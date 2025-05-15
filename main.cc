@@ -2,9 +2,8 @@
 
 int main() {
 
-    Game game;
-    game.Loop();
-
+    game::Loop();
 
     return 0;
+
 }
