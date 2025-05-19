@@ -1,6 +1,5 @@
 ﻿//
 // Created by sebas on 15/05/2025.
-// Still Admin ?
 //
 #include "graphics/tilemap.h"
 
