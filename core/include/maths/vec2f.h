@@ -1,8 +1,4 @@
-﻿//
-// Created by unite on 21.05.2025.
-//
-
-#ifndef VEC2F_H
+﻿#ifndef VEC2F_H
 #define VEC2F_H
 
 namespace core {

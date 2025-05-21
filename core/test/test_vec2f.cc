@@ -1,6 +1,5 @@
-﻿
-#include <gtest/gtest.h>
-#include "vec2f.h"
+﻿#include "gtest/gtest.h"
+#include "maths/vec2f.h"
 
 TEST(Vec2f, Empty) {
   core::Vec2f v;
