@@ -1,14 +1,22 @@
 # Cmake Versio
 cmake_minimum_required(VERSION 3.30)
 
+option(ENABLE_TESTING "Enable gtest" OFF)
+if(ENABLE_TESTING)
+    list(APPEND VCPKG_MANIFEST_FEATURES "testing")
+endif(ENABLE_TESTING)
+
 # Create Solution
 project(CityBuilder)
 
 # C++ Version
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Packages : external libraries managed by
-find_package(SFML COMPONENTS Graphics Window System REQUIRED)
+if(ENABLE_TESTING)
+    enable_testing()
+    find_package(GTest CONFIG REQUIRED)
+endif(ENABLE_TESTING)
 
 # Creating Architecture and libraries
 add_subdirectory(core/)

@@ -1,0 +1,11 @@
+﻿{
+  "name": "city-builder",
+  "version-string": "1.0",
+  "dependencies": [
+    "sfml"
+  ],
+  "features": {
+    "testing": {"description": "Testing", "dependencies": ["gtest"] }
+  },
+  "builtin-baseline": "d43918b9143e24ffb56917daacd9126ad03014d6"
+}
