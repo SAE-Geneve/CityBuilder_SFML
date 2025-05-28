@@ -1,5 +1,5 @@
-﻿#ifndef VEC2F_H
-#define VEC2F_H
+﻿#ifndef CORE_MATHS_VEC2F_H
+#define CORE_MATHS_VEC2F_H
 
 namespace core {
 class Vec2f {
@@ -12,4 +12,4 @@ public:
 
 };
 }
-#endif //VEC2F_H
+#endif //CORE_MATHS_VEC2F_H
