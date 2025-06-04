@@ -8,15 +8,9 @@
 
 namespace core {
 
-float Cos(Radian angle) {
-  return std::cos(static_cast<float>(angle));
-}
-float Sin(Radian angle) {
-  return std::sin(static_cast<float>(angle));
-}
-float Tan(Radian angle) {
-  return std::tan(static_cast<float>(angle));
-}
+inline float Cos(Radian angle) { return std::cos(static_cast<float>(angle)); }
+inline float Sin(Radian angle) { return std::sin(static_cast<float>(angle)); }
+inline float Tan(Radian angle) { return std::tan(static_cast<float>(angle)); }
 
 }
 
