@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ai/bt_action.h"
+#include "ai/bt_selector.h"
 #include "assets/asset_manager.h"
 
 using namespace core::ai::behaviour_tree;
@@ -28,6 +29,11 @@ public:
 
     // Actions
     Status Move();
+
+    // Behaviours
+    //bool hungry_ = false;
+    int hunger_ = 0;
+    bool resourceAvailable_ = true;
 
 };
 

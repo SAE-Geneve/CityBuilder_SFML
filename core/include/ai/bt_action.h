@@ -4,9 +4,9 @@
 #include <functional>
 
 #include "bt_node.h"
-
 namespace core::ai {
     namespace behaviour_tree {
+
 
         //template<typename Callable>
         class Action : public Node {
