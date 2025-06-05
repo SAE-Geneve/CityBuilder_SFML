@@ -9,19 +9,21 @@ constexpr int kWidth = 1600;
 constexpr int kHeight = 1280;
 constexpr int kPixelStep = 16;
 
+using core::experimental::AssetManager;
+
 class TileMap {
     enum class Tile {
-        EMPTY,
-        GRASS
+        kEmpty,
+        kGrass,
+        kMaison,
+        kLength
     };
+
+    std::string_view files[static_cast<size_t>(Tile::kLength)]{"empty.png", "grass.png", "maison.png"};
 
 private:
     std::array<Tile, kWidth/kPixelStep * kHeight/kPixelStep> tiles_ = {};
-    /* TODO: delete textures direct usage
-    sf::Texture grass_texture_;
-    sf::Texture default_texture_;
-    */
-    AssetManager<sf::Texture> textures;
+    AssetManager<sf::Texture, Tile, "_assets/sprites"> textures;
 
     static sf::Vector2f ScreenPosition(int index);
     static int Index(sf::Vector2f screenPosition);
