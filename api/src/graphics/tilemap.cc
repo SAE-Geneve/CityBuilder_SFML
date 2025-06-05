@@ -14,7 +14,7 @@ TileMap::TileMap(){
 
 void TileMap::Setup(){
     textures.Load(files);
-    tiles_.fill(Tile::kMaison);
+    tiles_.fill(Tile::kGrass);
 }
 
 void TileMap::Draw(sf::RenderWindow &window){
