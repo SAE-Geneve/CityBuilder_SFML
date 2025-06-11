@@ -1,21 +1,19 @@
 ﻿//
-// Created by sebas on 05/06/2025.
+// Created by sebas on 11/06/2025.
 //
 
-#include "ai/bt_selector.h"
+#include "ai/bt_sequence.h"
 
 using namespace core::ai::behaviour_tree;
 
-
-
-Status Selector::Tick(){
+Status Sequence::Tick(){
 
     while (childIdx_ < children_.size()) {
         Status status = children_[childIdx_]->Tick();
 
-        if (status == Status::kSuccess) {
+        if (status == Status::kFailure) {
             Reset();
-            return Status::kSuccess;
+            return Status::kFailure;
         }
 
         if (status == Status::kRunning) {
@@ -26,6 +24,7 @@ Status Selector::Tick(){
 
     }
 
-    return Status::kFailure;
+    Reset();
+    return Status::kSuccess;
 
 }

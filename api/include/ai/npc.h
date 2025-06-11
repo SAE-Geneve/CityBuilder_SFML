@@ -22,6 +22,10 @@ class Npc {
 
     std::unique_ptr<Node> root_;
 
+    // Constants
+    static constexpr float kHungerRate = 0.1f;
+    static constexpr float kMovingSpeed = 0.5f;
+
 public:
     void Setup();
     void Update();
@@ -29,11 +33,14 @@ public:
 
     // Actions
     Status Move();
+    Status Eat();
 
     // Behaviours
     //bool hungry_ = false;
-    int hunger_ = 0;
+    float hunger_ = 0;
     bool resourceAvailable_ = true;
+    bool target_reachable_ = true;
+    float target_distance_ = 20;
 
 };
 
