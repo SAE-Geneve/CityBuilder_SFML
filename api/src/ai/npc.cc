@@ -78,11 +78,17 @@ void Npc::Setup(){
 
     SetupBehaviourTree();
 
-    motor_.SetPosition(sf::Vector2f(100, 100));
+    motor_.SetPosition({100, 100});
+    motor_.SetSpeed(kMovingSpeed);
+    motor_.SetDestination({600.0f, 600.0f});
 
 }
 
-void Npc::Update(){
+void Npc::Update(float dt){
+
+    // -------------------
+    motor_.Update(dt);
+
     // -------------------
     std::cout << "Hunger : " << hunger_ << std::endl;
     root_->Tick();

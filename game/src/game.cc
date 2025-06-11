@@ -9,6 +9,8 @@
 
 namespace game {
     namespace {
+        sf::Clock clock;
+
         sf::RenderWindow window_;
         TileMap tilemap_;
 
@@ -25,10 +27,16 @@ namespace game {
     }
 
     void Loop(){
+
+
+
         Setup();
 
         // Start the game loop
         while (window_.isOpen()) {
+
+            auto dt = clock.restart().asSeconds();
+
             // Process events = Input frame
             while (const std::optional event = window_.pollEvent()) {
                 // Close window: exit
@@ -38,7 +46,7 @@ namespace game {
             }
 
             // GamePlay, physic frame
-            npc_.Update();
+            npc_.Update(dt);
 
             // Graphic frame
             window_.clear();

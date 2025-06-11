@@ -14,12 +14,14 @@ using core::experimental::AssetManager;
 class TileMap {
     enum class Tile {
         kEmpty,
-        kGrass,
+        kGrass16,
+        kBgA,
+        kBgB,
         kMaison,
         kLength
     };
 
-    std::string_view files[static_cast<size_t>(Tile::kLength)]{"empty.png", "grass.png", "maison.png"};
+    std::string_view files[static_cast<size_t>(Tile::kLength)]{"empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png"};
 
 private:
     std::array<Tile, kWidth/kPixelStep * kHeight/kPixelStep> tiles_ = {};

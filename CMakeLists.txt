@@ -1,4 +1,4 @@
-# Cmake Versio
+# Cmake Version
 cmake_minimum_required(VERSION 3.30)
 
 option(ENABLE_TESTING "Enable gtest" OFF)

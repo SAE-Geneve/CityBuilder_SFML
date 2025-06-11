@@ -26,21 +26,19 @@ namespace api::ai {
         std::unique_ptr<Node> root_;
         // Behaviour Constants
         static constexpr float kHungerRate = 0.1f;
-        static constexpr float kMovingSpeed = 0.5f;
+        static constexpr float kMovingSpeed = 50.0f;
 
         // Motion
         Motor motor_;
 
     public:
         void Setup();
-
-        void Update();
+        void Update(float dt);
 
         void Draw(sf::RenderWindow &window);
 
         // Actions
         Status Move();
-
         Status Eat();
 
         void SetupBehaviourTree();

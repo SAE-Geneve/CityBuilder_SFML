@@ -1,11 +1,5 @@
-﻿//
-// Created by sebas on 11/06/2025.
-//
-
-#ifndef MOTOR_H
+﻿#ifndef MOTOR_H
 #define MOTOR_H
-
-#include <SFML/Graphics/Transform.hpp>
 
 namespace api::motion {
 
@@ -15,16 +9,28 @@ namespace api::motion {
         float speed_;
 
     public:
-        // choix 2
-        void Update(float dt);
-        void MoveTo(sf::Vector2f destination);
+        void Update(float dt);  // each frame
 
         // getter / setter
         void SetSpeed(float speed){speed_ = speed;}
         void SetPosition(sf::Vector2f position){position_ = position;}
+        void SetDestination(sf::Vector2f destination){destination_ = destination;}
+
         [[nodiscard]] const sf::Vector2f& GetPosition() const{return position_;}
 
     };
+
+    inline void Motor::Update(const float dt){
+       const sf::Vector2f distance = destination_ - position_;
+
+        if (distance.length() < speed_ * dt) {
+            position_ = destination_;
+            return;
+        }
+        position_ += distance.normalized() * speed_ * dt;
+
+    }
+
 
 }
 
