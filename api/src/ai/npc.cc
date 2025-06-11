@@ -3,6 +3,10 @@
 #include <iostream>
 
 #include "ai/bt_sequence.h"
+#include "ai/bt_selector.h"
+#include "ai/bt_action.h"
+
+using namespace api::ai;
 
 Status Npc::Move(){
     // if destination not reachable, return failure
@@ -22,8 +26,6 @@ Status Npc::Move(){
     }
 }
 
-
-
 Status Npc::Eat(){
     // No failure, until we have food storage system
     hunger_ -= kHungerRate;
@@ -34,9 +36,7 @@ Status Npc::Eat(){
     }
 }
 
-void Npc::Setup(){
-    textures.Load(files);
-
+void Npc::SetupBehaviourTree(){
     auto feedSequence = std::make_unique<Sequence>();
     feedSequence->AddChild(std::make_unique<Action>([this]() {
         if (hunger_ >= 100) {
@@ -50,8 +50,6 @@ void Npc::Setup(){
     }));
     feedSequence->AddChild(std::make_unique<Action>(std::bind(&Npc::Move, this)));
     feedSequence->AddChild(std::make_unique<Action>(std::bind(&Npc::Eat, this)));
-
-
 
     auto selector = std::make_unique<Selector>();
     // Attach the sequence to the selector
@@ -73,8 +71,15 @@ void Npc::Setup(){
     }));
 
     root_ = std::move(selector);
+}
 
-    //root_ = std::make_unique<Action>(std::bind(&Npc::Move, this));
+void Npc::Setup(){
+    textures.Load(files);
+
+    SetupBehaviourTree();
+
+    motor_.SetPosition(sf::Vector2f(100, 100));
+
 }
 
 void Npc::Update(){
@@ -85,5 +90,8 @@ void Npc::Update(){
 
 void Npc::Draw(sf::RenderWindow &window){
     sf::Sprite sprite(textures.Get(Animation::KBlue));
+
+    sprite.setPosition(motor_.GetPosition());
+
     window.draw(sprite);
 }

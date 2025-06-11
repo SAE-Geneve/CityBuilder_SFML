@@ -5,12 +5,14 @@
 #include "ai/npc.h"
 #include "graphics/tilemap.h"
 
+
+
 namespace game {
     namespace {
         sf::RenderWindow window_;
         TileMap tilemap_;
 
-        Npc npc_;
+        api::ai::Npc npc_;
 
         void Setup(){
             // Create the main window
