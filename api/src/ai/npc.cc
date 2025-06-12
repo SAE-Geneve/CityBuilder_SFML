@@ -5,6 +5,7 @@
 #include "ai/bt_sequence.h"
 #include "ai/bt_selector.h"
 #include "ai/bt_action.h"
+#include "motion/AStar.h"
 
 using namespace api::ai;
 
@@ -72,13 +73,19 @@ void Npc::SetupBehaviourTree(){
     root_ = std::move(selector);
 }
 
-void Npc::Setup(){
+void Npc::Setup(const TileMap* tileMap){
     textures.Load(files);
 
     SetupBehaviourTree();
 
     motor_.SetPosition({100, 100});
     motor_.SetSpeed(kMovingSpeed);
+
+    tileMap_ = tileMap;
+
+    Path path = ::motion::Astar::GetPath({0,0}, {256, 256}, tileMap_->GetWalkables());
+    SetPath(path);
+
 }
 
 void Npc::Update(float dt){

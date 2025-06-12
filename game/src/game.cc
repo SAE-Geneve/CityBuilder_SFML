@@ -20,17 +20,7 @@ namespace game {
 
             tilemap_.Setup();
 
-            npc_.Setup();
-            Path temp_path_;
-            std::vector<sf::Vector2f> points;
-            points.push_back(sf::Vector2f(10, 10));
-            points.push_back(sf::Vector2f(100, 100));
-            points.push_back(sf::Vector2f(150, 150));
-            points.push_back(sf::Vector2f(200, 200));
-
-            temp_path_.Fill(points);
-
-            npc_.SetPath(temp_path_);
+            npc_.Setup(&tilemap_);
 
         }
     }
@@ -52,7 +42,6 @@ namespace game {
             }
 
             // GamePlay, physic frame
-
             npc_.Update(dt);
 
             // Graphic frame

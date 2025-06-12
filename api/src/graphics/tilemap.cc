@@ -4,17 +4,33 @@
 #include "graphics/tilemap.h"
 
 #include <iostream>
-#include <gtest/internal/gtest-port.h>
+#include <random>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-
 
 TileMap::TileMap(){
 }
 
 void TileMap::Setup(){
     textures.Load(files);
-    tiles_.fill(Tile::kGrass16);
+
+    // Créer un générateur de nombres aléatoires
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 5);
+
+    // Remplir le tableau avec de l'herbe ou de l'eau de manière aléatoire
+    for (int tileIndex = 0; tileIndex < tiles_.size(); ++tileIndex) {
+        if (dis(gen) == 0) {
+            tiles_[tileIndex] = Tile::kWater;
+        }else {
+            tiles_[tileIndex] = Tile::kGrass16;
+            walkables_.push_back(ScreenPosition(tileIndex));
+
+        // std::cout << "add walkable " << tileIndex << " : [" << ScreenPosition(tileIndex).x << " : " << ScreenPosition(tileIndex).y << "]\n";
+
+        }
+    }
 }
 
 void TileMap::Draw(sf::RenderWindow &window){
@@ -22,13 +38,17 @@ void TileMap::Draw(sf::RenderWindow &window){
 
     sf::Sprite sprite(textures.Get(Tile::kEmpty));
 
-    for (auto element: tiles_) {
-        sprite.setTexture(textures.Get(element));
+    for (auto tile: tiles_) {
+        sprite.setTexture(textures.Get(tile));
         sprite.setPosition(ScreenPosition(tileIndex));
         window.draw(sprite);
 
         tileIndex++;
     }
+}
+
+std::vector<sf::Vector2f> TileMap::GetWalkables() const{
+    return walkables_;
 }
 
 sf::Vector2f TileMap::ScreenPosition(const int index){

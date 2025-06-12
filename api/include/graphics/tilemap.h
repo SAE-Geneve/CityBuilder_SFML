@@ -18,10 +18,14 @@ class TileMap {
         kBgA,
         kBgB,
         kMaison,
+        kWater,
         kLength
     };
 
-    std::string_view files[static_cast<size_t>(Tile::kLength)]{"empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png"};
+    std::string_view files[static_cast<size_t>(Tile::kLength)] {
+        "empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png",
+        "water.png"
+    };
 
 private:
     std::array<Tile, kWidth/kPixelStep * kHeight/kPixelStep> tiles_ = {};
@@ -30,10 +34,13 @@ private:
     static sf::Vector2f ScreenPosition(int index);
     static int Index(sf::Vector2f screenPosition);
 
+    std::vector<sf::Vector2f> walkables_;
+
 public:
     explicit TileMap();
     void Setup();
     void Draw(sf::RenderWindow &window);
 
+    std::vector<sf::Vector2f> GetWalkables() const;
 };
 #endif
