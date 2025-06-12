@@ -13,7 +13,7 @@ Status Npc::Move(){
     if (!target_reachable_) {
         std::cout << "Not reachable" << target_reachable_ << std::endl;
         return Status::kFailure;
-    } else{
+    } else {
         std::cout << "I'm moving (distance = " << target_distance_ << ")" << std::endl;
         if (target_distance_ >= 0.15f) {
             // still arriving, return running
@@ -31,7 +31,7 @@ Status Npc::Eat(){
     hunger_ -= kHungerRate;
     if (hunger_ > 0) {
         return Status::kRunning;
-    }else {
+    } else {
         return Status::kSuccess;
     }
 }
@@ -42,11 +42,10 @@ void Npc::SetupBehaviourTree(){
         if (hunger_ >= 100) {
             std::cout << "I'm hungry, wanna eat........" << std::endl;
             return Status::kSuccess;
-        }else {
+        } else {
             std::cout << "I'm not hungry, thanks........" << std::endl;
             return Status::kFailure;
         }
-
     }));
     feedSequence->AddChild(std::make_unique<Action>(std::bind(&Npc::Move, this)));
     feedSequence->AddChild(std::make_unique<Action>(std::bind(&Npc::Eat, this)));
@@ -80,24 +79,25 @@ void Npc::Setup(){
 
     motor_.SetPosition({100, 100});
     motor_.SetSpeed(kMovingSpeed);
-    motor_.SetDestination({600.0f, 600.0f});
-
 }
 
 void Npc::Update(float dt){
-
     // -------------------
-    motor_.Update(dt);
-
-    // -------------------
-    std::cout << "Hunger : " << hunger_ << std::endl;
-    root_->Tick();
+    if (path_.IsValid()){
+        motor_.Update(dt);
+        if (!path_.IsDone() && motor_.RemainingDistance() <= 0.001f) {
+            motor_.SetDestination(path_.GetNextPoint());
+        }
+    }
 }
 
 void Npc::Draw(sf::RenderWindow &window){
     sf::Sprite sprite(textures.Get(Animation::KBlue));
-
     sprite.setPosition(motor_.GetPosition());
-
     window.draw(sprite);
+}
+
+void Npc::SetPath(const Path& path){
+    path_ = path;
+    motor_.SetDestination(path_.StartPoint());
 }

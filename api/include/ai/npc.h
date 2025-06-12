@@ -6,6 +6,7 @@
 #include "ai/bt_node.h"
 #include "assets/asset_manager.h"
 #include "motion/motor.h"
+#include "motion/path.h"
 
 using namespace core::ai::behaviour_tree;
 using namespace api::motion;
@@ -30,6 +31,8 @@ namespace api::ai {
 
         // Motion
         Motor motor_;
+        Path path_;
+
 
     public:
         void Setup();
@@ -49,6 +52,10 @@ namespace api::ai {
         bool resourceAvailable_ = true;
         bool target_reachable_ = true;
         float target_distance_ = 20;
+
+        // Motion
+        void SetPath(const Path& path);
+
     };
 }
 

@@ -1,5 +1,6 @@
 ﻿#ifndef MOTOR_H
 #define MOTOR_H
+#include <iostream>
 
 namespace api::motion {
 
@@ -8,28 +9,41 @@ namespace api::motion {
         sf::Vector2f destination_;
         float speed_;
 
+        float remainingDistance_ = 0;
+
     public:
         void Update(float dt);  // each frame
+        float RemainingDistance() const;
 
         // getter / setter
         void SetSpeed(float speed){speed_ = speed;}
         void SetPosition(sf::Vector2f position){position_ = position;}
-        void SetDestination(sf::Vector2f destination){destination_ = destination;}
+        void SetDestination(const sf::Vector2f destination){
+            std::cout << "new destination : " << destination.x << ":" << destination.y << "\n";
+            destination_ = destination;
+        }
 
         [[nodiscard]] const sf::Vector2f& GetPosition() const{return position_;}
+
 
     };
 
     inline void Motor::Update(const float dt){
        const sf::Vector2f distance = destination_ - position_;
+        remainingDistance_ = distance.length();
 
-        if (distance.length() < speed_ * dt) {
+        if (remainingDistance_ < speed_ * dt) {
             position_ = destination_;
             return;
         }
         position_ += distance.normalized() * speed_ * dt;
 
     }
+
+    inline float Motor::RemainingDistance() const{
+        return remainingDistance_;
+    }
+
 
 
 }
