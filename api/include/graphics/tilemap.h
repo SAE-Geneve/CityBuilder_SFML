@@ -7,7 +7,7 @@
 
 constexpr int kWidth = 1600;
 constexpr int kHeight = 1280;
-constexpr int kPixelStep = 16;
+constexpr int kPixelStep = 64;
 
 using core::experimental::AssetManager;
 

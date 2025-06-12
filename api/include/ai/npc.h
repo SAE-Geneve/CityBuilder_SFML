@@ -17,11 +17,11 @@ namespace api::ai {
         // Assets
         enum class Animation {
             kEmpty,
-            KBlue,
+            KBlueTruck,
             kLength
         };
 
-        std::string_view files[static_cast<size_t>(Animation::kLength)]{"empty.png", "npc_blue.png"};
+        std::string_view files[static_cast<size_t>(Animation::kLength)]{"empty.png", "scifiUnit_06.png"};
         core::experimental::AssetManager<sf::Texture, Animation, "_assets/sprites"> textures;
 
         // Behaviour tree

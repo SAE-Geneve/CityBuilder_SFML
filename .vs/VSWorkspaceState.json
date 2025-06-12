@@ -6,12 +6,7 @@
     ]
   },
   "ExpandedNodes": [
-    "",
-    "\\api\\src",
-    "\\api\\src\\ai",
-    "\\api\\src\\graphics",
-    "\\api\\src\\motion"
+    ""
   ],
-  "SelectedNode": "\\main.cc",
   "PreviewInSolutionExplorer": false
 }

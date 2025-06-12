@@ -71,6 +71,7 @@ void Npc::SetupBehaviourTree(){
     }));
 
     root_ = std::move(selector);
+
 }
 
 void Npc::Setup(const TileMap* tileMap){
@@ -78,12 +79,12 @@ void Npc::Setup(const TileMap* tileMap){
 
     SetupBehaviourTree();
 
-    motor_.SetPosition({100, 100});
+    motor_.SetPosition({0, 0});
     motor_.SetSpeed(kMovingSpeed);
 
     tileMap_ = tileMap;
 
-    Path path = ::motion::Astar::GetPath({0,0}, {256, 256}, tileMap_->GetWalkables());
+    Path path = ::motion::Astar::GetPath(motor_.GetPosition(), {256, 256}, tileMap_->GetWalkables());
     SetPath(path);
 
 }
@@ -99,7 +100,7 @@ void Npc::Update(float dt){
 }
 
 void Npc::Draw(sf::RenderWindow &window){
-    sf::Sprite sprite(textures.Get(Animation::KBlue));
+    sf::Sprite sprite(textures.Get(Animation::KBlueTruck));
     sprite.setPosition(motor_.GetPosition());
     window.draw(sprite);
 }
