@@ -1,6 +1,7 @@
 ﻿#include "ai/npc.h"
 
 #include <iostream>
+#include <random>
 
 #include "ai/bt_sequence.h"
 #include "ai/bt_selector.h"
@@ -84,7 +85,13 @@ void Npc::Setup(const TileMap* tileMap){
 
     tileMap_ = tileMap;
 
-    Path path = ::motion::Astar::GetPath(motor_.GetPosition(), {256, 256}, tileMap_->GetWalkables());
+
+    static std::mt19937 gen{std::random_device{}()};
+    static std::uniform_int_distribution<size_t> dist(0, tileMap_->GetWalkables().size() - 1);
+
+    sf::Vector2f end = tileMap_->GetWalkables().at(dist(gen));
+
+    Path path = Astar::GetPath(64, motor_.GetPosition(), end, tileMap_->GetWalkables());
     SetPath(path);
 
 }
