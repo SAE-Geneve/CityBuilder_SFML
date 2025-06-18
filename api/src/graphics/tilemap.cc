@@ -12,14 +12,14 @@
 
 TileMap::TileMap() {}
 
-void TileMap::Setup() {
+void TileMap::Setup(std::span<std::string_view> texture_names) {
   // Create and configure FastNoise object
   FastNoiseLite noise;
   noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
   noise.SetSeed(1309);
   noise.SetFrequency(0.01f);
 
-  textures.Load(files);
+  textures.Load(texture_names);
 
   // Remplir le tableau avec de l'herbe ou de l'eau de manière aléatoire
   for (int tileIndex = 0; tileIndex < tiles_.size(); ++tileIndex) {
@@ -34,10 +34,6 @@ void TileMap::Setup() {
     } else {
       tiles_[tileIndex] = Tile::kBgA;
       walkables_.push_back(pos);
-
-      // std::cout << "add walkable " << tileIndex << " : [" <<
-      // ScreenPosition(tileIndex).x << " : " << ScreenPosition(tileIndex).y <<
-      // "]\n";
     }
   }
 }

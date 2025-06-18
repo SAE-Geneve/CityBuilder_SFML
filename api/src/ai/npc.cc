@@ -76,11 +76,11 @@ void Npc::SetupBehaviourTree(){
 }
 
 
-void Npc::Setup(const TileMap* tileMap, std::span<std::string_view> files){
+void Npc::Setup(const TileMap* tileMap, std::span<std::string_view> texture_names){
 
   tileMap_ = tileMap;
 
-  textures.Load(files);
+  textures.Load(texture_names);
 
   SetupBehaviourTree();
 

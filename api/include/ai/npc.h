@@ -23,7 +23,6 @@ namespace api::ai {
             kLength
         };
     private:
-        //std::string_view files_[static_cast<size_t>(Sprites::kLength)] = {"empty.png", "scifiUnit_06.png"};
         core::experimental::AssetManager<sf::Texture, Sprites, "_assets/sprites"> textures;
 
         // Behaviour tree
@@ -45,7 +44,7 @@ namespace api::ai {
         const TileMap* tileMap_ = nullptr;
 
     public:
-        void Setup(const TileMap* tileMap, std::span<std::string_view> files);
+        void Setup(const TileMap* tileMap, std::span<std::string_view> texture_names);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
 

@@ -16,11 +16,16 @@ namespace game {
         //api::ai::Npc npc_;
         api::ai::NPCManager npc_manager;
 
+        std::array<std::string_view, static_cast<size_t>(TileMap::Tile::kLength)> files = {
+              "empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png",
+              "water.png"
+          };
+
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode({1280, 1080}), "SFML window");
 
-            tilemap_.Setup();
+            tilemap_.Setup(files);
 
             //npc_.Setup(&tilemap_);
             npc_manager.Add(api::ai::NpcType::kBlueTruck, &tilemap_);
