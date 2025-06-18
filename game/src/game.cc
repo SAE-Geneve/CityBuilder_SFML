@@ -4,33 +4,26 @@
 
 #include "ai/npc.h"
 #include "ai/npc_manager.h"
-#include "graphics/tilemap.h"
 
 namespace game {
+
     namespace {
+
         sf::Clock clock;
-
         sf::RenderWindow window_;
-        TileMap tilemap_;
-
-        //api::ai::Npc npc_;
+        TileMap<BgTile> background_;
         api::ai::NPCManager npc_manager;
-
-        std::array<std::string_view, static_cast<size_t>(TileMap::Tile::kLength)> files = {
-              "empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png",
-              "water.png"
-          };
 
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode({1280, 1080}), "SFML window");
 
-            tilemap_.Setup(files);
+            background_.Setup(bg_files_);
 
             //npc_.Setup(&tilemap_);
-            npc_manager.Add(api::ai::NpcType::kBlueTruck, &tilemap_);
-            npc_manager.Add(api::ai::NpcType::kGreenTruck, &tilemap_);
-            npc_manager.Add(api::ai::NpcType::kRedTruck, &tilemap_);
+            npc_manager.Add(api::ai::NpcType::kBlueTruck, &background_);
+            npc_manager.Add(api::ai::NpcType::kGreenTruck, &background_);
+            npc_manager.Add(api::ai::NpcType::kRedTruck, &background_);
 
         }
     }
@@ -57,7 +50,7 @@ namespace game {
             // Graphic frame
             window_.clear();
 
-            tilemap_.Draw(window_);
+            background_.Draw(window_);
             npc_manager.Draw(window_);
 
             window_.display();

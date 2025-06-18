@@ -6,7 +6,7 @@
 
 namespace api::ai {
 
-void NPCManager::Add(NpcType type, const TileMap* tileMap) {
+void NPCManager::Add(NpcType type, const TileMap<BgTile>* tileMap) {
 
   std::cout << "Adding npc" << std::endl;
 
@@ -15,6 +15,8 @@ void NPCManager::Add(NpcType type, const TileMap* tileMap) {
   // npcs_.back()->Setup(tileMap, files);
 
   npcs_.push_back(NPCFactory::createNPC(type, tileMap));
+
+  std::cout << "Added npc" << std::endl;
 
 }
 

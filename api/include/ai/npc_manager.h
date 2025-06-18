@@ -16,7 +16,7 @@ namespace api::ai {
     std::vector<std::unique_ptr<Npc>> npcs_;
 
   public:
-    void Add(NpcType type, const TileMap* tileMap);
+    void Add(NpcType type, const TileMap<BgTile>* tileMap);
     void Update(float dt);
     void Draw(sf::RenderWindow &window);
 

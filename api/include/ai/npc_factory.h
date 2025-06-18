@@ -21,7 +21,7 @@ class NPCFactory {
 public:
 
   // Méthode de création qui inclut le setup
-  static std::unique_ptr<Npc> createNPC(NpcType type, const TileMap* tileMap) {
+  static std::unique_ptr<Npc> createNPC(NpcType type, const TileMap<BgTile>* tileMap) {
     std::unique_ptr<Npc> npc = std::make_unique<Npc>();
 
     std::array<std::string_view, static_cast<size_t>(Npc::Sprites::kLength)> files;

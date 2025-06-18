@@ -11,6 +11,7 @@
 
 using namespace core::ai::behaviour_tree;
 using namespace api::motion;
+using namespace api::graphics;
 
 namespace api::ai {
     class Npc {
@@ -41,10 +42,10 @@ namespace api::ai {
         Path path_;
 
         // Tilemap
-        const TileMap* tileMap_ = nullptr;
+        const TileMap<BgTile>* tileMap_ = nullptr;
 
     public:
-        void Setup(const TileMap* tileMap, std::span<std::string_view> texture_names);
+        void Setup(const TileMap<BgTile>* tileMap, std::span<std::string_view> texture_names);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
 
