@@ -10,8 +10,11 @@ void NPCManager::Add(NpcType type, const TileMap* tileMap) {
 
   std::cout << "Adding npc" << std::endl;
 
-  npcs_.push_back(std::make_unique<Npc>());
-  npcs_.back()->Setup(tileMap);
+  // std::string_view files[static_cast<size_t>(Npc::Sprites::kLength)] = {"empty.png", "scifiUnit_19.png"};
+  // npcs_.push_back(std::make_unique<Npc>());
+  // npcs_.back()->Setup(tileMap, files);
+
+  npcs_.push_back(NPCFactory::createNPC(type, tileMap));
 
 }
 

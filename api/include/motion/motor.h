@@ -7,7 +7,7 @@ namespace api::motion {
     class Motor {
         sf::Vector2f position_;
         sf::Vector2f destination_;
-        float speed_;
+        float speed_ = 10;
 
         float remainingDistance_ = 0;
 

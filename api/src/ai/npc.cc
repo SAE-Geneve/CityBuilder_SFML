@@ -75,24 +75,26 @@ void Npc::SetupBehaviourTree(){
 
 }
 
-void Npc::Setup(const TileMap* tileMap){
-    textures.Load(files);
 
-    SetupBehaviourTree();
+void Npc::Setup(const TileMap* tileMap, std::span<std::string_view> files){
 
-    motor_.SetPosition({0, 0});
-    motor_.SetSpeed(kMovingSpeed);
+  tileMap_ = tileMap;
 
-    tileMap_ = tileMap;
+  textures.Load(files);
+
+  SetupBehaviourTree();
+
+  motor_.SetPosition({0, 0});
+  motor_.SetSpeed(kMovingSpeed);
 
 
-    static std::mt19937 gen{std::random_device{}()};
-    static std::uniform_int_distribution<size_t> dist(0, tileMap_->GetWalkables().size() - 1);
+  static std::mt19937 gen{std::random_device{}()};
+  static std::uniform_int_distribution<size_t> dist(0, tileMap_->GetWalkables().size() - 1);
 
-    sf::Vector2f end = tileMap_->GetWalkables().at(dist(gen));
+  sf::Vector2f end = tileMap_->GetWalkables().at(dist(gen));
 
-    Path path = Astar::GetPath(64, motor_.GetPosition(), end, tileMap_->GetWalkables());
-    SetPath(path);
+  Path path = Astar::GetPath(64, motor_.GetPosition(), end, tileMap_->GetWalkables());
+  SetPath(path);
 
 }
 
@@ -107,7 +109,7 @@ void Npc::Update(float dt){
 }
 
 void Npc::Draw(sf::RenderWindow &window){
-    sf::Sprite sprite(textures.Get(Animation::KBlueTruck));
+    sf::Sprite sprite(textures.Get(Sprites::kIdle));
     sprite.setPosition(motor_.GetPosition());
     window.draw(sprite);
 }

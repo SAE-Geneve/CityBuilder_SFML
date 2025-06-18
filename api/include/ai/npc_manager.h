@@ -7,7 +7,6 @@
 
 #include "npc.h"
 #include "npc_factory.h"
-#include "npc_types.h"
 
 namespace api::ai {
 
@@ -15,7 +14,6 @@ namespace api::ai {
 
   private:
     std::vector<std::unique_ptr<Npc>> npcs_;
-    NPCFactory factory_;
 
   public:
     void Add(NpcType type, const TileMap* tileMap);

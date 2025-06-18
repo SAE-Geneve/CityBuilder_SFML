@@ -24,6 +24,8 @@ namespace game {
 
             //npc_.Setup(&tilemap_);
             npc_manager.Add(api::ai::NpcType::kBlueTruck, &tilemap_);
+            npc_manager.Add(api::ai::NpcType::kGreenTruck, &tilemap_);
+            npc_manager.Add(api::ai::NpcType::kRedTruck, &tilemap_);
 
         }
     }
