@@ -8,12 +8,19 @@
 #include "ai/npc.h"
 
 namespace api::ai{
+
+    enum class NpcType {
+        kBlue,
+        kRed,
+        kGreen
+    };
+
     class NpcManager {
 
         std::vector<Npc> npcs_;
 
     public:
-        void Add(const TileMap* tilemap);
+        void Add(NpcType type, const TileMap* tilemap);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
 

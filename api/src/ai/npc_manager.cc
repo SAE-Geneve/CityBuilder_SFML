@@ -3,12 +3,12 @@
 //
 
 #include "ai/npc_manager.h"
+#include "ai/npc_factory.h"
 
 namespace api::ai {
 
-    void NpcManager::Add(const TileMap* tilemap){
-        npcs_.emplace_back();
-        npcs_.back().Setup(tilemap);
+    void NpcManager::Add(NpcType type, const TileMap* tilemap){
+        CreateNpc(npcs_, type, tilemap);
     }
 
     void NpcManager::Update(float dt){

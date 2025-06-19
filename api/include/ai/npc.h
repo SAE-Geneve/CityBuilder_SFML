@@ -14,18 +14,11 @@ using namespace api::motion;
 
 namespace api::ai {
     class Npc {
-        // Assets
-        enum class Animation {
-            kEmpty,
-            KBlueTruck,
-            kLength
-        };
-
-        std::string_view files[static_cast<size_t>(Animation::kLength)]{"empty.png", "scifiUnit_06.png"};
-        core::experimental::AssetManager<sf::Texture, Animation, "_assets/sprites"> textures;
+        sf::Texture texture_;
 
         // Behaviour tree
-        std::unique_ptr<Node> root_;
+        std::unique_ptr<Node> bt_tree_;
+
         // Behaviour Constants
         static constexpr float kHungerRate = 0.1f;
         static constexpr float kMovingSpeed = 50.0f;
@@ -38,7 +31,7 @@ namespace api::ai {
         const TileMap* tileMap_;
 
     public:
-        void Setup(const TileMap* tileMap);
+        void Setup(std::string_view fileName, const TileMap* tileMap);
         void Update(float dt);
 
         void Draw(sf::RenderWindow &window);

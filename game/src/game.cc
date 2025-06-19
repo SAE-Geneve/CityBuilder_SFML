@@ -22,7 +22,9 @@ namespace game {
 
             tilemap_.Setup();
 
-            npc_manager_.Add(&tilemap_);
+            npc_manager_.Add(api::ai::NpcType::kBlue, &tilemap_);
+            npc_manager_.Add(api::ai::NpcType::kRed, &tilemap_);
+            npc_manager_.Add(api::ai::NpcType::kGreen, &tilemap_);
 
         }
     }

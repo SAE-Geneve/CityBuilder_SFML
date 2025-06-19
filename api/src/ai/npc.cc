@@ -71,12 +71,19 @@ void Npc::SetupBehaviourTree(){
         return Status::kSuccess;
     }));
 
-    root_ = std::move(selector);
+    bt_tree_ = std::move(selector);
 
 }
 
-void Npc::Setup(const TileMap* tileMap){
-    textures.Load(files);
+void Npc::Setup(std::string_view filename, const TileMap* tileMap){
+
+    // TODO : find lighter concat for string view
+    if(!texture_.loadFromFile("_assets/sprites/" + std::string(filename))) {
+        std::cout << "Error loading texture " << filename << std::endl;
+        if (!texture_.loadFromFile("_assets/sprites/empty.png")) {
+            std::cout << "Error loading texture empty.png" << std::endl;
+        }
+    }
 
     SetupBehaviourTree();
 
@@ -107,7 +114,7 @@ void Npc::Update(float dt){
 }
 
 void Npc::Draw(sf::RenderWindow &window){
-    sf::Sprite sprite(textures.Get(Animation::KBlueTruck));
+    sf::Sprite sprite(texture_);
     sprite.setPosition(motor_.GetPosition());
     window.draw(sprite);
 }
