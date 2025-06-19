@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 
 #include "ai/npc.h"
+#include "ai/npc_manager.h"
 #include "graphics/tilemap.h"
 
 namespace game {
@@ -11,8 +12,9 @@ namespace game {
 
         sf::RenderWindow window_;
         TileMap tilemap_;
-
-        api::ai::Npc npc_;
+        api::ai::NpcManager npc_manager_;
+        //
+        // api::ai::Npc npc_;
 
         void Setup(){
             // Create the main window
@@ -20,7 +22,7 @@ namespace game {
 
             tilemap_.Setup();
 
-            npc_.Setup(&tilemap_);
+            npc_manager_.Add(&tilemap_);
 
         }
     }
@@ -42,13 +44,13 @@ namespace game {
             }
 
             // GamePlay, physic frame
-            npc_.Update(dt);
+            npc_manager_.Update(dt);
 
             // Graphic frame
             window_.clear();
 
             tilemap_.Draw(window_);
-            npc_.Draw(window_);
+            npc_manager_.Draw(window_);
 
             window_.display();
         }

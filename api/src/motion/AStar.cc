@@ -51,8 +51,8 @@ namespace api::motion {
             aStarNode *current_node = &start_node;
 
             while (current_node != nullptr) {
-                std::cout << "reconstiution point : " << current_node->position.x << ":" << current_node->position.y <<
-                        std::endl;
+                // std::cout << "reconstiution point : " << current_node->position.x << ":" << current_node->position.y <<
+                //         std::endl;
                 pathPoints.emplace_back(current_node->position);
                 current_node = current_node->previous_node;
             }
