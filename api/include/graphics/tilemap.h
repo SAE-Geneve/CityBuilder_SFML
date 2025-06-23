@@ -13,21 +13,16 @@ using core::experimental::AssetManager;
 
 class TileMap {
     enum class Tile {
-        kEmpty,
-        kGrass16,
-        kBgA,
-        kBgB,
-        kMaison,
+        kEmpty, kGrass16, kBgA, kBgB, kMaison,
         kWater,
         kLength
     };
 
-    std::string_view files[static_cast<size_t>(Tile::kLength)] {
+    std::array<std::string_view, static_cast<size_t>(Tile::kLength)> files = {
         "empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png",
         "water.png"
     };
 
-private:
     std::array<Tile, kWidth/kPixelStep * kHeight/kPixelStep> tiles_ = {};
     AssetManager<sf::Texture, Tile, "_assets/sprites"> textures;
 
@@ -37,7 +32,6 @@ private:
     std::vector<sf::Vector2f> walkables_;
 
 public:
-    explicit TileMap();
     void Setup();
     void Draw(sf::RenderWindow &window);
 

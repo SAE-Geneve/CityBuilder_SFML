@@ -10,8 +10,6 @@
 
 #include "noise/FastNoiseLite.h"
 
-TileMap::TileMap() {}
-
 void TileMap::Setup() {
   // Create and configure FastNoise object
   FastNoiseLite noise;

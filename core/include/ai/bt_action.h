@@ -14,7 +14,8 @@ namespace core::ai {
             std::function<Status()> action_;
 
         public:
-            explicit Action(std::function<Status()> action) : action_(action){}
+            explicit Action(std::function<Status()> action) : action_(
+                std::move(action)){}
 
             void Reset() override{};
 

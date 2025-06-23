@@ -1,5 +1,7 @@
 ﻿#ifndef MOTOR_H
 #define MOTOR_H
+
+#include <SFML/System/Vector2.hpp>
 #include <iostream>
 
 namespace api::motion {
@@ -7,13 +9,13 @@ namespace api::motion {
     class Motor {
         sf::Vector2f position_;
         sf::Vector2f destination_;
-        float speed_;
+        float speed_ = 0;
 
         float remainingDistance_ = 0;
 
     public:
         void Update(float dt);  // each frame
-        float RemainingDistance() const;
+        [[nodiscard]] float RemainingDistance() const;
 
         // getter / setter
         void SetSpeed(float speed){speed_ = speed;}

@@ -2,29 +2,32 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "ai/npc.h"
 #include "ai/npc_manager.h"
 #include "graphics/tilemap.h"
 
 namespace game {
     namespace {
-        sf::Clock clock;
 
-        sf::RenderWindow window_;
-        TileMap tilemap_;
-        api::ai::NpcManager npc_manager_;
-        //
-        // api::ai::Npc npc_;
+        inline sf::Clock clock;
+
+        inline sf::RenderWindow window_;
+        inline auto tilemap_ptr_= std::make_unique<TileMap>();
+        // inline TileMap tilemap_obj_;
+        inline api::ai::NpcManager npc_manager_;
 
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode({1280, 1080}), "SFML window");
 
-            tilemap_.Setup();
+            tilemap_ptr_->Setup();
+            npc_manager_.Add(api::ai::NpcType::kGreen, tilemap_ptr_.get());
+            npc_manager_.Add(api::ai::NpcType::kBlue, tilemap_ptr_.get());
+            npc_manager_.Add(api::ai::NpcType::kRed, tilemap_ptr_.get());
 
-            npc_manager_.Add(api::ai::NpcType::kBlue, &tilemap_);
-            npc_manager_.Add(api::ai::NpcType::kRed, &tilemap_);
-            npc_manager_.Add(api::ai::NpcType::kGreen, &tilemap_);
+            // tilemap_obj_.Setup();
+            // npc_manager_.Add(api::ai::NpcType::kGreen, &tilemap_obj_);
+            // npc_manager_.Add(api::ai::NpcType::kBlue, &tilemap_obj_);
+            // npc_manager_.Add(api::ai::NpcType::kRed, &tilemap_obj_);
 
         }
     }
@@ -51,7 +54,7 @@ namespace game {
             // Graphic frame
             window_.clear();
 
-            tilemap_.Draw(window_);
+            tilemap_ptr_->Draw(window_);
             npc_manager_.Draw(window_);
 
             window_.display();

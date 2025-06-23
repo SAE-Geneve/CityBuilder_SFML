@@ -29,9 +29,11 @@ sf::Vector2f Path::GetNextPoint(){
     return path_points_[idxPoint_];
 }
 
-void Path::Fill(std::vector<sf::Vector2f>& path_points){
-    if (!path_points.empty())
+void Path::Fill(const std::vector<sf::Vector2f> &path_points){
+    if (!path_points.empty()) {
         path_points_ = path_points;
+        idxPoint_ = 0;
+    }
 }
 
 sf::Vector2f Path::StartPoint() const{

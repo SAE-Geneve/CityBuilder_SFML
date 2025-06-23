@@ -7,18 +7,21 @@
 #include "npc_manager.h"
 
 namespace api::ai {
-    inline void CreateNpc(std::vector<Npc> &npcs, NpcType type, const TileMap *tilemap){
-        npcs.emplace_back();
+    inline void CreateNpc(std::vector<Npc> &npcs, const NpcType type, TileMap* tilemap){
+
 
         switch (type) {
             case NpcType::kBlue:
-                npcs.back().Setup("scifiUnit_06.png", tilemap);
+                npcs.emplace_back();
+                npcs.back().Setup("BLUE", "scifiUnit_06.png", tilemap);
                 break;
             case NpcType::kRed:
-                npcs.back().Setup("scifiUnit_18.png", tilemap);
+                npcs.emplace_back();
+                npcs.back().Setup("RED", "scifiUnit_18.png", tilemap);
                 break;
             case NpcType::kGreen:
-                npcs.back().Setup("scifiUnit_31.png", tilemap);
+                npcs.emplace_back();
+                npcs.back().Setup("GREEN","scifiUnit_31.png", tilemap);
                 break;
             default:
                 break;

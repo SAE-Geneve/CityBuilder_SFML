@@ -16,11 +16,10 @@ namespace api::ai{
     };
 
     class NpcManager {
-
         std::vector<Npc> npcs_;
 
     public:
-        void Add(NpcType type, const TileMap* tilemap);
+        void Add(NpcType type, TileMap* tilemap);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
 

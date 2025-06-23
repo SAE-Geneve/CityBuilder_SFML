@@ -16,7 +16,8 @@ namespace api::motion {
         [[nodiscard]] sf::Vector2f GetNextPoint();
         [[nodiscard]] sf::Vector2f StartPoint() const;
 
-        void Fill(std::vector<sf::Vector2f>& path_points);
+        void Fill(const std::vector<sf::Vector2f> &path_points);
+        std::vector<sf::Vector2f> Points(){return  path_points_;};
 
     };
 }
