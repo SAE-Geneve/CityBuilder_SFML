@@ -26,9 +26,9 @@ jobs:
         # Créer le payload JSON pour Discord
         cat << EOF > discord_payload.json
         {
+          "content": "<@&1375369355025584258> Nouveau push... Mettez vous à jour.",
           "embeds": [
             {
-              "content": "<@&1375369355025584258> Nouveau push... Mettez vous ä jour.",
               "title": "🚀 Nouveau push sur $REPO_NAME",
               "description": "**Branche:** \`$BRANCH_NAME\`\n**Commit:** $COMMIT_MESSAGE",
               "url": "$COMMIT_URL",
