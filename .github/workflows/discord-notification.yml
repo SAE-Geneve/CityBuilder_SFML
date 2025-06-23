@@ -29,7 +29,11 @@ jobs:
           "content": "<@&1375369355025584258> Nouveau push... Mettez vous à jour.",
           "embeds": [
             {
-              "title": "🚀 Nouveau push sur $REPO_NAME",
+              "author": {
+                "name": "Repository Update",
+                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              },
+              "title": "🚀 $REPO_NAME",
               "description": "**Branche:** \`$BRANCH_NAME\`\n**Commit:** $COMMIT_MESSAGE",
               "url": "$COMMIT_URL",
               "color": 3447003,
