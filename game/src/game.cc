@@ -1,87 +1,111 @@
 ﻿#include "game.h"
 
 #include "SFML/Graphics.hpp"
-
 #include "ai/npc_manager.h"
 #include "graphics/tilemap.h"
+#include "ui/button.h"
 #include "ui/clickable.h"
 
 namespace game {
-    namespace {
+namespace {
 
-        inline sf::Clock clock;
+sf::Clock clock;
+sf::RenderWindow window_;
 
-        inline sf::RenderWindow window_;
-        inline auto tilemap_ptr_= std::make_unique<TileMap>();
-        // inline TileMap tilemap_obj_;
-        inline api::ai::NpcManager npc_manager_;
+auto tilemap_ptr_ = std::make_unique<TileMap>();
+api::ai::NpcManager npc_manager_;
 
-        inline api::ui::Clickable clickable_;
+// UI Elements
+std::unique_ptr<api::ui::Button> btnBlue;
+std::unique_ptr<api::ui::Button> btnRed;
+std::unique_ptr<api::ui::Button> btnGreen;
 
-        inline sf::RectangleShape rect_;
+sf::Font font;
 
-        void Setup(){
-            // Create the main window
-            window_.create(sf::VideoMode({1280, 1080}), "SFML window");
+api::ai::NpcType npc_adding_type = api::ai::NpcType::kNone;
 
-            tilemap_ptr_->Setup();
-            npc_manager_.Add(api::ai::NpcType::kGreen, tilemap_ptr_.get());
-            npc_manager_.Add(api::ai::NpcType::kBlue, tilemap_ptr_.get());
-            npc_manager_.Add(api::ai::NpcType::kRed, tilemap_ptr_.get());
+enum class UISprite { kEmpty, kBgBtn, kHoverBtn, kLength };
+std::array<std::string_view, static_cast<size_t>(UISprite::kLength)> UIfiles_ =
+    {"empty.png", "button_grey.png", "button_brown.png"};
+AssetManager<sf::Texture, UISprite, "_assets/sprites"> UItextures_;
 
-            // tilemap_obj_.Setup();
-            // npc_manager_.Add(api::ai::NpcType::kGreen, &tilemap_obj_);
-            // npc_manager_.Add(api::ai::NpcType::kBlue, &tilemap_obj_);
-            // npc_manager_.Add(api::ai::NpcType::kRed, &tilemap_obj_);
+void Setup() {
+  // Create the main window
+  window_.create(sf::VideoMode({1280, 1080}), "SFML window");
 
-            rect_.setPosition({static_cast<float>(window_.getSize().x / 2), static_cast<float>(window_.getSize().y / 2)});
-            rect_.setSize({200, 200});
+  tilemap_ptr_->Setup();
+  tilemap_ptr_->OnReleasedLeft = []() {
 
-            clickable_.SetZone(sf::IntRect(
-                {static_cast<int>(window_.getSize().x / 2), static_cast<int>(window_.getSize().y / 2)},
-                {200, 200})
-                );
-            clickable_.OnReleasedLeft = [] () {std::cout << "Left Released" << std::endl;};
-            clickable_.OnReleasedRight = [] () {std::cout << "Right Released" << std::endl;};
-            clickable_.OnPressedLeft = [] () {std::cout << "Left Pressed" << std::endl;};
-            clickable_.OnPressedRight = [] () {std::cout << "Right Pressed" << std::endl;};
-            clickable_.OnHoverEnter = [] () {std::cout << "Hover Enter" << std::endl;};
-            clickable_.OnHoverExit = [] () {std::cout << "Hover Exit" << std::endl;};
+    std::cout << "Clicked tilemap" << "\n";
+    npc_manager_.Add(npc_adding_type,
+                     TileMap::TilePos(sf::Mouse::getPosition(window_)),
+                     tilemap_ptr_.get());
+    npc_adding_type = api::ai::NpcType::kNone;
 
-        }
-    }
+  };
 
-    void Loop(){
-        Setup();
+  UItextures_.Load(UIfiles_);
+  font.openFromFile("_assets/fonts/ANTQUAB.TTF");
 
-        // Start the game loop
-        while (window_.isOpen()) {
+  btnBlue = std::make_unique<api::ui::Button>(
+      sf::Vector2f(100.f, window_.getSize().y - 100.f), "Blue",
+      UItextures_.Get(UISprite::kBgBtn), UItextures_.Get(UISprite::kHoverBtn),
+      font);
+  btnBlue->OnReleasedLeft = []() { npc_adding_type = api::ai::NpcType::kBlue; };
 
-            auto dt = clock.restart().asSeconds();
+  btnRed = std::make_unique<api::ui::Button>(
+      sf::Vector2f(200.f, window_.getSize().y - 100.f), "Red",
+      UItextures_.Get(UISprite::kBgBtn), UItextures_.Get(UISprite::kHoverBtn),
+      font);
+  btnRed->OnReleasedLeft = []() { npc_adding_type = api::ai::NpcType::kRed; };
 
-            // Process events = Input frame
-            while (const std::optional event = window_.pollEvent()) {
-                // Close window: exit
-                if (event->is<sf::Event::Closed>()) {
-                    window_.close();
-                }
-
-                clickable_.HandleEvent(event);
-
-            }
-
-            // GamePlay, physic frame
-            npc_manager_.Update(dt);
-
-            // Graphic frame
-            window_.clear();
-
-            tilemap_ptr_->Draw(window_);
-            npc_manager_.Draw(window_);
-
-            window_.draw(rect_);
-
-            window_.display();
-        }
-    }
+  btnGreen = std::make_unique<api::ui::Button>(
+      sf::Vector2f(300.f, window_.getSize().y - 100.f), "Green",
+      UItextures_.Get(UISprite::kBgBtn), UItextures_.Get(UISprite::kHoverBtn),
+      font);
+  btnGreen->OnReleasedLeft = []() {
+    npc_adding_type = api::ai::NpcType::kGreen;
+  };
 }
+}  // namespace
+
+void Loop() {
+  Setup();
+
+  // Start the game loop
+  while (window_.isOpen()) {
+    auto dt = clock.restart().asSeconds();
+
+    // Process events = Input frame
+    while (const std::optional event = window_.pollEvent()) {
+      // Close window: exit
+      if (event->is<sf::Event::Closed>()) {
+        window_.close();
+      }
+
+      bool buttonsWasClicked = false;
+      btnBlue->HandleEvent(event, buttonsWasClicked);
+      btnRed->HandleEvent(event, buttonsWasClicked);
+      btnGreen->HandleEvent(event, buttonsWasClicked);
+
+      tilemap_ptr_->HandleEvent(event, buttonsWasClicked);
+
+    }
+
+    // GamePlay, physic frame
+    npc_manager_.Update(dt);
+
+    // Graphic frame
+    window_.clear();
+
+    tilemap_ptr_->Draw(window_);
+    npc_manager_.Draw(window_);
+
+    btnBlue->Draw(window_);
+    btnRed->Draw(window_);
+    btnGreen->Draw(window_);
+
+    window_.display();
+  }
+}
+}  // namespace game

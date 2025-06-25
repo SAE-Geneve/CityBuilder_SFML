@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "assets/asset_manager.h"
+#include "ui/clickable.h"
 
 constexpr int kWidth = 1600;
 constexpr int kHeight = 1280;
@@ -11,7 +12,7 @@ constexpr int kPixelStep = 64;
 
 using core::experimental::AssetManager;
 
-class TileMap {
+class TileMap : public api::ui::Clickable{
 
     enum class Tile {
         kEmpty, kBg, kWater,
@@ -26,14 +27,17 @@ class TileMap {
     std::array<Tile, kWidth/kPixelStep * kHeight/kPixelStep> tiles_ = {};
     AssetManager<sf::Texture, Tile, "_assets/sprites"> textures_;
 
+  std::vector<sf::Vector2f> walkables_;
+
     static sf::Vector2f ScreenPosition(int index);
     static int Index(sf::Vector2f screenPosition);
 
-    std::vector<sf::Vector2f> walkables_;
-
 public:
+    static sf::Vector2f TilePos(sf::Vector2i);
+
     void Setup();
     void Draw(sf::RenderWindow &window);
+
 
     std::vector<sf::Vector2f>& GetWalkables();
 };

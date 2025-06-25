@@ -10,6 +10,7 @@
 namespace api::ai{
 
     enum class NpcType {
+        kNone,
         kBlue,
         kRed,
         kGreen
@@ -19,7 +20,7 @@ namespace api::ai{
         std::vector<Npc> npcs_;
 
     public:
-        void Add(NpcType type, TileMap* tilemap);
+        void Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
 

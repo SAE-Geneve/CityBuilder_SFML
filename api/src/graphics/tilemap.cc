@@ -22,6 +22,14 @@ void TileMap::Setup(){
 
     textures_.Load(files_);
 
+    std::array weights = {
+        std::pair<Tile, float>{Tile::kWater, 3.f},
+        std::pair<Tile, float>{Tile::kRock, 1.f},
+        std::pair<Tile, float>{Tile::kTree, 1.f},
+        std::pair<Tile, float>{Tile::kFood, 1.f},
+        std::pair<Tile, float>{Tile::kBg, 6.f}
+    };
+
     // Remplir le tableau avec de l'herbe ou de l'eau de manière aléatoire
     for (int tileIndex = 0; tileIndex < tiles_.size(); ++tileIndex) {
         sf::Vector2f pos = ScreenPosition(tileIndex);
@@ -29,15 +37,8 @@ void TileMap::Setup(){
         // auto value = 0.5f * (noise.GetNoise(pos.x, pos.y) + 1);
         auto value = dist(gen);
 
-        std::cout << "noise value = " << value << "\n";
+        //std::cout << "noise value = " << value << "\n";
 
-        std::array weights = {
-            std::pair<Tile, float>{Tile::kWater, 3.f},
-            std::pair<Tile, float>{Tile::kRock, 1.f},
-            std::pair<Tile, float>{Tile::kTree, 1.f},
-            std::pair<Tile, float>{Tile::kFood, 1.f},
-            std::pair<Tile, float>{Tile::kBg, 6.f}
-        };
         std::sort(weights.begin(), weights.end(), [](auto &a, auto &b) { return a.second < b.second; });
 
         float sumWeight = 0;
@@ -62,22 +63,10 @@ void TileMap::Setup(){
             walkables_.push_back(pos);
         }
 
-        // if (value < 0.35f) {
-        //   tiles_[tileIndex] = Tile::kWater;
-        // } else if (value < 0.5f){
-        //   tiles_[tileIndex] = Tile::kFood;
-        //   walkables_.push_back(pos);
-        // } else if (value < 0.6f){
-        //   tiles_[tileIndex] = Tile::kRock;
-        //   walkables_.push_back(pos);
-        // } else if (value < 0.75f){
-        //   tiles_[tileIndex] = Tile::kTree;
-        //   walkables_.push_back(pos);
-        // } else {
-        //   tiles_[tileIndex] = Tile::kBg;
-        //   walkables_.push_back(pos);
-        // }
     }
+
+    SetZone(sf::IntRect({0, 0}, sf::Vector2i(kWidth, kHeight)));
+
 }
 
 void TileMap::Draw(sf::RenderWindow &window){
@@ -110,4 +99,11 @@ sf::Vector2f TileMap::ScreenPosition(const int index){
 int TileMap::Index(const sf::Vector2f screenPosition){
     return static_cast<int>(ceil(screenPosition.y / kPixelStep * kWidth)) +
            static_cast<int>(ceil(screenPosition.x / kPixelStep));
+}
+
+sf::Vector2f TileMap::TilePos(sf::Vector2i pos) {
+
+  return {static_cast<float>(ceil(pos.x / kPixelStep) * kPixelStep),
+          static_cast<float>(ceil(pos.y / kPixelStep) * kPixelStep)};
+
 }

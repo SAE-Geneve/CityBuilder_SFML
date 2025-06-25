@@ -32,6 +32,9 @@ namespace api::ai {
                    TileMap* tilemap);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
+        void SetPosition(const sf::Vector2f &position) {
+          motor_->SetPosition(position);
+        }
 
         // Motion
         // void SetPath(const motion::Path &path);

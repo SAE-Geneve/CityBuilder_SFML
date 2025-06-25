@@ -5,30 +5,42 @@
 #include "ui/clickable.h"
 
 namespace api::ui {
-    void Clickable::HandleEvent(std::optional<sf::Event> evt){
+    void Clickable::HandleEvent(std::optional<sf::Event> evt, bool &wasClicked){
 
         const auto released = evt->getIf<sf::Event::MouseButtonReleased>();
-        if (released) {
+        if (released && !wasClicked) {
             if (zone_.contains(released->position)) {
                 if (released->button == sf::Mouse::Button::Left) {
-                    if (OnReleasedLeft) OnReleasedLeft();
+                    if (OnReleasedLeft) {
+                      OnReleasedLeft();
+                      wasClicked |= true;  // Indicate that a click was handled
+                    }
                 }
 
                 if (released->button == sf::Mouse::Button::Right) {
-                    if (OnReleasedRight) OnReleasedRight();
+                    if (OnReleasedRight) {
+                      OnReleasedRight();
+                      wasClicked |= true;  // Indicate that a click was handled
+                    }
                 }
             }
         }
 
         const auto pressed = evt->getIf<sf::Event::MouseButtonPressed>();
-        if (pressed) {
+        if (pressed && !wasClicked) {
             if (zone_.contains(pressed->position)) {
                 if (pressed->button == sf::Mouse::Button::Left) {
-                    if (OnPressedLeft) OnPressedLeft();
+                    if (OnPressedLeft) {
+                      OnPressedLeft();
+                      wasClicked |= true;  // Indicate that a click was handled
+                    }
                 }
 
                 if (pressed->button == sf::Mouse::Button::Right) {
-                    if (OnPressedRight) OnPressedRight();
+                    if (OnPressedRight) {
+                      OnPressedRight();
+                      wasClicked |= true;  // Indicate that a click was handled
+                    }
                 }
             }
         }
@@ -49,4 +61,5 @@ namespace api::ui {
     void Clickable::SetZone(sf::IntRect zone){
         zone_ = zone;
     }
+
 }

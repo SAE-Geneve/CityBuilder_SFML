@@ -7,8 +7,9 @@
 #include "npc_manager.h"
 
 namespace api::ai {
-    inline void CreateNpc(std::vector<Npc> &npcs, const NpcType type, TileMap* tilemap){
+    inline void CreateNpc(std::vector<Npc> &npcs, const NpcType type, const sf::Vector2f start_position, TileMap* tilemap){
 
+        std::cout << "Creating npc" << std::endl;
 
         switch (type) {
             case NpcType::kBlue:
@@ -24,8 +25,14 @@ namespace api::ai {
                 npcs.back().Setup("GREEN","scifiUnit_31.png", tilemap);
                 break;
             default:
+                std::cout << "Error: Npc type not found" << std::endl;
                 break;
         }
+
+      if (type == NpcType::kBlue || type == NpcType::kRed || type == NpcType::kGreen) {
+          npcs.back().SetPosition(start_position);
+      }
+
     }
 }
 
