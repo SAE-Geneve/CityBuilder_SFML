@@ -33,11 +33,11 @@ namespace api::ai{
 
     void Npc::Update(const float dt){
 
-        // Updating
-        std::cout << "\n";
-        std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
-        std::cout << "Update " << name_ << "\n";
-        std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
+        // // Updating
+        // std::cout << "\n";
+        // std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
+        // std::cout << "Update " << name_ << "\n";
+        // std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
 
         // -------------------
         if (path_->IsValid()){

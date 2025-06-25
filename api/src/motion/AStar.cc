@@ -90,7 +90,7 @@ namespace api::motion {
                 aStarNode currentNode = openList.top();
                 openList.pop();
 
-                std::cout << "current node : " << currentNode.position.x << ":" << currentNode.position.y << std::endl;
+                //std::cout << "current node : " << currentNode.position.x << ":" << currentNode.position.y << std::endl;
 
                 if (currentNode.position == end) {
                     std::cout << "Found path" << std::endl;

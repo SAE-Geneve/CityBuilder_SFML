@@ -12,19 +12,19 @@ constexpr int kPixelStep = 64;
 using core::experimental::AssetManager;
 
 class TileMap {
+
     enum class Tile {
-        kEmpty, kGrass16, kBgA, kBgB, kMaison,
-        kWater,
+        kEmpty, kBg, kWater,
+        kRock, kTree, kFood,
         kLength
     };
-
-    std::array<std::string_view, static_cast<size_t>(Tile::kLength)> files = {
-        "empty.png", "grass.png", "bg_tile_a.png", "bg_tile_b.png", "maison.png",
-        "water.png"
+    std::array<std::string_view, static_cast<size_t>(TileMap::Tile::kLength)> files_ = {
+        "empty.png", "bg_tile_a.png", "water.png",
+        "bg_plus_rock.png", "bg_plus_tree.png", "bg_plus_food.png"
     };
 
     std::array<Tile, kWidth/kPixelStep * kHeight/kPixelStep> tiles_ = {};
-    AssetManager<sf::Texture, Tile, "_assets/sprites"> textures;
+    AssetManager<sf::Texture, Tile, "_assets/sprites"> textures_;
 
     static sf::Vector2f ScreenPosition(int index);
     static int Index(sf::Vector2f screenPosition);
@@ -35,6 +35,6 @@ public:
     void Setup();
     void Draw(sf::RenderWindow &window);
 
-    std::vector<sf::Vector2f> GetWalkables() const;
+    std::vector<sf::Vector2f>& GetWalkables();
 };
 #endif

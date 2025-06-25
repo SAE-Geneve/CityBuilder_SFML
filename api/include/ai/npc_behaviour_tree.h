@@ -16,16 +16,17 @@ namespace api::ai {
     class NpcBehaviourTree {
         // Behaviour tree
         std::unique_ptr<core::ai::behaviour_tree::Node> bt_root_;
-        motion::Motor *npc_motor_ = nullptr;
+        // Env informations ----------------------
         TileMap *tilemap_ = nullptr;
+        // Ways of action
+        motion::Motor *npc_motor_ = nullptr;
         motion::Path *path_ = nullptr;
-
 
         void SetRandomDestination() const;
         // Actions
         [[nodiscard]] core::ai::behaviour_tree::Status CheckHunger() const;
         [[nodiscard]] core::ai::behaviour_tree::Status Move() const;
-        [[nodiscard]] core::ai::behaviour_tree::Status Eat();
+        [[nodiscard]] core::ai::behaviour_tree::Status Eat(float);
         [[nodiscard]] core::ai::behaviour_tree::Status Work();
         [[nodiscard]] core::ai::behaviour_tree::Status Idle();
 

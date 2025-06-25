@@ -33,11 +33,11 @@ void NpcBehaviourTree::SetRandomDestination() const {
 }
 
 Status NpcBehaviourTree::CheckHunger() const {
-  std::cout << "this ? = " << this << "\n";
-  std::cout << "Am I hungry ? " << std::to_string(hunger_);
+  // std::cout << "this ? = " << this << "\n";
+  // std::cout << "Am I hungry ? " << std::to_string(hunger_);
 
   if (hunger_ >= 100) {
-    std::cout << " : Yes, I need to find food\n";
+    //std::cout << " : Yes, I need to find food\n";
 
     if (!tilemap_) {
       std::cout << "No tilemap\n";
@@ -57,7 +57,7 @@ Status NpcBehaviourTree::CheckHunger() const {
     return Status::kSuccess;
 
   } else {
-    std::cout << " : No, I can wait\n";
+    // std::cout << " : No, I can wait\n";
     return Status::kFailure;
   }
 }
@@ -65,10 +65,10 @@ Status NpcBehaviourTree::CheckHunger() const {
 Status NpcBehaviourTree::Move() const {
   // if destination not reachable, return failure
   if (!path_->IsValid()) {
-    std::cout << "Not reachable" << path_->IsValid() << "\n";
+    // std::cout << "Not reachable" << path_->IsValid() << "\n";
     return Status::kFailure;
   } else {
-    std::cout << "I'm moving" << "\n";
+    // std::cout << "I'm moving" << "\n";
     if (!path_->IsDone()) {
       // still arriving, return running
       return Status::kRunning;
@@ -79,9 +79,9 @@ Status NpcBehaviourTree::Move() const {
   }
 }
 
-Status NpcBehaviourTree::Eat() {
+Status NpcBehaviourTree::Eat(float foodQty) {
   // No failure, until we have food storage system
-  hunger_ -= kHungerRate;
+  hunger_ -= foodQty;
   if (hunger_ > 0) {
     return Status::kRunning;
   } else {
@@ -92,7 +92,7 @@ Status NpcBehaviourTree::Eat() {
 Status NpcBehaviourTree::Work() {
   hunger_ += kHungerRate * 5;
   if (resourceAvailable_) {
-    std::cout << "Resource Available, working....." << "\n";
+    // std::cout << "Resource Available, working....." << "\n";
     return Status::kSuccess;
   }
   return Status::kFailure;
@@ -104,8 +104,7 @@ Status NpcBehaviourTree::Idle() {
   return Status::kSuccess;
 }
 
-void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
-                                          TileMap* tilemap) {
+void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path, TileMap* tilemap) {
   std::cout << "Setup Behaviour Tree\n";
 
   hunger_ = 0;
@@ -114,11 +113,12 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
   path_ = path;
   tilemap_ = tilemap;
 
+  sf::Vector2f start = {0, 0};
+
   auto feedSequence = std::make_unique<Sequence>();
-  feedSequence->AddChild(
-      std::make_unique<Action>([this]() { return CheckHunger(); }));
+  feedSequence->AddChild(std::make_unique<Action>([this]() { return CheckHunger(); }));
   feedSequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
-  feedSequence->AddChild(std::make_unique<Action>([this]() { return Eat(); }));
+  feedSequence->AddChild(std::make_unique<Action>([this]() { return Eat(kHungerRate); }));
 
   auto selector = std::make_unique<Selector>();
   // Attach the sequence to the selector
@@ -131,10 +131,6 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
 
 void NpcBehaviourTree::Update(float dt) {
   bt_root_->Tick();
-  std::cout << "this ? = " << this << "\n";
-  /*
-    std::cout << "Check hunger\n";
-    CheckHunger();
-    */// npc_motor_->Update(dt);
+  // std::cout << "this ? = " << this << "\n";
 }
 }  // namespace api::ai

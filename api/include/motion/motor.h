@@ -21,7 +21,7 @@ namespace api::motion {
         void SetSpeed(float speed){speed_ = speed;}
         void SetPosition(sf::Vector2f position){position_ = position;}
         void SetDestination(const sf::Vector2f destination){
-            std::cout << "new destination : " << destination.x << ":" << destination.y << "\n";
+            //std::cout << "new destination : " << destination.x << ":" << destination.y << "\n";
             destination_ = destination;
         }
 
