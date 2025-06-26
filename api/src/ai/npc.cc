@@ -10,7 +10,7 @@ using namespace api::motion;
 namespace api::ai{
 
     void Npc::Setup(std::string_view name, std::string_view filename,
-                    TileMap* tilemap) {
+                    TileMap* tilemap, sf::Vector2f& cantina_position, std::vector<Ressource> ressources) {
 
         name_ = std::string(name);
 
@@ -24,7 +24,7 @@ namespace api::ai{
 
         std::cout << "Setup " << name_ << " -- -- -- -- -- -- -- -- -- -- -- -- -- " << std::endl;
 
-        bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap);
+        bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap, cantina_position, ressources);
 
         motor_->SetPosition({0, 0});
         motor_->SetSpeed(kMovingSpeed);

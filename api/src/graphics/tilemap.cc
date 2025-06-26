@@ -37,8 +37,6 @@ void TileMap::Setup(){
         // auto value = 0.5f * (noise.GetNoise(pos.x, pos.y) + 1);
         auto value = dist(gen);
 
-        //std::cout << "noise value = " << value << "\n";
-
         std::sort(weights.begin(), weights.end(), [](auto &a, auto &b) { return a.second < b.second; });
 
         float sumWeight = 0;
@@ -62,11 +60,9 @@ void TileMap::Setup(){
         if (goodTile != Tile::kWater) {
             walkables_.push_back(pos);
         }
-
     }
 
     SetZone(sf::IntRect({0, 0}, sf::Vector2i(kWidth, kHeight)));
-
 }
 
 void TileMap::Draw(sf::RenderWindow &window){
@@ -85,7 +81,27 @@ void TileMap::Draw(sf::RenderWindow &window){
     }
 }
 
-std::vector<sf::Vector2f>& TileMap::GetWalkables() { return walkables_; }
+void TileMap::SetTile(int idx, Tile tile) {
+	if (idx > 0 && idx < tiles_.size()) {
+		tiles_[idx] = tile;
+	}
+}
+
+std::vector<sf::Vector2f> &TileMap::GetWalkables(){ return walkables_; }
+
+std::vector<int> TileMap::GetCollectibles(Tile search_tile){
+
+    std::vector<int> collectibles;
+
+    for (int tile_index = 0; tile_index < tiles_.size(); ++tile_index) {
+        if (tiles_[tile_index] == search_tile) {
+            collectibles.emplace_back(tile_index);
+        }
+    }
+
+    return collectibles;
+
+}
 
 sf::Vector2f TileMap::ScreenPosition(const int index){
     float x = ceil((index % (kWidth / kPixelStep)) * kPixelStep);
@@ -101,9 +117,9 @@ int TileMap::Index(const sf::Vector2f screenPosition){
            static_cast<int>(ceil(screenPosition.x / kPixelStep));
 }
 
-sf::Vector2f TileMap::TilePos(sf::Vector2i pos) {
-
-  return {static_cast<float>(ceil(pos.x / kPixelStep) * kPixelStep),
-          static_cast<float>(ceil(pos.y / kPixelStep) * kPixelStep)};
-
+sf::Vector2f TileMap::TilePos(sf::Vector2i pos){
+    return {
+        static_cast<float>(round(pos.x / kPixelStep) * kPixelStep),
+        static_cast<float>(round(pos.y / kPixelStep) * kPixelStep)
+    };
 }

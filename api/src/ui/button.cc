@@ -13,6 +13,7 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
                const sf::Texture &t, const sf::Texture &hover_t,
                const sf::Font &font)
     : Clickable(), sprite_(t), hoverSprite_(hover_t), label_(font) {
+
   sf::Vector2i int_size = {static_cast<int>(sprite_.getTexture().getSize().x),
                            static_cast<int>(sprite_.getTexture().getSize().y)};
   sf::Vector2i int_pos = {static_cast<int>(pos.x), static_cast<int>(pos.y)};
@@ -20,9 +21,7 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
   std::cout << "Texture size : " << int_size.x << ":" << int_size.y << "\n";
 
   sprite_.setPosition(pos);
-  // sprite_.setOrigin(sprite_.getLocalBounds().getCenter());
   hoverSprite_.setPosition(pos);
-  // hoverSprite_.setOrigin(hoverSprite_.getLocalBounds().getCenter());
 
   label_.setCharacterSize(24);
   label_.setString(std::string(label));

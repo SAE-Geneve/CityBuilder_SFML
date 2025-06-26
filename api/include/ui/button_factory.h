@@ -20,7 +20,7 @@ namespace api::ui {
                 {"empty.png", "button_grey.png", "button_brown.png"};
 
         sf::Font font;
-        AssetManager<sf::Texture, Sprite, "_assets/sprites"> textures_;
+        core::experimental::AssetManager<sf::Texture, Sprite, "_assets/sprites"> textures_;
 
     public:
         ButtonFactory(){

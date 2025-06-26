@@ -8,8 +8,8 @@
 
 namespace api::ai {
 
-void NpcManager::Add(NpcType type, const sf::Vector2f start_position, TileMap* tilemap) {
-  CreateNpc(npcs_, type, start_position, tilemap);
+void NpcManager::Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap, RessourceManager& ressource_manager) {
+	CreateNpc(npcs_, type, start_position, tilemap, ressource_manager);
 }
 
 void NpcManager::Update(float dt) {
