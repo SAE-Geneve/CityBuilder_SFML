@@ -21,7 +21,7 @@ namespace api::ai {
 
 void NpcBehaviourTree::SetDestination(const sf::Vector2f& destination) const {
 
-	Path path = Astar::GetPath(64, npc_motor_->GetPosition(), destination,
+	Path path = Astar::GetPath(TileMap::GetStep(), npc_motor_->GetPosition(), destination,
 							   this->tilemap_->GetWalkables());
 	if (path.IsValid()) {
 		this->path_->Fill(path.Points());

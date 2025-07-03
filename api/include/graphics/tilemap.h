@@ -38,6 +38,7 @@ private:
 public:
 	static sf::Vector2f ScreenPosition(int index);
 	static sf::Vector2f TilePos(sf::Vector2i);
+	static int GetStep(){return kPixelStep;};
 
     void Setup();
     void Draw(sf::RenderWindow &window);
