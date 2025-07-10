@@ -3,14 +3,14 @@
 #include <iostream>
 #include <random>
 
-#include "motion/AStar.h"
+#include "motion/a_star.h"
 
 using namespace api::motion;
 
 namespace api::ai{
 
     void Npc::Setup(std::string_view name, std::string_view filename,
-                    TileMap* tilemap, sf::Vector2f& cantina_position, std::vector<Ressource> ressources) {
+                    const TileMap* tilemap, const sf::Vector2f& cantina_position, std::vector<Resource> ressources) {
 
         name_ = std::string(name);
 

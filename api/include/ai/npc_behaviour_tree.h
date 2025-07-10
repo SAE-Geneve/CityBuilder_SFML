@@ -11,7 +11,7 @@
 #include "graphics/tilemap.h"
 #include "motion/motor.h"
 #include "motion/path.h"
-#include "ressources/ressource.h"
+#include "resources/resource.h"
 
 namespace api::ai {
 class NpcBehaviourTree {
@@ -19,7 +19,7 @@ class NpcBehaviourTree {
 	std::unique_ptr<core::ai::behaviour_tree::Node> bt_root_;
 
 	// Env informations ----------------------
-	TileMap* tilemap_ = nullptr;
+	const TileMap* tilemap_ = nullptr;
 	// Ways of action
 	motion::Motor* npc_motor_ = nullptr;
 	motion::Path* path_ = nullptr;
@@ -43,13 +43,13 @@ class NpcBehaviourTree {
 	float tick_dt = 0;
 
 	sf::Vector2f cantina_position_;
-	std::vector<Ressource> ressources_;
-	Ressource current_ressource_;
+	std::vector<Resource> ressources_;
+	Resource current_ressource_;
 
    public:
 	void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path,
-							TileMap* tilemap, sf::Vector2f cantina_position,
-							std::vector<Ressource> ressources);
+							const TileMap* tilemap, sf::Vector2f cantina_position,
+							std::vector<Resource> ressources);
 	void Update(float dt);
 };
 }  // namespace api::ai

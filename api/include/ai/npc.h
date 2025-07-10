@@ -7,7 +7,7 @@
 #include "motion/motor.h"
 #include "motion/path.h"
 #include "npc_behaviour_tree.h"
-#include "ressources/ressource.h"
+#include "resources/resource.h"
 
 namespace api::ai {
 class Npc {
@@ -30,7 +30,7 @@ class Npc {
 	// const TileMap *tileMap_;
 
    public:
-	void Setup(std::string_view name, std::string_view filename, TileMap* tilemap, sf::Vector2f& cantina_position, std::vector<Ressource> ressources);
+	void Setup(std::string_view name, std::string_view filename, const TileMap* tilemap,const sf::Vector2f& cantina_position, std::vector<Resource> ressources);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 	void SetPosition(const sf::Vector2f& position) {

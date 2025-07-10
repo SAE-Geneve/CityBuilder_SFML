@@ -1,4 +1,4 @@
-﻿#include "motion/AStar.h"
+﻿#include "motion/a_star.h"
 
 #include <array>
 #include <iostream>
@@ -63,8 +63,8 @@ namespace api::motion {
             return path;
         }
 
-        Path GetPath(const int gridStep, sf::Vector2f start, sf::Vector2f end,
-                     std::vector<sf::Vector2f> walkableTiles){
+        Path GetPath(const int gridStep, const sf::Vector2f start, const sf::Vector2f end,
+                     const std::vector<sf::Vector2f> walkableTiles){
             Path aStarPath;
 
             // Are start / end point in walkables tiles ?

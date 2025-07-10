@@ -6,6 +6,7 @@
 #define BUTTON_FACTORY_H
 
 #include <array>
+#include <iostream>
 #include <string_view>
 #include <SFML/Graphics/Font.hpp>
 

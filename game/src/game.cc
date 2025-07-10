@@ -1,12 +1,12 @@
 ﻿#include "game.h"
 
-#include "ressource_manager.h"
 #include "SFML/Graphics.hpp"
 #include "ai/npc_manager.h"
 #include "graphics/tilemap.h"
 #include "ui/button.h"
 #include "ui/button_factory.h"
 #include "ui/clickable.h"
+#include "resources/resource_manager.h"
 
 namespace game {
     namespace {
@@ -26,7 +26,7 @@ namespace game {
 
         api::ai::NpcType npc_adding_type = api::ai::NpcType::kNone;
 
-        RessourceManager ressource_manager_;
+        ResourceManager resource_manager;
 
         void ChopEvent(int index, float quantity) {
             std::cout << "chop event : " << index << "," << quantity << "\n";
@@ -45,7 +45,7 @@ namespace game {
                 npc_manager_.Add(npc_adding_type,
                                  TileMap::TilePos(sf::Mouse::getPosition(window_)),
                                  tilemap_ptr_.get(),
-                                 ressource_manager_);
+                                 resource_manager);
                 npc_adding_type = api::ai::NpcType::kNone;
             };
 
@@ -61,16 +61,16 @@ namespace game {
             btnExit = btn_factory.CreateButton(sf::Vector2f(window_.getSize().y - 30.f, 30.f), "Exit");
             btnExit->OnReleasedLeft = []() { window_.close(); };
 
-            ressource_manager_.LoadRessources(
-				Ressource::Type::kWood,
+            resource_manager.LoadResources(
+				Resource::Type::kWood,
 				tilemap_ptr_->GetCollectibles(TileMap::Tile::kTree), ChopEvent);
 
-			ressource_manager_.LoadRessources(
-				Ressource::Type::kFood,
+			resource_manager.LoadResources(
+				Resource::Type::kFood,
 				tilemap_ptr_->GetCollectibles(TileMap::Tile::kFood), ChopEvent);
 
-			ressource_manager_.LoadRessources(
-				Ressource::Type::kStone,
+			resource_manager.LoadResources(
+				Resource::Type::kStone,
 				tilemap_ptr_->GetCollectibles(TileMap::Tile::kRock), ChopEvent);
 
         }

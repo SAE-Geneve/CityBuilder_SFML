@@ -1,14 +1,9 @@
-﻿//
-// Created by sebas on 15/05/2025.
-//
-#include "graphics/tilemap.h"
+﻿#include "graphics/tilemap.h"
 
+#include <random>
+#include "noise/FastNoiseLite.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
-#include <random>
-
-#include "noise/FastNoiseLite.h"
 
 static std::mt19937 gen{std::random_device{}()};
 static std::uniform_real_distribution dist(0.f, 1.f);
@@ -23,11 +18,11 @@ void TileMap::Setup(){
     textures_.Load(files_);
 
     std::array weights = {
-        std::pair<Tile, float>{Tile::kWater, 3.f},
-        std::pair<Tile, float>{Tile::kRock, 1.f},
-        std::pair<Tile, float>{Tile::kTree, 1.f},
-        std::pair<Tile, float>{Tile::kFood, 1.f},
-        std::pair<Tile, float>{Tile::kBg, 6.f}
+        std::pair{Tile::kWater, 3.f},
+        std::pair{Tile::kRock, 1.f},
+        std::pair{Tile::kTree, 1.f},
+        std::pair{Tile::kFood, 1.f},
+        std::pair{Tile::kBg, 6.f}
     };
 
     // Remplir le tableau avec de l'herbe ou de l'eau de manière aléatoire
@@ -87,9 +82,9 @@ void TileMap::SetTile(int idx, Tile tile) {
 	}
 }
 
-std::vector<sf::Vector2f> &TileMap::GetWalkables(){ return walkables_; }
+const std::vector<sf::Vector2f> &TileMap::GetWalkables() const{ return walkables_; }
 
-std::vector<int> TileMap::GetCollectibles(Tile search_tile){
+std::vector<int> TileMap::GetCollectibles(Tile search_tile) const{
 
     std::vector<int> collectibles;
 

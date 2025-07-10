@@ -2,7 +2,6 @@
 #define API_GRAPHICS_TILEMAP_H
 
 #include <SFML/Graphics.hpp>
-
 #include "assets/asset_manager.h"
 #include "ui/clickable.h"
 
@@ -44,8 +43,9 @@ public:
     void Draw(sf::RenderWindow &window);
 	void SetTile(int, Tile);
 
-    std::vector<sf::Vector2f> &GetWalkables();
-    std::vector<int> GetCollectibles(Tile);
+    const std::vector<sf::Vector2f> &GetWalkables() const;
+
+    std::vector<int> GetCollectibles(Tile) const;
 
 };
 #endif

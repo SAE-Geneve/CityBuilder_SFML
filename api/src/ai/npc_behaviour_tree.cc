@@ -11,7 +11,7 @@
 #include "ai/bt_action.h"
 #include "ai/bt_selector.h"
 #include "ai/bt_sequence.h"
-#include "motion/AStar.h"
+#include "motion/a_star.h"
 #include "motion/path.h"
 
 using namespace core::ai::behaviour_tree;
@@ -22,7 +22,7 @@ namespace api::ai {
 void NpcBehaviourTree::SetDestination(const sf::Vector2f& destination) const {
 
 	Path path = Astar::GetPath(TileMap::GetStep(), npc_motor_->GetPosition(), destination,
-							   this->tilemap_->GetWalkables());
+							   tilemap_->GetWalkables());
 	if (path.IsValid()) {
 		this->path_->Fill(path.Points());
 		this->npc_motor_->SetDestination(path.StartPoint());
@@ -128,9 +128,9 @@ Status NpcBehaviourTree::Idle() {
 }
 
 void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
-										  TileMap* tilemap,
+										  const TileMap* tilemap,
 										  sf::Vector2f cantina_position,
-										  std::vector<Ressource> ressources) {
+										  std::vector<Resource> ressources) {
 	std::cout << "Setup Behaviour Tree\n";
 
 	hunger_ = 0;
@@ -144,8 +144,10 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
 	sf::Vector2f start = {0, 0};
 
 	auto feedSequence = std::make_unique<Sequence>();
+	auto foodPlaceSelection = std::make_unique<Selector>();
 	feedSequence->AddChild(
 		std::make_unique<Action>([this]() { return CheckHunger(); }));
+	feedSequence->AddChild(std::move(foodPlaceSelection));
 	feedSequence->AddChild(
 		std::make_unique<Action>([this]() { return Move(); }));
 	feedSequence->AddChild(

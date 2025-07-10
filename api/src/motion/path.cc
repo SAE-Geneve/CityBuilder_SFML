@@ -1,10 +1,4 @@
-﻿//
-// Created by sebas on 11/06/2025.
-//
-
-#include "motion/path.h"
-
-#include <iostream>
+﻿#include "motion/path.h"
 
 using namespace api::motion;
 
