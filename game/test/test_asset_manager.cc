@@ -25,4 +25,5 @@ TEST(TextureManager, Load) {
   textureManager.Load(paths);
 
   auto& maisonTexture = textureManager.Get(TextureIndex::KMaison);
+
 }

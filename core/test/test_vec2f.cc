@@ -21,5 +21,4 @@ TEST(Vec2f, Add) {
   EXPECT_FLOAT_EQ(result.x, x1+x2);
   EXPECT_FLOAT_EQ(result.y, y1+y2);
 
-
 }

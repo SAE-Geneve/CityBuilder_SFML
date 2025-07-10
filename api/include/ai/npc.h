@@ -10,6 +10,7 @@
 #include "resources/resource.h"
 
 namespace api::ai {
+
 class Npc {
 	sf::Texture texture_;
 

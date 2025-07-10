@@ -9,9 +9,9 @@
 #include "npc_manager.h"
 
 namespace api::ai {
-    inline void CreateNpc(std::vector<Npc> &npcs, const NpcType type, const sf::Vector2f& start_position, const TileMap* tilemap, const ResourceManager& resource_manager){
+    inline void CreateNpc(std::vector<Npc> &npcs, NpcType type, sf::Vector2f start_position, const TileMap* tilemap, const ResourceManager& resource_manager){
 
-        std::cout << "Creating npc" << std::endl;
+        //std::cout << "Creating npc" << std::endl;
 
         switch (type) {
             case NpcType::kBlueWood:
