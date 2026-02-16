@@ -7,17 +7,13 @@
 
 #include "bt_composite.h"
 
-namespace core::ai {
-    namespace behaviour_tree {
+namespace core::ai::behaviour_tree {
 
-        class Selector : public Composite {
+class Selector : public Composite {
+ public:
+  Status Tick() override;
+};
 
-        public:
-            Status Tick() override;
+}  // namespace core::ai::behaviour_tree
 
-        };
-
-    }
-}
-
-#endif //BT_SELECTOR_H
+#endif  // BT_SELECTOR_H

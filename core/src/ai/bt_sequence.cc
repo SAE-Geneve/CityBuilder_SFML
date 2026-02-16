@@ -6,25 +6,22 @@
 
 using namespace core::ai::behaviour_tree;
 
-Status Sequence::Tick(){
+Status Sequence::Tick() {
+  while (childIdx_ < children_.size()) {
+    Status status = children_[childIdx_]->Tick();
 
-    while (childIdx_ < children_.size()) {
-        Status status = children_[childIdx_]->Tick();
-
-        if (status == Status::kFailure) {
-            Reset();
-            return Status::kFailure;
-        }
-
-        if (status == Status::kRunning) {
-            return Status::kRunning;
-        }
-
-        childIdx_++;
-
+    if (status == Status::kFailure) {
+      Reset();
+      return Status::kFailure;
     }
 
-    Reset();
-    return Status::kSuccess;
+    if (status == Status::kRunning) {
+      return Status::kRunning;
+    }
 
+    childIdx_++;
+  }
+
+  Reset();
+  return Status::kSuccess;
 }

@@ -12,35 +12,38 @@
 namespace api::ai {
 
 class Npc {
-	sf::Texture texture_;
+  sf::Texture texture_;
 
-	// Decision
-	std::unique_ptr<NpcBehaviourTree> bt_tree_ =
-		std::make_unique<NpcBehaviourTree>();
+  // FIXME each npc has its own bt_tree that allocates which is the same...
+  //  Decision
+  std::unique_ptr<NpcBehaviourTree> bt_tree_ =
+      std::make_unique<NpcBehaviourTree>();
 
-	// Movement
-	static constexpr float kMovingSpeed = 200.0f;
-	std::unique_ptr<motion::Motor> motor_ = std::make_unique<motion::Motor>();
-	std::unique_ptr<motion::Path> path_ = std::make_unique<motion::Path>();
+  // Movement
+  static constexpr float kMovingSpeed = 200.0f;
+  std::unique_ptr<motion::Motor> motor_ = std::make_unique<motion::Motor>();
+  std::unique_ptr<motion::Path> path_ = std::make_unique<motion::Path>();
 
-	// name
-	std::string name_;
+  // name
+  std::string name_;
 
-	// World informations
-	// Tilemap
-	// const TileMap *tileMap_;
+  // World informations
+  // Tilemap
+  // const TileMap *tileMap_;
 
-   public:
-	void Setup(std::string_view name, std::string_view filename, const TileMap* tilemap,const sf::Vector2f& cantina_position, std::vector<Resource> ressources);
-	void Update(float dt);
-	void Draw(sf::RenderWindow& window);
-	void SetPosition(const sf::Vector2f& position) {
-		motor_->SetPosition(position);
-	}
+ public:
+  void Setup(std::string_view name, std::string_view filename,
+             const TileMap* tilemap, const sf::Vector2f& cantina_position,
+             std::vector<Resource> ressources);
+  void Update(float dt);
+  void Draw(sf::RenderWindow& window);
+  void SetPosition(const sf::Vector2f& position) {
+    motor_->SetPosition(position);
+  }
 
-	// Motion
-	// void SetPath(const motion::Path &path);
+  // Motion
+  // void SetPath(const motion::Path &path);
 };
 }  // namespace api::ai
 
-#endif	// NPC_H
+#endif  // NPC_H

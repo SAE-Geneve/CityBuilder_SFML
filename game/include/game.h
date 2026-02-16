@@ -2,8 +2,7 @@
 #define GAME_H
 
 namespace game {
-    void Loop();
+void Loop();
 };
 
-
-#endif //GAME_H
+#endif  // GAME_H

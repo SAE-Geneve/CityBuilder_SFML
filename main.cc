@@ -1,9 +1,7 @@
 #include "game.h"
 
 int main() {
+  game::Loop();
 
-    game::Loop();
-
-    return 0;
-
+  return 0;
 }

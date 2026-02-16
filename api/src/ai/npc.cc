@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <random>
+#include <utility>
 
 #include "motion/a_star.h"
 
@@ -24,7 +25,7 @@ namespace api::ai{
 
         std::cout << "Setup " << name_ << " -- -- -- -- -- -- -- -- -- -- -- -- -- " << std::endl;
 
-        bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap, cantina_position, ressources);
+        bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap, cantina_position, std::move(ressources));
 
         motor_->SetPosition({0, 0});
         motor_->SetSpeed(kMovingSpeed);

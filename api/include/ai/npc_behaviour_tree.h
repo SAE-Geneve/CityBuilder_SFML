@@ -15,43 +15,43 @@
 
 namespace api::ai {
 class NpcBehaviourTree {
-	// Behaviour tree
-	std::unique_ptr<core::ai::behaviour_tree::Node> bt_root_;
+  // Behaviour tree
+  std::unique_ptr<core::ai::behaviour_tree::Node> bt_root_;
 
-	// Env informations ----------------------
-	const TileMap* tilemap_ = nullptr;
-	// Ways of action
-	motion::Motor* npc_motor_ = nullptr;
-	motion::Path* path_ = nullptr;
+  // Env informations ----------------------
+  const TileMap* tilemap_ = nullptr;
+  // Ways of action
+  motion::Motor* npc_motor_ = nullptr;
+  motion::Path* path_ = nullptr;
 
-	void SetDestination(const sf::Vector2f& destination) const;
-	// Actions
-	[[nodiscard]] core::ai::behaviour_tree::Status CheckHunger() const;
-	[[nodiscard]] core::ai::behaviour_tree::Status Move() const;
-	[[nodiscard]] core::ai::behaviour_tree::Status Eat();
-	[[nodiscard]] core::ai::behaviour_tree::Status PickRessource();
-	[[nodiscard]] core::ai::behaviour_tree::Status GetRessource();
-	[[nodiscard]] core::ai::behaviour_tree::Status Idle();
+  void SetDestination(const sf::Vector2f& destination) const;
+  // Actions
+  [[nodiscard]] core::ai::behaviour_tree::Status CheckHunger() const;
+  [[nodiscard]] core::ai::behaviour_tree::Status Move() const;
+  [[nodiscard]] core::ai::behaviour_tree::Status Eat();
+  [[nodiscard]] core::ai::behaviour_tree::Status PickRessource();
+  [[nodiscard]] core::ai::behaviour_tree::Status GetRessource();
+  [[nodiscard]] core::ai::behaviour_tree::Status Idle();
 
-	// Behaviour Constants
-	static constexpr float kHungerRate = 2.f;
-	static constexpr float kExploitRate = 1.f;
+  // Behaviour Constants
+  static constexpr float kHungerRate = 2.f;
+  static constexpr float kExploitRate = 1.f;
 
-	// Behaviours
-	float hunger_ = 0.0f;
-	bool resourceAvailable_ = true;
-	float tick_dt = 0;
+  // Behaviours
+  float hunger_ = 0.0f;
+  bool resourceAvailable_ = true;
+  float tick_dt = 0;
 
-	sf::Vector2f cantina_position_;
-	std::vector<Resource> ressources_;
-	Resource current_ressource_;
+  sf::Vector2f cantina_position_;
+  std::vector<Resource> ressources_;
+  Resource current_ressource_;
 
-   public:
-	void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path,
-							const TileMap* tilemap, sf::Vector2f cantina_position,
-							std::vector<Resource> ressources);
-	void Update(float dt);
+ public:
+  void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path,
+                          const TileMap* tilemap, sf::Vector2f cantina_position,
+                          std::vector<Resource> ressources);
+  void Update(float dt);
 };
 }  // namespace api::ai
 
-#endif	// NPC_BEHAVIOUR_TREE_H
+#endif  // NPC_BEHAVIOUR_TREE_H

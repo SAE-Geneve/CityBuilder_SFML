@@ -32,15 +32,16 @@ class Vec2 {
 
   template <typename VectorT>
     requires is_convertible_to_vector2<VectorT, T> && !is_vector2<VectorT, T>
-  constexpr explicit Vec2(VectorT v)
-      : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
+             constexpr explicit Vec2(VectorT v)
+      : x(static_cast<T>(v.x)),
+  y(static_cast<T>(v.y)) {}
 
   [[nodiscard]] Vec2 operator+(Vec2 other) const {
     return {x + other.x, y + other.y};
   }
 
   template <typename VectorT>
-  requires is_vector2<VectorT, T>
+    requires is_vector2<VectorT, T>
   explicit constexpr operator VectorT() const {
     return VectorT{x, y};
   }

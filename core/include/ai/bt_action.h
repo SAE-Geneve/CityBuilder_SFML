@@ -4,29 +4,27 @@
 #include <functional>
 
 #include "bt_node.h"
-namespace core::ai {
-    namespace behaviour_tree {
 
-        //template<typename Callable>
-        class Action : public Node {
+namespace core::ai::behaviour_tree {
 
-        private:
-            std::function<Status()> action_;
+//TODO use inheritance instead of std::function
+class Action : public Node {
+ private:
+  std::function<Status()> action_;
 
-        public:
-            explicit Action(std::function<Status()> action) : action_(
-                std::move(action)){}
+ public:
+  explicit Action(std::function<Status()> action)
+      : action_(std::move(action)) {}
 
-            void Reset() override{};
+  void Reset() override {};
 
-            Status Tick() override{
-                // Faire des trucs ---------------
-                return action_();
-            }
-        };
+  Status Tick() override {
+    // Faire des trucs ---------------
+    return action_();
+  }
+};
 
-    }
-}
+} // namespace core::ai::behaviour_tree
 
 
-#endif //ACTION_H
+#endif  // ACTION_H

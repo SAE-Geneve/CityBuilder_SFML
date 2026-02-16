@@ -12,6 +12,6 @@ inline float Cos(Radian angle) { return std::cos(static_cast<float>(angle)); }
 inline float Sin(Radian angle) { return std::sin(static_cast<float>(angle)); }
 inline float Tan(Radian angle) { return std::tan(static_cast<float>(angle)); }
 
-}
+}  // namespace core
 
-#endif //CORE_MATHS_FUNC_H
+#endif  // CORE_MATHS_FUNC_H

@@ -13,7 +13,6 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
                const sf::Texture &t, const sf::Texture &hover_t,
                const sf::Font &font)
     : Clickable(), sprite_(t), hoverSprite_(hover_t), label_(font) {
-
   sf::Vector2i int_size = {static_cast<int>(sprite_.getTexture().getSize().x),
                            static_cast<int>(sprite_.getTexture().getSize().y)};
   sf::Vector2i int_pos = {static_cast<int>(pos.x), static_cast<int>(pos.y)};
