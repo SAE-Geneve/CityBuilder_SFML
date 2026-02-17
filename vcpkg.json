@@ -5,7 +5,11 @@
     "sfml"
   ],
   "features": {
-    "testing": {"description": "Testing", "dependencies": ["gtest"] }
+    "testing": {"description": "Testing", "dependencies": ["gtest"] },
+    "profiling": {"description": "Profiling", "dependencies": [{
+      "name": "tracy",
+      "features": ["gui-tools"]
+    }] }
   },
-  "builtin-baseline": "d43918b9143e24ffb56917daacd9126ad03014d6"
+  "builtin-baseline": "e5a1490e1409d175932ef6014519e9ae149ddb7c"
 }

@@ -6,12 +6,19 @@
 
 #include "motion/a_star.h"
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 using namespace api::motion;
 
 namespace api::ai{
 
     void Npc::Setup(std::string_view name, std::string_view filename,
                     const TileMap* tilemap, const sf::Vector2f& cantina_position, std::vector<Resource> ressources) {
+#ifdef TRACY_ENABLE
+        ZoneScoped;
+#endif
 
         name_ = std::string(name);
 
@@ -33,6 +40,9 @@ namespace api::ai{
     }
 
     void Npc::Update(const float dt){
+#ifdef TRACY_ENABLE
+        ZoneScoped;
+#endif
 
         // // Updating
         // std::cout << "\n";
@@ -53,6 +63,9 @@ namespace api::ai{
     }
 
     void Npc::Draw(sf::RenderWindow &window){
+#ifdef TRACY_ENABLE
+        ZoneScoped;
+#endif
         sf::Sprite sprite(texture_);
         sprite.setPosition(motor_->GetPosition());
         window.draw(sprite);

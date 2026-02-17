@@ -10,3 +10,8 @@ if(ENABLE_TESTING)
     add_executable(core_test ${TEST_FILES})
     target_link_libraries(core_test PRIVATE GTest::gtest GTest::gtest_main core)
 endif(ENABLE_TESTING)
+
+if(ENABLE_PROFILING)
+    target_link_libraries(core PUBLIC Tracy::TracyClient)
+    target_compile_definitions(core PUBLIC TRACY_ENABLE)
+endif(ENABLE_PROFILING)

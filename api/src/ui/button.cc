@@ -7,12 +7,19 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 namespace api::ui {
 
 Button::Button(const sf::Vector2f pos, std::string_view label,
                const sf::Texture &t, const sf::Texture &hover_t,
                const sf::Font &font)
     : Clickable(), sprite_(t), hoverSprite_(hover_t), label_(font) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   sf::Vector2i int_size = {static_cast<int>(sprite_.getTexture().getSize().x),
                            static_cast<int>(sprite_.getTexture().getSize().y)};
   sf::Vector2i int_pos = {static_cast<int>(pos.x), static_cast<int>(pos.y)};
@@ -47,6 +54,9 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
 }
 
 void Button::Draw(sf::RenderWindow &window) const {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   window.draw(sprite_);
   window.draw(hoverSprite_);
   window.draw(label_);

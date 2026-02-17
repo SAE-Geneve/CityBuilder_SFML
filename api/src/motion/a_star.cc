@@ -7,6 +7,10 @@
 
 #include "motion/path.h"
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 namespace api::motion::Astar {
 
 struct aStarNode {
@@ -26,9 +30,17 @@ struct aStarNode {
   }
 };
 
-float heuristic(sf::Vector2f p1, sf::Vector2f p2) { return (p2 - p1).length(); }
+float heuristic(sf::Vector2f p1, sf::Vector2f p2) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
+  return (p2 - p1).length();
+}
 
 std::array<sf::Vector2f, 4> neighbours(int gridStep = 16) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   std::array<sf::Vector2f, 4> neighbours = {
       sf::Vector2f(0, gridStep), sf::Vector2f(gridStep, 0),
       sf::Vector2f(0, -1 * gridStep), sf::Vector2f(-1 * gridStep, 0)};
@@ -37,6 +49,9 @@ std::array<sf::Vector2f, 4> neighbours(int gridStep = 16) {
 }
 
 Path ReconstitutePath(aStarNode &start_node) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   Path path;
   std::vector<sf::Vector2f> pathPoints;
   aStarNode *current_node = &start_node;
@@ -58,6 +73,9 @@ Path ReconstitutePath(aStarNode &start_node) {
 Path GetPath(const int gridStep, const sf::Vector2f start,
              const sf::Vector2f end,
              const std::vector<sf::Vector2f> walkableTiles) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   Path aStarPath;
 
   // Are start / end point in walkables tiles ?

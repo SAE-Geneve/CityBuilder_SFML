@@ -6,6 +6,11 @@ if(ENABLE_TESTING)
     list(APPEND VCPKG_MANIFEST_FEATURES "testing")
 endif(ENABLE_TESTING)
 
+option(ENABLE_PROFILING "Enable profiling with tracy" OFF)
+if(ENABLE_PROFILING)
+    list(APPEND VCPKG_MANIFEST_FEATURES "profiling")
+endif(ENABLE_PROFILING)
+
 # Create Solution
 project(CityBuilder)
 
@@ -17,6 +22,10 @@ if(ENABLE_TESTING)
     enable_testing()
     find_package(GTest CONFIG REQUIRED)
 endif(ENABLE_TESTING)
+
+if(ENABLE_PROFILING)
+    find_package(Tracy CONFIG REQUIRED)
+endif(ENABLE_PROFILING)
 
 # Creating Architecture and libraries
 add_subdirectory(core/)

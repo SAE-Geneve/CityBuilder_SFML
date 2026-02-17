@@ -8,6 +8,10 @@
 #include "ui/button_factory.h"
 #include "ui/clickable.h"
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 namespace game {
 namespace {
 sf::Clock clock;
@@ -29,6 +33,9 @@ api::ai::NpcType npc_adding_type = api::ai::NpcType::kNone;
 ResourceManager resource_manager;
 
 void ChopEvent(int index, float quantity) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   std::cout << "chop event : " << index << "," << quantity << "\n";
   if (quantity <= 0) {
     tilemap_ptr_->SetTile(index, TileMap::Tile::kBg);
@@ -36,6 +43,9 @@ void ChopEvent(int index, float quantity) {
 }
 
 void Setup() {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   // Create the main window
   window_.create(sf::VideoMode({1280, 1080}), "SFML window");
 
@@ -122,6 +132,9 @@ void Loop() {
     btnExit->Draw(window_);
 
     window_.display();
+#ifdef TRACY_ENABLE
+    FrameMark;
+#endif
   }
 }
 }  // namespace game

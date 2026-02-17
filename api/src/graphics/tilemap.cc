@@ -6,10 +6,17 @@
 
 #include "noise/FastNoiseLite.h"
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 static std::mt19937 gen{std::random_device{}()};
 static std::uniform_real_distribution dist(0.f, 1.f);
 
 void TileMap::Setup() {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   // Create and configure FastNoise object
   FastNoiseLite noise;
   noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
@@ -61,6 +68,9 @@ void TileMap::Setup() {
 }
 
 void TileMap::Draw(sf::RenderWindow &window) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   int tileIndex = 0;
 
   //FIXME use sf::VertexArray instead of sf::Sprite
@@ -78,16 +88,25 @@ void TileMap::Draw(sf::RenderWindow &window) {
 }
 
 void TileMap::SetTile(int idx, Tile tile) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   if (idx > 0 && idx < tiles_.size()) {
     tiles_[idx] = tile;
   }
 }
 
 const std::vector<sf::Vector2f> &TileMap::GetWalkables() const {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   return walkables_;
 }
 
 std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   std::vector<int> collectibles;
 
   for (int tile_index = 0; tile_index < tiles_.size(); ++tile_index) {
@@ -100,6 +119,9 @@ std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
 }
 
 sf::Vector2f TileMap::ScreenPosition(const int index) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   float x = ceil((index % (kWidth / kPixelStep)) * kPixelStep);
   float y = ceil((index / (kWidth / kPixelStep)) * kPixelStep);
 
@@ -109,11 +131,17 @@ sf::Vector2f TileMap::ScreenPosition(const int index) {
 }
 
 int TileMap::Index(const sf::Vector2f screenPosition) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   return static_cast<int>(ceil(screenPosition.y / kPixelStep * kWidth)) +
          static_cast<int>(ceil(screenPosition.x / kPixelStep));
 }
 
 sf::Vector2f TileMap::TilePos(sf::Vector2i pos) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   return {static_cast<float>(round(pos.x / kPixelStep) * kPixelStep),
           static_cast<float>(round(pos.y / kPixelStep) * kPixelStep)};
 }

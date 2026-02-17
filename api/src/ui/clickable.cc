@@ -4,8 +4,15 @@
 
 #include "ui/clickable.h"
 
+#ifdef TRACY_ENABLE
+#include "tracy/Tracy.hpp"
+#endif
+
 namespace api::ui {
 void Clickable::HandleEvent(std::optional<sf::Event> evt, bool &wasClicked) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
   const auto released = evt->getIf<sf::Event::MouseButtonReleased>();
   if (released && !wasClicked) {
     if (zone_.contains(released->position)) {
@@ -57,6 +64,11 @@ void Clickable::HandleEvent(std::optional<sf::Event> evt, bool &wasClicked) {
   }
 }
 
-void Clickable::SetZone(sf::IntRect zone) { zone_ = zone; }
+void Clickable::SetZone(sf::IntRect zone) {
+#ifdef TRACY_ENABLE
+  ZoneScoped;
+#endif
+  zone_ = zone;
+}
 
 }  // namespace api::ui
