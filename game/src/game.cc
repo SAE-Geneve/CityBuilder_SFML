@@ -1,6 +1,7 @@
 ﻿#include "game.h"
 
 #include "SFML/Graphics.hpp"
+#include "utils/log.h"
 #include "ai/npc_manager.h"
 #include "graphics/tilemap.h"
 #include "resources/resource_manager.h"
@@ -36,7 +37,7 @@ void ChopEvent(int index, float quantity) {
 #ifdef TRACY_ENABLE
   ZoneScoped;
 #endif
-  std::cout << "chop event : " << index << "," << quantity << "\n";
+  core::LogDebug("chop event : {},{}", index, quantity);
   if (quantity <= 0) {
     tilemap_ptr_->SetTile(index, TileMap::Tile::kBg);
   }
@@ -51,7 +52,7 @@ void Setup() {
 
   tilemap_ptr_->Setup();
   tilemap_ptr_->OnReleasedLeft = []() {
-    std::cout << "Clicked tilemap" << "\n";
+    core::LogDebug("Clicked tilemap");
     npc_manager_.Add(npc_adding_type,
                      TileMap::TilePos(sf::Mouse::getPosition(window_)),
                      tilemap_ptr_.get(), resource_manager);

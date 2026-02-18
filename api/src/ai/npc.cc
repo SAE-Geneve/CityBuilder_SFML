@@ -1,8 +1,9 @@
 ﻿#include "ai/npc.h"
 
-#include <iostream>
 #include <random>
 #include <utility>
+
+#include "utils/log.h"
 
 #include "motion/a_star.h"
 
@@ -24,13 +25,13 @@ namespace api::ai{
 
         // TODO : find lighter concat for string view
         if(!texture_.loadFromFile("_assets/sprites/" + std::string(filename))) {
-            std::cout << "Error loading texture " << filename << std::endl;
+            core::LogError("Error loading texture {}", filename);
             if (!texture_.loadFromFile("_assets/sprites/empty.png")) {
-                std::cout << "Error loading texture empty.png" << std::endl;
+                core::LogError("Error loading texture empty.png");
             }
         }
 
-        std::cout << "Setup " << name_ << " -- -- -- -- -- -- -- -- -- -- -- -- -- " << std::endl;
+        core::LogDebug("Setup {} -- -- -- -- -- -- -- -- -- -- -- -- -- ", name_);
 
         bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap, cantina_position, std::move(ressources));
 

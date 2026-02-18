@@ -2,8 +2,9 @@
 
 #include <algorithm>
 #include <array>
-#include <iostream>
 #include <queue>
+
+#include "utils/log.h"
 
 #include "motion/path.h"
 
@@ -81,15 +82,13 @@ Path GetPath(const int gridStep, const sf::Vector2f start,
   // Are start / end point in walkables tiles ?
   auto f = std::ranges::find(walkableTiles, start);
   if (f == walkableTiles.end()) {
-    std::cout << "Start point (" << start.x << ":" << start.y
-              << ")not in walkable tiles" << std::endl;
+    core::LogError("Start point ({}:{}) not in walkable tiles", start.x, start.y);
     return aStarPath;
   }
 
   auto g = std::ranges::find(walkableTiles, end);
   if (g == walkableTiles.end()) {
-    std::cout << "End point (" << end.x << ":" << end.y
-              << ") not in walkable tiles" << std::endl;
+    core::LogError("End point ({}:{}) not in walkable tiles", end.x, end.y);
     return aStarPath;
   }
 
@@ -107,7 +106,7 @@ Path GetPath(const int gridStep, const sf::Vector2f start,
     // currentNode.position.y << std::endl;
 
     if (currentNode.position == end) {
-      std::cout << "Found path" << std::endl;
+      core::LogDebug("Found path");
       return ReconstitutePath(currentNode);
     }
 

@@ -5,9 +5,10 @@
 #include "ai/npc_behaviour_tree.h"
 
 #include <functional>
-#include <iostream>
 #include <random>
 #include <utility>
+
+#include "utils/log.h"
 
 #include "ai/bt_action.h"
 #include "ai/bt_selector.h"
@@ -47,15 +48,15 @@ Status NpcBehaviourTree::CheckHunger() const {
     // std::cout << " : Yes, I need to find food\n";
 
     if (!tilemap_) {
-      std::cout << "No tilemap\n";
+      core::LogError("No tilemap");
       return Status::kFailure;
     }
     if (!path_) {
-      std::cout << "No path\n";
+      core::LogError("No path");
       return Status::kFailure;
     }
     if (!npc_motor_) {
-      std::cout << "No motor\n";
+      core::LogError("No motor");
       return Status::kFailure;
     }
 
@@ -107,7 +108,7 @@ Status NpcBehaviourTree::PickRessource() {
   ZoneScoped;
 #endif
   if (ressources_.empty()) {
-    std::cout << "No ressources available\n";
+    core::LogWarning("No ressources available");
     return Status::kFailure;
   }
 
@@ -145,7 +146,7 @@ Status NpcBehaviourTree::Idle() {
   ZoneScoped;
 #endif
   hunger_ += kHungerRate * tick_dt;
-  std::cout << "I'm sleeping" << "\n";
+  core::LogDebug("I'm sleeping");
   return Status::kSuccess;
 }
 
@@ -156,7 +157,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
 #ifdef TRACY_ENABLE
   ZoneScoped;
 #endif
-  std::cout << "Setup Behaviour Tree\n";
+  core::LogDebug("Setup Behaviour Tree");
 
   hunger_ = 0;
 
