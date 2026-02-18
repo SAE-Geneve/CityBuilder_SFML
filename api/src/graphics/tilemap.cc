@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <random>
+#include <ranges>
 
 #include "noise/FastNoiseLite.h"
 
@@ -33,7 +34,7 @@ void TileMap::Setup() {
   // Remplir le tableau avec de l'herbe ou de l'eau de manière aléatoire
 
   // Fixed, why were weights sorted for each tile when not modified?
-  std::sort(weights.begin(), weights.end(),
+  std::ranges::sort(weights,
             [](auto &a, auto &b) { return a.second < b.second; });
   for (int tileIndex = 0; tileIndex < tiles_.size(); ++tileIndex) {
     sf::Vector2f pos = ScreenPosition(tileIndex);
@@ -42,7 +43,7 @@ void TileMap::Setup() {
     auto value = dist(gen);
 
     float sumWeight = 0;
-    for (auto &[tile, weight] : weights) {
+    for (const auto &weight : weights | std::views::values) {
       sumWeight += weight;
     }
 

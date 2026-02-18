@@ -14,8 +14,10 @@ namespace api::ai {
 class Npc {
   sf::Texture texture_;
 
-  // FIXME each npc has its own bt_tree that allocates which is the same...
-  //  Decision
+  /*
+   * FIXME each npc has its own bt_tree that allocates which is the same...
+   * What about 4 bt_trees (one for each role) shared between all NPC
+   */
   std::unique_ptr<NpcBehaviourTree> bt_tree_ =
       std::make_unique<NpcBehaviourTree>();
 
