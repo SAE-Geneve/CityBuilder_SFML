@@ -40,6 +40,10 @@ class Vec2 {
     return {x + other.x, y + other.y};
   }
 
+  [[nodiscard]] constexpr bool operator==(Vec2 other) const {
+    return x == other.x && y == other.y;
+  }
+
   template <typename VectorT>
     requires is_vector2<VectorT, T>
   explicit constexpr operator VectorT() const {
