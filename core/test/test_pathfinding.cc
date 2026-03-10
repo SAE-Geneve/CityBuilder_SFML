@@ -19,3 +19,25 @@ TEST(Pathfinding, Empty) {
   EXPECT_FALSE(path.empty());
 
 }
+
+TEST(Pathfinding, OutOfBoundsShouldBeEmpty) {
+
+  std::array<Tile, 9> tilemap{};
+  std::ranges::fill(tilemap, Tile(true));
+  {
+    auto path = core::ai::experimental::calculate_shortest_path(std::mdspan(tilemap.data(), 3, 3), core::Vec2i(-1, 0), core::Vec2i(2,2));
+    EXPECT_TRUE(path.empty());
+  }
+  {
+    auto path = core::ai::experimental::calculate_shortest_path(std::mdspan(tilemap.data(), 3, 3), core::Vec2i(3, 0), core::Vec2i(2,2));
+    EXPECT_TRUE(path.empty());
+  }
+  {
+    auto path = core::ai::experimental::calculate_shortest_path(std::mdspan(tilemap.data(), 3, 3), core::Vec2i(0, 0), core::Vec2i(2,-2));
+    EXPECT_TRUE(path.empty());
+  }
+  {
+    auto path = core::ai::experimental::calculate_shortest_path(std::mdspan(tilemap.data(), 3, 3), core::Vec2i(0, 0), core::Vec2i(2,3));
+    EXPECT_TRUE(path.empty());
+  }
+}

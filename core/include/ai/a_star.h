@@ -65,7 +65,7 @@ std::vector<Vec2i> calculate_shortest_path(
     if (current.pos == end_pos) {
       std::vector<Vec2i> path;
       Vec2i trace = end_pos;
-      while (!(trace == start_pos)) {
+      while (trace != start_pos) {
         path.push_back(trace);
         const int idx = came_from[to_index(trace)];
         trace = {idx / width, idx % width};
