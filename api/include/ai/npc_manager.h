@@ -10,14 +10,14 @@
 
 namespace api::ai {
 
-enum class NpcType { kNone, kBlueWood, kRedRock, kGreenFood };
+
 
 class NpcManager {
+
   std::vector<Npc> npcs_;
 
  public:
-  void Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap,
-           ResourceManager& ressource_manager);
+  void Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap, ResourceManager& resource_manager);
   void Update(float dt);
   void Draw(sf::RenderWindow& window);
 };

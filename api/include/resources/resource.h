@@ -30,7 +30,7 @@ class Resource {
 
   //FIXME this generates allocation
   //std::function<void(int, float)> OnChopResource_ = nullptr;
-  void(*on_chop_resource_)(int, float);
+  void(*on_chop_resource_)(int, float) = nullptr;
 };
 
 inline void Resource::SetType(const Type type) { type_ = type; }

@@ -37,7 +37,6 @@ void ChopEvent(int index, float quantity) {
 #ifdef TRACY_ENABLE
   ZoneScoped;
 #endif
-  core::LogDebug("chop event : {},{}", index, quantity);
   if (quantity <= 0) {
     tilemap_ptr_->SetTile(index, TileMap::Tile::kBg);
   }

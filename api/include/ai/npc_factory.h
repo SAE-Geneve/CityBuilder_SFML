@@ -18,17 +18,17 @@ inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
   switch (type) {
     case NpcType::kBlueWood:
       npcs.emplace_back();
-      npcs.back().Setup("BLUE", "scifiUnit_06.png", tilemap, start_position,
+      npcs.back().Setup(type, "scifiUnit_06.png", tilemap, start_position,
                         std::move(resource_manager.GetResources(Resource::Type::kWood)));
       break;
     case NpcType::kRedRock:
       npcs.emplace_back();
-      npcs.back().Setup("RED", "scifiUnit_18.png", tilemap, start_position,
+      npcs.back().Setup(type, "scifiUnit_18.png", tilemap, start_position,
                         std::move(resource_manager.GetResources(Resource::Type::kStone)));
       break;
     case NpcType::kGreenFood:
       npcs.emplace_back();
-      npcs.back().Setup("GREEN", "scifiUnit_31.png", tilemap, start_position,
+      npcs.back().Setup(type, "scifiUnit_31.png", tilemap, start_position,
                         std::move(resource_manager.GetResources(Resource::Type::kFood)));
       break;
     default:

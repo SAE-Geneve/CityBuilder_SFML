@@ -11,6 +11,13 @@
 
 namespace api::ai {
 
+enum class NpcType {
+  kNone = 'n',
+  kBlueWood = 'w',
+  kRedRock = 'r',
+  kGreenFood = 'f'
+};
+
 class Npc {
   sf::Texture texture_;
 
@@ -27,14 +34,16 @@ class Npc {
   std::unique_ptr<motion::Path> path_ = std::make_unique<motion::Path>();
 
   // name
-  std::string name_;
+  //std::string name_;
+  // Replace with type
+  NpcType type_ = NpcType::kNone;
 
   // World informations
   // Tilemap
   // const TileMap *tileMap_;
 
  public:
-  void Setup(std::string_view name, std::string_view filename,
+  void Setup(NpcType type, std::string_view filename,
              const TileMap* tilemap, const sf::Vector2f& cantina_position,
              std::vector<Resource> ressources);
   void Update(float dt);

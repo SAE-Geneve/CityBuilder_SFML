@@ -13,11 +13,11 @@
 namespace api::ai {
 
 void NpcManager::Add(NpcType type, sf::Vector2f start_position,
-                     TileMap* tilemap, ResourceManager& ressource_manager) {
+                     TileMap* tilemap, ResourceManager& resource_manager) {
 #ifdef TRACY_ENABLE
   ZoneScoped;
 #endif
-  CreateNpc(npcs_, type, start_position, tilemap, ressource_manager);
+  CreateNpc(npcs_, type, start_position, tilemap, resource_manager);
 }
 
 void NpcManager::Update(float dt) {

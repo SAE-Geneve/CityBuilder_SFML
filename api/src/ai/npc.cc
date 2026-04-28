@@ -15,15 +15,14 @@ using namespace api::motion;
 
 namespace api::ai{
 
-    void Npc::Setup(std::string_view name, std::string_view filename,
+    void Npc::Setup(const NpcType type, std::string_view filename,
                     const TileMap* tilemap, const sf::Vector2f& cantina_position, std::vector<Resource> ressources) {
 #ifdef TRACY_ENABLE
         ZoneScoped;
 #endif
 
-        name_ = std::string(name);
+        type_ = type;
 
-        // TODO : find lighter concat for string view
         if(!texture_.loadFromFile(std::format("_assets/sprites/{}", filename))) {
             core::LogError("Error loading texture {}", filename);
             if (!texture_.loadFromFile("_assets/sprites/empty.png")) {
@@ -31,7 +30,7 @@ namespace api::ai{
             }
         }
 
-        core::LogDebug("Setup {} -- -- -- -- -- -- -- -- -- -- -- -- -- ", name_);
+        core::LogDebug("Setup {} -- -- -- -- -- -- -- -- -- -- -- -- -- ", static_cast<char>(type_));
 
         bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap, cantina_position, std::move(ressources));
 
@@ -39,6 +38,7 @@ namespace api::ai{
         motor_->SetSpeed(kMovingSpeed);
 
     }
+
 
     void Npc::Update(const float dt){
 #ifdef TRACY_ENABLE
