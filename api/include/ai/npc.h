@@ -19,22 +19,20 @@ enum class NpcType {
 };
 
 class Npc {
-  sf::Texture texture_;
+  std::unique_ptr<sf::Texture> texture_ = std::make_unique<sf::Texture>();
+  std::optional<sf::Sprite> sprite_;
 
   /*
    * FIXME each npc has its own bt_tree that allocates which is the same...
    * What about 4 bt_trees (one for each role) shared between all NPC
    */
-  std::unique_ptr<NpcBehaviourTree> bt_tree_ =
-      std::make_unique<NpcBehaviourTree>();
+  std::unique_ptr<NpcBehaviourTree> bt_tree_ = std::make_unique<NpcBehaviourTree>();
 
   // Movement
   static constexpr float kMovingSpeed = 200.0f;
   std::unique_ptr<motion::Motor> motor_ = std::make_unique<motion::Motor>();
   std::unique_ptr<motion::Path> path_ = std::make_unique<motion::Path>();
 
-  // name
-  //std::string name_;
   // Replace with type
   NpcType type_ = NpcType::kNone;
 
