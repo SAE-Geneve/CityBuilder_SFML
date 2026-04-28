@@ -52,6 +52,10 @@ cmake-build-*/
 # IntelliJ
 out/
 
+# VisualStudio
+.vs/
+.vs*
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
