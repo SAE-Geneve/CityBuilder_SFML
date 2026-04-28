@@ -24,7 +24,7 @@ namespace api::ai{
         name_ = std::string(name);
 
         // TODO : find lighter concat for string view
-        if(!texture_.loadFromFile("_assets/sprites/" + std::string(filename))) {
+        if(!texture_.loadFromFile(std::format("_assets/sprites/{}", filename))) {
             core::LogError("Error loading texture {}", filename);
             if (!texture_.loadFromFile("_assets/sprites/empty.png")) {
                 core::LogError("Error loading texture empty.png");
