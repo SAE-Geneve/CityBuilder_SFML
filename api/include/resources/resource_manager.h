@@ -10,22 +10,22 @@ class ResourceManager {
   std::vector<Resource> resources_;
 
  public:
-  void LoadResources(Resource::Type type, const std::vector<int>& indexes,
-                     std::function<void(int, float)> OnChopEvent);
+  void LoadResources(Resource::Type type, const std::vector<int>& indexes, void (*on_chop_event)(int, float));
 
   [[nodiscard]] std::vector<Resource> GetResources(Resource::Type type) const;
 };
 
 inline void ResourceManager::LoadResources(
-    const Resource::Type type, const std::vector<int>& indexes,
-    std::function<void(int, float)> OnChopEvent) {
+    const Resource::Type type, const std::vector<int>& indexes, void (*on_chop_event)(int, float)) {
+
   for (auto& index : indexes) {
     resources_.emplace_back();
     resources_.back().SetType(type);
     resources_.back().SetIndex(index);
     resources_.back().SetQuantity(10);
-    resources_.back().OnChopResource_ = OnChopEvent;
+    resources_.back().on_chop_resource_ = on_chop_event;
   }
+
 }
 
 inline std::vector<Resource> ResourceManager::GetResources(

@@ -29,7 +29,8 @@ class Resource {
   void Exploit(float);
 
   //FIXME this generates allocation
-  std::function<void(int, float)> OnChopResource_ = nullptr;
+  //std::function<void(int, float)> OnChopResource_ = nullptr;
+  void(*on_chop_resource_)(int, float);
 };
 
 inline void Resource::SetType(const Type type) { type_ = type; }
@@ -46,8 +47,8 @@ inline void Resource::Exploit(const float rate) {
   quantity_ -= rate;
   quantity_ = std::max<float>(quantity_, 0);
 
-  if (OnChopResource_) {
-    OnChopResource_(tile_index_, quantity_);
+  if (on_chop_resource_) {
+    on_chop_resource_(tile_index_, quantity_);
   }
 }
 #endif
