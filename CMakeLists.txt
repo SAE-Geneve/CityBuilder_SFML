@@ -1,16 +1,6 @@
 # Cmake Version
 cmake_minimum_required(VERSION 3.30)
 
-option(ENABLE_TESTING "Enable gtest" OFF)
-if(ENABLE_TESTING)
-    list(APPEND VCPKG_MANIFEST_FEATURES "testing")
-endif(ENABLE_TESTING)
-
-option(ENABLE_PROFILING "Enable profiling with tracy" OFF)
-if(ENABLE_PROFILING)
-    list(APPEND VCPKG_MANIFEST_FEATURES "profiling")
-endif(ENABLE_PROFILING)
-
 # Create Solution
 project(CityBuilder)
 
@@ -18,18 +8,8 @@ project(CityBuilder)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(ENABLE_TESTING)
-    enable_testing()
-    find_package(GTest CONFIG REQUIRED)
-endif(ENABLE_TESTING)
-
-if(ENABLE_PROFILING)
-    find_package(Tracy CONFIG REQUIRED)
-endif(ENABLE_PROFILING)
 
 # Creating Architecture and libraries
-add_subdirectory(core/)
-add_subdirectory(api/)
 add_subdirectory(game/)
 
 # Manage Ressources
