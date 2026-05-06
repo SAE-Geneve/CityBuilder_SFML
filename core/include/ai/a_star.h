@@ -12,12 +12,14 @@
 #include <vector>
 
 #include "maths/vec2.h"
+#include "profiling/profiling.h"
 
 namespace core::ai::experimental {
 
 template <typename tile_t, typename extends>
 std::vector<Vec2i> calculate_shortest_path(
     std::mdspan<tile_t, extends> tilemap, Vec2i start_pos, Vec2i end_pos) {
+  PROFILE_ZONE();
   const int width = static_cast<int>(tilemap.extent(0));
   const int height = static_cast<int>(tilemap.extent(1));
 

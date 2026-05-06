@@ -20,6 +20,8 @@ class NpcManager {
   void Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap, ResourceManager& resource_manager);
   void Update(float dt);
   void Draw(sf::RenderWindow& window);
+
+  [[nodiscard]] std::ptrdiff_t Count() const noexcept { return std::ssize(npcs_); }
 };
 }  // namespace api::ai
 

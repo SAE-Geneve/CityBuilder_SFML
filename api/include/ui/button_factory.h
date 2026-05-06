@@ -12,6 +12,7 @@
 
 #include "assets/asset_manager.h"
 #include "button.h"
+#include "profiling/profiling.h"
 
 namespace api::ui {
 class ButtonFactory {
@@ -26,6 +27,7 @@ class ButtonFactory {
 
  public:
   ButtonFactory() {
+    PROFILE_ZONE();
     textures_.Load(files_);
     if (!font.openFromFile("_assets/fonts/ANTQUAB.TTF")) {
       std::cout << "Failed to load font" << std::endl;
@@ -34,6 +36,7 @@ class ButtonFactory {
 
   std::unique_ptr<Button> CreateButton(sf::Vector2f pos,
                                        std::string_view label) {
+    PROFILE_ZONE();
     return std::move(std::make_unique<api::ui::Button>(
         pos, label, textures_.Get(Sprite::kBgBtn),
         textures_.Get(Sprite::kHoverBtn), font));

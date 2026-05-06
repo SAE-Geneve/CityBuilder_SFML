@@ -4,16 +4,12 @@
 
 #include "ai/bt_sequence.h"
 
-#ifdef TRACY_ENABLE
-#include "tracy/Tracy.hpp"
-#endif
+#include "profiling/profiling.h"
 
 using namespace core::ai::behaviour_tree;
 
 Status Sequence::Tick() {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   while (childIdx_ < children_.size()) {
     Status status = children_[childIdx_]->Tick();
 

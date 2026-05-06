@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "profiling/profiling.h"
+
 namespace core::experimental {
 
 template <size_t N>
@@ -21,6 +23,7 @@ template <typename TAsset, typename TAssetType, StringLiteral folderPath>
 class AssetManager {
  public:
   void Load(std::span<const std::string_view> assetsPaths) {
+    PROFILE_ZONE();
     for (size_t i = 0; i < assets_.size(); ++i) {
       assets_[i] = TAsset(std::format("{}/{}", folderPath.str, assetsPaths[i]));
     }

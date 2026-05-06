@@ -9,9 +9,7 @@
 #include "ui/button_factory.h"
 #include "ui/clickable.h"
 
-#ifdef TRACY_ENABLE
-#include "tracy/Tracy.hpp"
-#endif
+#include "profiling/profiling.h"
 
 namespace game {
 namespace {
@@ -34,18 +32,14 @@ api::ai::NpcType npc_adding_type = api::ai::NpcType::kNone;
 ResourceManager resource_manager;
 
 void ChopEvent(int index, float quantity) {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   if (quantity <= 0) {
     tilemap_ptr_->SetTile(index, TileMap::Tile::kBg);
   }
 }
 
 void Setup() {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   // Create the main window
   window_.create(sf::VideoMode({1280, 1080}), "SFML window");
 
@@ -120,6 +114,9 @@ void Loop() {
     // GamePlay, physic frame
     npc_manager_.Update(dt);
 
+    PROFILE_PLOT("Frame dt (ms)", dt * 1000.0f);
+    PROFILE_PLOT("NPC count", static_cast<int64_t>(npc_manager_.Count()));
+
     // Graphic frame
     window_.clear();
 
@@ -132,9 +129,7 @@ void Loop() {
     btnExit->Draw(window_);
 
     window_.display();
-#ifdef TRACY_ENABLE
-    FrameMark;
-#endif
+    PROFILE_FRAME();
   }
 }
 }  // namespace game

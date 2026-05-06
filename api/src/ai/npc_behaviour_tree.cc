@@ -15,10 +15,7 @@
 #include "ai/bt_sequence.h"
 #include "motion/a_star.h"
 #include "motion/path.h"
-
-#ifdef TRACY_ENABLE
-#include "tracy/Tracy.hpp"
-#endif
+#include "profiling/profiling.h"
 
 using namespace core::ai::behaviour_tree;
 using namespace api::motion;
@@ -26,9 +23,7 @@ using namespace api::motion;
 namespace api::ai {
 
 void NpcBehaviourTree::SetDestination(const sf::Vector2f& destination) const {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   Path path = Astar::GetPath(TileMap::GetStep(), npc_motor_->GetPosition(),
                              destination, tilemap_->GetWalkables());
   if (path.IsValid()) {
@@ -38,9 +33,7 @@ void NpcBehaviourTree::SetDestination(const sf::Vector2f& destination) const {
 }
 
 Status NpcBehaviourTree::CheckHunger() const {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   // std::cout << "this ? = " << this << "\n";
   // std::cout << "Am I hungry ? " << std::to_string(hunger_);
 
@@ -71,9 +64,7 @@ Status NpcBehaviourTree::CheckHunger() const {
 }
 
 Status NpcBehaviourTree::Move() const {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   // if destination not reachable, return failure
   if (!path_->IsValid()) {
     // std::cout << "Not reachable" << path_->IsValid() << "\n";
@@ -91,9 +82,7 @@ Status NpcBehaviourTree::Move() const {
 }
 
 Status NpcBehaviourTree::Eat() {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   // No failure, until we have food storage system
   hunger_ -= kHungerRate * tick_dt;
   if (hunger_ > 0) {
@@ -104,9 +93,7 @@ Status NpcBehaviourTree::Eat() {
 }
 
 Status NpcBehaviourTree::PickRessource() {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   if (ressources_.empty()) {
     core::LogWarning("No ressources available");
     return Status::kFailure;
@@ -129,9 +116,7 @@ Status NpcBehaviourTree::PickRessource() {
 }
 
 Status NpcBehaviourTree::GetRessource() {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   if (current_ressource_.GetQty() <= 0) {
     return Status::kSuccess;
   }
@@ -142,9 +127,7 @@ Status NpcBehaviourTree::GetRessource() {
 }
 
 Status NpcBehaviourTree::Idle() {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   hunger_ += kHungerRate * tick_dt;
   core::LogDebug("I'm sleeping");
   return Status::kSuccess;
@@ -154,9 +137,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
                                           const TileMap* tilemap,
                                           sf::Vector2f cantina_position,
                                           std::vector<Resource> ressources) {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   core::LogDebug("Setup Behaviour Tree");
 
   hunger_ = 0;
@@ -194,9 +175,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
 }
 
 void NpcBehaviourTree::Update(float dt) {
-#ifdef TRACY_ENABLE
-  ZoneScoped;
-#endif
+  PROFILE_ZONE();
   tick_dt = dt;
   bt_root_->Tick();
   // std::cout << "this ? = " << this << "\n";

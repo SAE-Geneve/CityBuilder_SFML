@@ -7,12 +7,14 @@
 #include <iostream>
 
 #include "npc_manager.h"
+#include "profiling/profiling.h"
 #include "utils/log.h"
 
 namespace api::ai {
 inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
                       sf::Vector2f start_position, const TileMap* tilemap,
                       const ResourceManager& resource_manager) {
+  PROFILE_ZONE();
   // std::cout << "Creating npc" << std::endl;
 
   switch (type) {
