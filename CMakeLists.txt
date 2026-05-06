@@ -27,6 +27,8 @@ if(ENABLE_PROFILING)
     find_package(Tracy CONFIG REQUIRED)
 endif(ENABLE_PROFILING)
 
+find_package(argh CONFIG REQUIRED)
+
 # Creating Architecture and libraries
 add_subdirectory(core/)
 add_subdirectory(api/)
@@ -48,7 +50,7 @@ add_executable(city_builder_game main.cc)
 add_dependencies(city_builder_game copy_resources)
 
 # This project is linked to its own libraries
-target_link_libraries(city_builder_game PRIVATE game)
+target_link_libraries(city_builder_game PRIVATE game argh)
 
 target_compile_options(city_builder_game PRIVATE
         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/Od /Zi>

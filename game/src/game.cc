@@ -1,5 +1,8 @@
 ﻿#include "game.h"
 
+#include <array>
+#include <random>
+
 #include "SFML/Graphics.hpp"
 #include "utils/log.h"
 #include "ai/npc_manager.h"
@@ -86,10 +89,45 @@ void Setup() {
       Resource::Type::kStone,
       tilemap_ptr_->GetCollectibles(TileMap::Tile::kRock), ChopEvent);
 }
+
+void SpawnInitialNpcs(int total) {
+  PROFILE_ZONE();
+  if (total <= 0) {
+    return;
+  }
+
+  const auto& walkables = tilemap_ptr_->GetWalkables();
+  if (walkables.empty()) {
+    core::LogWarning("No walkable tiles available for initial NPC spawn");
+    return;
+  }
+
+  static std::mt19937 gen{std::random_device{}()};
+  std::uniform_int_distribution<std::ptrdiff_t> tile_dist(
+      0, std::ssize(walkables) - 1);
+
+  constexpr std::array<api::ai::NpcType, 3> kTypes = {
+      api::ai::NpcType::kBlueWood,
+      api::ai::NpcType::kRedRock,
+      api::ai::NpcType::kGreenFood,
+  };
+
+  const int base = total / 3;
+  const int remainder = total % 3;
+  for (std::ptrdiff_t t = 0; t < std::ssize(kTypes); ++t) {
+    const int count = base + (t < remainder ? 1 : 0);
+    for (int i = 0; i < count; ++i) {
+      const auto& position = walkables[tile_dist(gen)];
+      npc_manager_.Add(kTypes[t], position, tilemap_ptr_.get(),
+                       resource_manager);
+    }
+  }
+}
 }  // namespace
 
-void Loop() {
+void Loop(const LaunchOptions& options) {
   Setup();
+  SpawnInitialNpcs(options.initial_spawn_count);
 
   // Start the game loop
   while (window_.isOpen()) {

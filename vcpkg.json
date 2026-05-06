@@ -2,7 +2,8 @@
   "name": "city-builder",
   "version-string": "1.0",
   "dependencies": [
-    "sfml"
+    "sfml",
+    "argh"
   ],
   "features": {
     "testing": {"description": "Testing", "dependencies": ["gtest"] },
