@@ -7,8 +7,7 @@
   "features": {
     "testing": {"description": "Testing", "dependencies": ["gtest"] },
     "profiling": {"description": "Profiling", "dependencies": [{
-      "name": "tracy",
-      "features": ["gui-tools"]
+      "name": "tracy"
     }] }
   },
   "builtin-baseline": "80f9bcfa455e875d9c1bf7a7c6692d7e1e481061"
