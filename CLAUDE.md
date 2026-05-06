@@ -16,6 +16,26 @@ cmake -S . -B cmake-build-debug -DENABLE_TESTING=ON -DCMAKE_TOOLCHAIN_FILE=$env:
 cmake --build cmake-build-debug
 ```
 
+### CMake presets
+
+`CMakePresets.json` defines six configure presets (Ninja, single-config) covering Debug / RelWithDebInfo / Release on Windows and Linux:
+
+| Preset                           | `CMAKE_BUILD_TYPE` | `ENABLE_TESTING` | `ENABLE_PROFILING` |
+|----------------------------------|--------------------|------------------|--------------------|
+| `{windows,linux}-debug`          | `Debug`            | ON               | OFF                |
+| `{windows,linux}-relwithdebinfo` | `RelWithDebInfo`   | ON               | ON                 |
+| `{windows,linux}-release`        | `Release`          | OFF              | OFF                |
+
+Build dirs are `out/build/<presetName>/`. `VCPKG_ROOT` must be set in the environment. On Windows the MSVC environment must be loaded (run from a "Developer PowerShell for VS 2022", or invoke `vcvarsall.bat x64` first) so Ninja can find `cl.exe`.
+
+```
+cmake --preset windows-debug
+cmake --build --preset windows-debug
+ctest --preset windows-debug          # Debug + RelWithDebInfo only
+```
+
+`CMakeUserPresets.json` is git-ignored — use it for personal overrides.
+
 Run a single test via the GTest filter:
 ```
 cmake-build-debug/core/core_test.exe --gtest_filter=TestSuiteName.TestName
