@@ -8,13 +8,13 @@ bool Path::IsDone() const {
   return idxPoint_ == path_points_.size() - 1;
 }
 
-bool Path::IsValid() const {
+bool Path::valid() const {
   return !path_points_.empty();
 }
 
-sf::Vector2f Path::GetNextPoint() {
+sf::Vector2f Path::next_point() {
   PROFILE_ZONE();
-  if (!IsValid()) {
+  if (!valid()) {
     return {0, 0};
   }
 
@@ -34,7 +34,7 @@ void Path::Fill(const std::vector<sf::Vector2f> &path_points) {
 }
 
 sf::Vector2f Path::StartPoint() const {
-  if (IsValid()) {
+  if (valid()) {
     return path_points_[0];
   }
   return {

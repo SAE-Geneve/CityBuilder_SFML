@@ -8,27 +8,27 @@
 #include <random>
 #include <utility>
 
-#include "utils/log.h"
-
 #include "ai/bt_action.h"
 #include "ai/bt_selector.h"
 #include "ai/bt_sequence.h"
+#include "ai/npc.h"
 #include "motion/a_star.h"
 #include "motion/path.h"
 #include "profiling/profiling.h"
+#include "utils/log.h"
 
 using namespace core::ai::behaviour_tree;
 using namespace api::motion;
 
 namespace api::ai {
 
-void NpcBehaviourTree::SetDestination(const sf::Vector2f& destination) const {
+void NpcBehaviourTree::set_destination(const sf::Vector2f& destination) const {
   PROFILE_ZONE();
-  Path path = Astar::GetPath(TileMap::GetStep(), npc_motor_->GetPosition(),
+  Path path = Astar::GetPath(TileMap::GetStep(), npc_motor_->position(),
                              destination, tilemap_->GetWalkables());
-  if (path.IsValid()) {
+  if (path.valid()) {
     this->path_->Fill(path.Points());
-    this->npc_motor_->SetDestination(path.StartPoint());
+    this->npc_motor_->set_destination(path.StartPoint());
   }
 }
 
@@ -53,7 +53,7 @@ Status NpcBehaviourTree::CheckHunger() const {
       return Status::kFailure;
     }
 
-    SetDestination(cantina_position_);
+    set_destination(cantina_position_);
 
     return Status::kSuccess;
 
@@ -66,7 +66,7 @@ Status NpcBehaviourTree::CheckHunger() const {
 Status NpcBehaviourTree::Move() const {
   PROFILE_ZONE();
   // if destination not reachable, return failure
-  if (!path_->IsValid()) {
+  if (!path_->valid()) {
     // std::cout << "Not reachable" << path_->IsValid() << "\n";
     return Status::kFailure;
   } else {
@@ -92,24 +92,26 @@ Status NpcBehaviourTree::Eat() {
   }
 }
 
-Status NpcBehaviourTree::PickRessource() {
+Status NpcBehaviourTree::PickResource() {
   PROFILE_ZONE();
-  if (resources_.empty()) {
-    core::LogWarning("No ressources available");
+  auto resources = resource_manager_.resources(GetResourceType(npc_->type()));
+  if (resources.empty()) {
+    core::LogWarning("No resources available");
     return Status::kFailure;
   }
 
-  //this static saves 2.5kb every call
   static std::mt19937 gen{std::random_device{}()};
-  std::uniform_int_distribution<size_t> dist(0, resources_.size() - 1);
 
-  //Fixed: not throwing dice twice
-  const auto new_index = dist(gen);
-  if (resources_[new_index].quantity() > 0) {
-    current_ressource_ = resources_[new_index];
-    SetDestination(TileMap::ScreenPosition(current_ressource_.tile_index()));
+  auto resources_ptrs =
+      resources | std::views::transform([](auto& x) { return &x; });
+  resource::Resource* picked_resource = nullptr;
+  std::ranges::sample(resources_ptrs, &picked_resource, 1,
+                      gen);  // C++20 ranges form
+  if (picked_resource != nullptr && picked_resource->quantity() > 0) {
+    current_ressource_ = picked_resource;
+    set_destination(TileMap::ScreenPosition(current_ressource_->tile_index()));
 
-    if (path_->IsValid()) return Status::kSuccess;
+    if (path_->valid()) return Status::kSuccess;
   }
 
   return Status::kFailure;
@@ -117,11 +119,13 @@ Status NpcBehaviourTree::PickRessource() {
 
 Status NpcBehaviourTree::GetResource() {
   PROFILE_ZONE();
-  if (current_ressource_.quantity() <= 0) {
+  if (current_ressource_ == nullptr) return Status::kFailure;
+  if (current_ressource_->quantity() <= 0) {
+    current_ressource_ = nullptr;
     return Status::kSuccess;
   }
 
-  current_ressource_.Exploit(kExploitRate * tick_dt);
+  current_ressource_->Exploit(kExploitRate * tick_dt);
   hunger_ += kHungerRate * tick_dt;
   return Status::kRunning;
 }
@@ -134,19 +138,17 @@ Status NpcBehaviourTree::Idle() {
 }
 
 void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
-                                          const TileMap* tilemap,
-                                          sf::Vector2f cantina_position,
-                                          std::vector<resource::Resource> ressources) {
+                                          Npc* npc, const TileMap* tilemap,
+                                          sf::Vector2f cantina_position) {
   PROFILE_ZONE();
   core::LogDebug("Setup Behaviour Tree");
 
   hunger_ = 0;
-
+  npc_ = npc;
   npc_motor_ = npc_motor;
   path_ = path;
   tilemap_ = tilemap;
   cantina_position_ = cantina_position;
-  resources_ = std::move(ressources);
 
   sf::Vector2f start = {0, 0};
 
@@ -160,7 +162,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
 
   auto workSequence = std::make_unique<Sequence>();
   workSequence->AddChild(
-      std::make_unique<Action>([this]() { return PickRessource(); }));
+      std::make_unique<Action>([this]() { return PickResource(); }));
   workSequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
   workSequence->AddChild(
       std::make_unique<Action>([this]() { return GetResource(); }));

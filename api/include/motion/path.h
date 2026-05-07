@@ -12,8 +12,8 @@ class Path {
 
  public:
   [[nodiscard]] bool IsDone() const;
-  [[nodiscard]] bool IsValid() const;
-  [[nodiscard]] sf::Vector2f GetNextPoint();
+  [[nodiscard]] bool valid() const;
+  [[nodiscard]] sf::Vector2f next_point();
   [[nodiscard]] sf::Vector2f StartPoint() const;
 
   void Fill(const std::vector<sf::Vector2f> &path_points);

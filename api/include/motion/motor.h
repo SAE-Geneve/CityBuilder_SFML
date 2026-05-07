@@ -13,19 +13,19 @@ class Motor {
 
  public:
   void Update(float dt);  // each frame
-  [[nodiscard]] float RemainingDistance() const;
+  [[nodiscard]] float remaining_distance() const;
 
   // getter / setter
-  void SetSpeed(float speed) { speed_ = speed; }
-  void SetPosition(sf::Vector2f position) { position_ = position; }
+  void set_speed(float speed) { speed_ = speed; }
+  void set_position(sf::Vector2f position) { position_ = position; }
 
-  void SetDestination(const sf::Vector2f destination) {
+  void set_destination(const sf::Vector2f destination) {
     // std::cout << "new destination : " << destination.x << ":" <<
     // destination.y << "\n";
     destination_ = destination;
   }
 
-  [[nodiscard]] const sf::Vector2f &GetPosition() const { return position_; }
+  [[nodiscard]] const sf::Vector2f &position() const { return position_; }
 };
 
 inline void Motor::Update(const float dt) {
@@ -39,7 +39,7 @@ inline void Motor::Update(const float dt) {
   position_ += distance.normalized() * speed_ * dt;
 }
 
-inline float Motor::RemainingDistance() const { return remainingDistance_; }
+inline float Motor::remaining_distance() const { return remainingDistance_; }
 }  // namespace api::motion
 
 #endif  // MOTOR_H

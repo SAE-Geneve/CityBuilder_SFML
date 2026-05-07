@@ -12,9 +12,14 @@
 #include "motion/motor.h"
 #include "motion/path.h"
 #include "resources/resource.h"
+#include "resources/resource_manager.h"
 
 namespace api::ai {
+class Npc;
 class NpcBehaviourTree {
+public:
+  NpcBehaviourTree(resource::ResourceManager& resource_manager): resource_manager_(resource_manager) {}
+private:
   // Behaviour tree
   std::unique_ptr<core::ai::behaviour_tree::Node> bt_root_;
 
@@ -23,13 +28,14 @@ class NpcBehaviourTree {
   // Ways of action
   motion::Motor* npc_motor_ = nullptr;
   motion::Path* path_ = nullptr;
+  Npc* npc_ = nullptr;
 
-  void SetDestination(const sf::Vector2f& destination) const;
+  void set_destination(const sf::Vector2f& destination) const;
   // Actions
   [[nodiscard]] core::ai::behaviour_tree::Status CheckHunger() const;
   [[nodiscard]] core::ai::behaviour_tree::Status Move() const;
   [[nodiscard]] core::ai::behaviour_tree::Status Eat();
-  [[nodiscard]] core::ai::behaviour_tree::Status PickRessource();
+  [[nodiscard]] core::ai::behaviour_tree::Status PickResource();
   [[nodiscard]] core::ai::behaviour_tree::Status GetResource();
   [[nodiscard]] core::ai::behaviour_tree::Status Idle();
 
@@ -43,13 +49,12 @@ class NpcBehaviourTree {
   float tick_dt = 0;
 
   sf::Vector2f cantina_position_;
-  std::vector<resource::Resource> resources_;
-  resource::Resource current_ressource_;
+  resource::ResourceManager& resource_manager_;
+  resource::Resource* current_ressource_ = nullptr;
 
  public:
-  void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path,
-                          const TileMap* tilemap, sf::Vector2f cantina_position,
-                          std::vector<resource::Resource> ressources);
+  void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path, Npc* npc_,
+                          const TileMap* tilemap, sf::Vector2f cantina_position);
   void Update(float dt);
 };
 }  // namespace api::ai

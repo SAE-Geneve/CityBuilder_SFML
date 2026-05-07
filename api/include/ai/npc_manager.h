@@ -6,6 +6,7 @@
 #define NPC_MANAGER_H
 
 #include "ai/npc.h"
+#include "ai/npc_behaviour_tree.h"
 #include "resources/resource_manager.h"
 
 namespace api::ai {

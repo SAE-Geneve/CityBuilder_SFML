@@ -1,10 +1,11 @@
 ﻿#include "ai/npc.h"
 
 #include <random>
-#include <utility>
 
+#include "ai/npc_behaviour_tree.h"
 #include "motion/a_star.h"
 #include "profiling/profiling.h"
+#include "resources/resource_manager.h"
 #include "utils/log.h"
 
 using namespace api::motion;
@@ -13,14 +14,15 @@ namespace api::ai {
 
 void Npc::Setup(const NpcType type, std::string_view filename,
                 const TileMap* tilemap, const sf::Vector2f& cantina_position,
-                std::vector<resource::Resource> resources) {
+                resource::ResourceManager& resources) {
   PROFILE_ZONE();
 
   type_ = type;
 
   bool texture_is_fine = false;
 
-  texture_is_fine = texture_->loadFromFile(std::format("_assets/sprites/{}", filename));
+  texture_is_fine =
+      texture_->loadFromFile(std::format("_assets/sprites/{}", filename));
   if (!texture_is_fine) {
     core::LogError("Error loading texture {}", filename);
 
@@ -36,12 +38,12 @@ void Npc::Setup(const NpcType type, std::string_view filename,
 
   core::LogDebug("Setup {} -- -- -- -- -- -- -- -- -- -- -- -- -- ",
                  static_cast<char>(type_));
+  bt_tree_ = std::make_unique<NpcBehaviourTree>(resources);
+  bt_tree_->SetupBehaviourTree(&motor_, &path_, this, tilemap,
+                               cantina_position);
 
-  bt_tree_->SetupBehaviourTree(motor_.get(), path_.get(), tilemap,
-                               cantina_position, std::move(resources));
-
-  motor_->SetPosition({0, 0});
-  motor_->SetSpeed(kMovingSpeed);
+  motor_.set_position({0, 0});
+  motor_.set_speed(kMovingSpeed);
 }
 
 void Npc::Update(const float dt) {
@@ -54,10 +56,10 @@ void Npc::Update(const float dt) {
   // std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
 
   // -------------------
-  if (path_->IsValid()) {
-    motor_->Update(dt);
-    if (!path_->IsDone() && motor_->RemainingDistance() <= 0.001f) {
-      motor_->SetDestination(path_->GetNextPoint());
+  if (path_.valid()) {
+    motor_.Update(dt);
+    if (!path_.IsDone() && motor_.remaining_distance() <= 0.001f) {
+      motor_.set_destination(path_.next_point());
     }
   }
 
@@ -66,12 +68,12 @@ void Npc::Update(const float dt) {
 
 void Npc::Draw(sf::RenderWindow& window) {
   PROFILE_ZONE();
-  //sf::Sprite sprite(texture_);
-  //sprite.setPosition(motor_->GetPosition());
-  //window.draw(sprite);
+  // sf::Sprite sprite(texture_);
+  // sprite.setPosition(motor_->GetPosition());
+  // window.draw(sprite);
 
   if (sprite_.has_value()) {
-    sprite_.value().setPosition(motor_->GetPosition());
+    sprite_.value().setPosition(motor_.position());
     window.draw(sprite_.value());
   }
 }

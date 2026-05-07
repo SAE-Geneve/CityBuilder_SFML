@@ -6,11 +6,11 @@
 #include "graphics/tilemap.h"
 #include "motion/motor.h"
 #include "motion/path.h"
-#include "npc_behaviour_tree.h"
-#include "resources/resource.h"
+#include "resources/resource_manager.h"
 
 namespace api::ai {
 
+class NpcBehaviourTree;
 enum class NpcType : char {
   kNone = 'n',
   kBlueWood = 'w',
@@ -27,12 +27,12 @@ class Npc {
    * FIXME each npc has its own bt_tree that allocates which is the same...
    * What about 4 bt_trees (one for each role) shared between all NPC
    */
-  std::unique_ptr<NpcBehaviourTree> bt_tree_ = std::make_unique<NpcBehaviourTree>();
+  std::unique_ptr<NpcBehaviourTree> bt_tree_;
 
   // Movement
   static constexpr float kMovingSpeed = 200.0f;
-  std::unique_ptr<motion::Motor> motor_ = std::make_unique<motion::Motor>();
-  std::unique_ptr<motion::Path> path_ = std::make_unique<motion::Path>();
+  motion::Motor motor_;
+  motion::Path path_;
 
   // Replace with type
   NpcType type_ = NpcType::kNone;
@@ -42,18 +42,32 @@ class Npc {
   // const TileMap *tileMap_;
 
  public:
-  void Setup(NpcType type, std::string_view filename,
-             const TileMap* tilemap, const sf::Vector2f& cantina_position,
-             std::vector<resource::Resource> resources);
+  void Setup(NpcType type, std::string_view filename, const TileMap* tilemap,
+             const sf::Vector2f& cantina_position,
+             resource::ResourceManager& resources);
   void Update(float dt);
   void Draw(sf::RenderWindow& window);
-  void SetPosition(const sf::Vector2f& position) {
-    motor_->SetPosition(position);
+  void set_position(const sf::Vector2f& position) {
+    motor_.set_position(position);
   }
-
+  [[nodiscard]] NpcType type() const { return type_; }
   // Motion
   // void SetPath(const motion::Path &path);
 };
+
+constexpr resource::Resource::Type GetResourceType(NpcType type) {
+  switch (type) {
+    case NpcType::kBlueWood:
+      return resource::Resource::Type::kWood;
+    case NpcType::kGreenFood:
+      return resource::Resource::Type::kFood;
+    case NpcType::kRedRock:
+      return resource::Resource::Type::kStone;
+    default:
+      break;
+  }
+  return resource::Resource::Type::kNone;
+}
 }  // namespace api::ai
 
 #endif  // NPC_H
