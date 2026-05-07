@@ -1,5 +1,7 @@
 ﻿#include "game.h"
 
+#include <optional>
+
 #include "SFML/Graphics.hpp"
 
 namespace game {
