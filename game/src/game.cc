@@ -1,38 +1,44 @@
-﻿#include "game.h"
-
-#include <optional>
-
+﻿#include <optional>
 #include "SFML/Graphics.hpp"
+#include "game.h"
+#include "graphics/tilemap.h"
 
 namespace game {
-namespace {
-sf::Clock clock;
-sf::RenderWindow window_;
+    namespace {
+        sf::Clock clock;
+        sf::RenderWindow window_;
 
-void Setup() {
-  // Create the main window
-  window_.create(sf::VideoMode({1280, 1080}), "SFML window");
-}
-}  // namespace
+        sf::Texture tilesheet;
+        graphics::TileMap tilemap_;
 
-void Loop() {
-  Setup();
+        void Setup() {
+            // Create the main window
+            window_.create(sf::VideoMode({1920, 1080}), "SFML window");
 
-  // Start the game loop
-  while (window_.isOpen()) {
-    auto dt = clock.restart().asSeconds();
+            tilesheet.loadFromFile("_assets/tiles/RTS_medieval@2_no_margins.png");
+            tilemap_.Setup(&tilesheet, {1920, 1080}, {64, 64}, {128, 128});
+        }
+    } // namespace
 
-    // Process events = Input frame
-    while (const std::optional event = window_.pollEvent()) {
-      // Close window: exit
-      if (event->is<sf::Event::Closed>()) {
-        window_.close();
-      }
+    void Loop() {
+        Setup();
+
+        // Start the game loop
+        while (window_.isOpen()) {
+            auto dt = clock.restart().asSeconds();
+
+            // Process events = Input frame
+            while (const std::optional event = window_.pollEvent()) {
+                // Close window: exit
+                if (event->is<sf::Event::Closed>()) {
+                    window_.close();
+                }
+            }
+
+            // Graphic frame
+            window_.clear();
+            tilemap_.Draw(window_);
+            window_.display();
+        }
     }
-
-    // Graphic frame
-    window_.clear();
-    window_.display();
-  }
-}
-}  // namespace game
+} // namespace game

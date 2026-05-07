@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Creating Architecture and libraries
 add_subdirectory(game/)
+add_subdirectory(api/)
 
 # Manage Ressources
 # Delete all and copy
@@ -28,9 +29,4 @@ add_executable(city_builder_game main.cc)
 add_dependencies(city_builder_game copy_resources)
 
 # This project is linked to its own libraries
-target_link_libraries(city_builder_game PRIVATE game)
-
-target_compile_options(city_builder_game PRIVATE
-        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/Od /Zi>
-        $<$<AND:$<CONFIG:Debug>,$<NOT:$<CXX_COMPILER_ID:MSVC>>>:-g -O0>
-)
+target_link_libraries(city_builder_game PRIVATE game api)
