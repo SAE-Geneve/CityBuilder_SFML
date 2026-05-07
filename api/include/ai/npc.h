@@ -44,7 +44,7 @@ class Npc {
  public:
   void Setup(NpcType type, std::string_view filename,
              const TileMap* tilemap, const sf::Vector2f& cantina_position,
-             std::vector<Resource> resources);
+             std::vector<resource::Resource> resources);
   void Update(float dt);
   void Draw(sf::RenderWindow& window);
   void SetPosition(const sf::Vector2f& position) {

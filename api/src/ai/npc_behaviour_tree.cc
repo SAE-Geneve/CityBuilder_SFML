@@ -94,20 +94,20 @@ Status NpcBehaviourTree::Eat() {
 
 Status NpcBehaviourTree::PickRessource() {
   PROFILE_ZONE();
-  if (ressources_.empty()) {
+  if (resources_.empty()) {
     core::LogWarning("No ressources available");
     return Status::kFailure;
   }
 
   //this static saves 2.5kb every call
   static std::mt19937 gen{std::random_device{}()};
-  std::uniform_int_distribution<size_t> dist(0, ressources_.size() - 1);
+  std::uniform_int_distribution<size_t> dist(0, resources_.size() - 1);
 
   //Fixed: not throwing dice twice
   const auto new_index = dist(gen);
-  if (ressources_[new_index].GetQty() > 0) {
-    current_ressource_ = ressources_[new_index];
-    SetDestination(TileMap::ScreenPosition(current_ressource_.GetTileIndex()));
+  if (resources_[new_index].quantity() > 0) {
+    current_ressource_ = resources_[new_index];
+    SetDestination(TileMap::ScreenPosition(current_ressource_.tile_index()));
 
     if (path_->IsValid()) return Status::kSuccess;
   }
@@ -115,9 +115,9 @@ Status NpcBehaviourTree::PickRessource() {
   return Status::kFailure;
 }
 
-Status NpcBehaviourTree::GetRessource() {
+Status NpcBehaviourTree::GetResource() {
   PROFILE_ZONE();
-  if (current_ressource_.GetQty() <= 0) {
+  if (current_ressource_.quantity() <= 0) {
     return Status::kSuccess;
   }
 
@@ -136,7 +136,7 @@ Status NpcBehaviourTree::Idle() {
 void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
                                           const TileMap* tilemap,
                                           sf::Vector2f cantina_position,
-                                          std::vector<Resource> ressources) {
+                                          std::vector<resource::Resource> ressources) {
   PROFILE_ZONE();
   core::LogDebug("Setup Behaviour Tree");
 
@@ -146,7 +146,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
   path_ = path;
   tilemap_ = tilemap;
   cantina_position_ = cantina_position;
-  ressources_ = std::move(ressources);
+  resources_ = std::move(ressources);
 
   sf::Vector2f start = {0, 0};
 
@@ -163,7 +163,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
       std::make_unique<Action>([this]() { return PickRessource(); }));
   workSequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
   workSequence->AddChild(
-      std::make_unique<Action>([this]() { return GetRessource(); }));
+      std::make_unique<Action>([this]() { return GetResource(); }));
 
   auto selector = std::make_unique<Selector>();
   // Attach the sequence to the selector

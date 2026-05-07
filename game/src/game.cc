@@ -32,7 +32,7 @@ std::unique_ptr<api::ui::Button> btnExit;
 
 api::ai::NpcType npc_adding_type = api::ai::NpcType::kNone;
 
-ResourceManager resource_manager;
+api::resource::ResourceManager resource_manager;
 
 void ChopEvent(int index, float quantity) {
   PROFILE_ZONE();
@@ -78,15 +78,15 @@ void Setup() {
   btnExit->OnReleasedLeft = []() { window_.close(); };
 
   resource_manager.LoadResources(
-      Resource::Type::kWood,
+      api::resource::Resource::Type::kWood,
       tilemap_ptr_->GetCollectibles(TileMap::Tile::kTree), ChopEvent);
 
   resource_manager.LoadResources(
-      Resource::Type::kFood,
+      api::resource::Resource::Type::kFood,
       tilemap_ptr_->GetCollectibles(TileMap::Tile::kFood), ChopEvent);
 
   resource_manager.LoadResources(
-      Resource::Type::kStone,
+      api::resource::Resource::Type::kStone,
       tilemap_ptr_->GetCollectibles(TileMap::Tile::kRock), ChopEvent);
 }
 

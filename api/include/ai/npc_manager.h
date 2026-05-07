@@ -17,7 +17,7 @@ class NpcManager {
   std::vector<Npc> npcs_;
 
  public:
-  void Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap, ResourceManager& resource_manager);
+  void Add(NpcType type, sf::Vector2f start_position, TileMap* tilemap, resource::ResourceManager& resource_manager);
   void Update(float dt);
   void Draw(sf::RenderWindow& window);
 

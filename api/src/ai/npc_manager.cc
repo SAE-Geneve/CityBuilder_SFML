@@ -10,7 +10,7 @@
 namespace api::ai {
 
 void NpcManager::Add(NpcType type, sf::Vector2f start_position,
-                     TileMap* tilemap, ResourceManager& resource_manager) {
+                     TileMap* tilemap, resource::ResourceManager& resource_manager) {
   PROFILE_ZONE();
   CreateNpc(npcs_, type, start_position, tilemap, resource_manager);
 }

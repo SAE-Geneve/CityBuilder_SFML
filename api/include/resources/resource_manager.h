@@ -1,43 +1,42 @@
 ﻿
 #ifndef RESOURCE_MANAGER_H
 #define RESOURCE_MANAGER_H
+#include <ranges>
 #include <vector>
 
-#include "graphics/tilemap.h"
 #include "resource.h"
 
+namespace api::resource {
 class ResourceManager {
   std::vector<Resource> resources_;
 
  public:
-  void LoadResources(Resource::Type type, const std::vector<int>& indexes, void (*on_chop_event)(int, float));
+  void LoadResources(Resource::Type type, const std::vector<int>& indices,
+                     void (*on_chop_event)(int, float));
 
-  [[nodiscard]] std::vector<Resource> GetResources(Resource::Type type) const;
+  auto resources(const Resource::Type type) {
+    return resources_ | std::ranges::views::filter([type](const Resource& t) {
+             return t.type() == type;
+           });
+  }
+  auto resources(const Resource::Type type) const {
+    return resources_ | std::ranges::views::filter([type](const Resource& t) {
+             return t.type() == type;
+           });
+  }
 };
 
-inline void ResourceManager::LoadResources(
-    const Resource::Type type, const std::vector<int>& indexes, void (*on_chop_event)(int, float)) {
-
-  for (auto& index : indexes) {
+inline void ResourceManager::LoadResources(const Resource::Type type,
+                                           const std::vector<int>& indices,
+                                           void (*on_chop_event)(int, float)) {
+  for (auto& index : indices) {
     resources_.emplace_back();
-    resources_.back().SetType(type);
-    resources_.back().SetIndex(index);
-    resources_.back().SetQuantity(10);
+    resources_.back().set_type(type);
+    resources_.back().set_index(index);
+    resources_.back().set_quantity(10);
     resources_.back().on_chop_resource_ = on_chop_event;
   }
-
 }
 
-inline std::vector<Resource> ResourceManager::GetResources(
-    const Resource::Type type) const {
-  std::vector<Resource> resources_of_type = {};
-
-  for (const auto& resource : resources_) {
-    if (resource.GetType() == type) {
-      resources_of_type.emplace_back(resource);
-    }
-  }
-  return resources_of_type;
-}
-
+}  // namespace api::resource
 #endif

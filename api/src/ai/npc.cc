@@ -13,7 +13,7 @@ namespace api::ai {
 
 void Npc::Setup(const NpcType type, std::string_view filename,
                 const TileMap* tilemap, const sf::Vector2f& cantina_position,
-                std::vector<Resource> resources) {
+                std::vector<resource::Resource> resources) {
   PROFILE_ZONE();
 
   type_ = type;

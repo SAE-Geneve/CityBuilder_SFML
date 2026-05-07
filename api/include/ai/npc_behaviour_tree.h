@@ -30,7 +30,7 @@ class NpcBehaviourTree {
   [[nodiscard]] core::ai::behaviour_tree::Status Move() const;
   [[nodiscard]] core::ai::behaviour_tree::Status Eat();
   [[nodiscard]] core::ai::behaviour_tree::Status PickRessource();
-  [[nodiscard]] core::ai::behaviour_tree::Status GetRessource();
+  [[nodiscard]] core::ai::behaviour_tree::Status GetResource();
   [[nodiscard]] core::ai::behaviour_tree::Status Idle();
 
   // Behaviour Constants
@@ -43,13 +43,13 @@ class NpcBehaviourTree {
   float tick_dt = 0;
 
   sf::Vector2f cantina_position_;
-  std::vector<Resource> ressources_;
-  Resource current_ressource_;
+  std::vector<resource::Resource> resources_;
+  resource::Resource current_ressource_;
 
  public:
   void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path,
                           const TileMap* tilemap, sf::Vector2f cantina_position,
-                          std::vector<Resource> ressources);
+                          std::vector<resource::Resource> ressources);
   void Update(float dt);
 };
 }  // namespace api::ai

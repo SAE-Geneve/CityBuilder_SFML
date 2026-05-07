@@ -7,24 +7,24 @@
 
 #include <algorithm>
 
+namespace api::resource {
 class Resource {
- public:
+public:
   enum class Type { kNone, kWood, kStone, kFood };
 
- private:
+private:
   int tile_index_ = 0;
   float quantity_ = 0;
   Type type_ = Type::kNone;
-  double cut_time_ = 0;
 
- public:
-  [[nodiscard]] Type GetType() const;
-  [[nodiscard]] int GetTileIndex() const;
-  [[nodiscard]] float GetQty() const;
+public:
+  [[nodiscard]] Type type() const {return type_; }
+ [[nodiscard]] int tile_index() const {return tile_index_; }
+ [[nodiscard]] float quantity() const {return quantity_; }
 
-  void SetType(Type type);
-  void SetIndex(int index);
-  void SetQuantity(float quantity);
+  void set_type(Type type){type_ = type;}
+  void set_index(int index){tile_index_ = index;}
+  void set_quantity(float quantity){quantity_ = quantity;}
 
   void Exploit(float);
 
@@ -32,23 +32,5 @@ class Resource {
   //std::function<void(int, float)> OnChopResource_ = nullptr;
   void(*on_chop_resource_)(int, float) = nullptr;
 };
-
-inline void Resource::SetType(const Type type) { type_ = type; }
-inline void Resource::SetIndex(const int index) { tile_index_ = index; }
-inline void Resource::SetQuantity(const float quantity) {
-  quantity_ = quantity;
-}
-
-inline Resource::Type Resource::GetType() const { return type_; }
-inline int Resource::GetTileIndex() const { return tile_index_; }
-inline float Resource::GetQty() const { return quantity_; }
-
-inline void Resource::Exploit(const float rate) {
-  quantity_ -= rate;
-  quantity_ = std::max<float>(quantity_, 0);
-
-  if (on_chop_resource_) {
-    on_chop_resource_(tile_index_, quantity_);
-  }
 }
 #endif

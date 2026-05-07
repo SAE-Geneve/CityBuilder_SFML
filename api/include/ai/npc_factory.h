@@ -13,7 +13,7 @@
 namespace api::ai {
 inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
                       sf::Vector2f start_position, const TileMap* tilemap,
-                      const ResourceManager& resource_manager) {
+                      const resource::ResourceManager& resource_manager) {
   PROFILE_ZONE();
   // std::cout << "Creating npc" << std::endl;
 
@@ -21,17 +21,17 @@ inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
     case NpcType::kBlueWood:
       npcs.emplace_back();
       npcs.back().Setup(type, "scifiUnit_06.png", tilemap, start_position,
-                        std::move(resource_manager.GetResources(Resource::Type::kWood)));
+                        resource_manager.resources(resource::Resource::Type::kWood));
       break;
     case NpcType::kRedRock:
       npcs.emplace_back();
       npcs.back().Setup(type, "scifiUnit_18.png", tilemap, start_position,
-                        std::move(resource_manager.GetResources(Resource::Type::kStone)));
+                        resource_manager.resources(resource::Resource::Type::kStone));
       break;
     case NpcType::kGreenFood:
       npcs.emplace_back();
       npcs.back().Setup(type, "scifiUnit_31.png", tilemap, start_position,
-                        std::move(resource_manager.GetResources(Resource::Type::kFood)));
+                        resource_manager.resources(resource::Resource::Type::kFood));
       break;
     default:
       core::LogError("Error: Npc type not found");
