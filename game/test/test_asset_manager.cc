@@ -10,7 +10,7 @@
 TEST(TextureManager, Load) {
   enum class TextureIndex { kDefault = 0, KGrass, KMaison, kLength };
   using TextureManager =
-      core::experimental::AssetManager<sf::Texture, TextureIndex,
+      core::assets::AssetManager<sf::Texture, TextureIndex,
                                        "../_assets/sprites/">;
   static constexpr std::array<std::string_view,
                               static_cast<int>(TextureIndex::kLength)>

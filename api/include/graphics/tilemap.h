@@ -34,7 +34,7 @@ class TileMap : public api::ui::Clickable {
       "scifiEnvironment_15.png"};
 
   std::array<Tile, kWidth / kPixelStep * kHeight / kPixelStep> tiles_ = {};
-  core::experimental::AssetManager<sf::Texture, Tile, "_assets/sprites">
+  core::assets::AssetManager<sf::Texture, Tile, "_assets/sprites">
       textures_;
 
   std::vector<sf::Vector2f> walkables_;

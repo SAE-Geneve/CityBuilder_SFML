@@ -11,7 +11,7 @@
 
 namespace api::ai {
 
-enum class NpcType {
+enum class NpcType : char {
   kNone = 'n',
   kBlueWood = 'w',
   kRedRock = 'r',
@@ -19,6 +19,7 @@ enum class NpcType {
 };
 
 class Npc {
+  // FIXME load the texture from an AssetManager?
   std::unique_ptr<sf::Texture> texture_ = std::make_unique<sf::Texture>();
   std::optional<sf::Sprite> sprite_;
 
@@ -43,7 +44,7 @@ class Npc {
  public:
   void Setup(NpcType type, std::string_view filename,
              const TileMap* tilemap, const sf::Vector2f& cantina_position,
-             std::vector<Resource> ressources);
+             std::vector<Resource> resources);
   void Update(float dt);
   void Draw(sf::RenderWindow& window);
   void SetPosition(const sf::Vector2f& position) {

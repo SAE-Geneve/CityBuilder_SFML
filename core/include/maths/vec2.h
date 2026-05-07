@@ -4,7 +4,7 @@
 #include <cmath>
 #include <type_traits>
 
-namespace core {
+namespace core::maths {
 
 template <typename VectorT, typename T>
 concept is_vector2 = requires(VectorT v) {
@@ -50,7 +50,7 @@ class Vec2 {
     return VectorT{x, y};
   }
 
-  static float Dot(Vec2 v1, Vec2 v2) { return v1.x * v2.x + v1.y * v2.y; }
+  [[nodiscard]] static float Dot(Vec2 v1, Vec2 v2) { return v1.x * v2.x + v1.y * v2.y; }
 
   [[nodiscard]] T SqrLength() const { return x * x + y * y; }
 
@@ -60,7 +60,9 @@ class Vec2 {
     return std::sqrt(x * x + y * y);
   }
 
-  Vec2& Normalize() {
+  Vec2& Normalize()
+    requires std::is_floating_point_v<T>
+  {
     const auto length = Length();
     x /= length;
     y /= length;
@@ -70,7 +72,7 @@ class Vec2 {
 
 using Vec2i = Vec2<int>;
 using Vec2d = Vec2<double>;
-
-}  // namespace core
+using Vec2f = Vec2<float>;
+}  // namespace core::maths
 
 #endif  // MATHS_VEC2_H

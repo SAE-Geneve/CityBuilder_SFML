@@ -6,7 +6,7 @@
 #define CORE_MATHS_FUNC_H
 #include <cmath>
 
-namespace core {
+namespace core::maths {
 
 inline float Cos(Radian angle) { return std::cos(static_cast<float>(angle)); }
 inline float Sin(Radian angle) { return std::sin(static_cast<float>(angle)); }

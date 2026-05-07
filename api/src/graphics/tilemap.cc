@@ -5,7 +5,7 @@
 #include <random>
 #include <ranges>
 
-#include "noise/FastNoiseLite.h"
+#include "../../../externals/include/FastNoiseLite.h"
 #include "profiling/profiling.h"
 
 static std::mt19937 gen{std::random_device{}()};

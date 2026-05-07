@@ -5,7 +5,9 @@
 #ifndef BT_COMPOSITE_H
 #define BT_COMPOSITE_H
 
+#include <cstdlib>
 #include <memory>
+#include <span>
 #include <vector>
 
 #include "bt_node.h"
@@ -15,10 +17,16 @@ namespace core::ai::behaviour_tree {
 class Composite : public Node {
  protected:
   std::vector<std::unique_ptr<Node>> children_;
-  int childIdx_ = 0;
+  int64_t childIdx_ = 0;
 
  public:
   using Node::Node;
+  Composite() = default;
+  template <std::convertible_to<std::unique_ptr<Node>>... Ptrs>
+  explicit Composite(Ptrs&&... ps) {
+    children_.reserve(sizeof...(ps));
+    (children_.emplace_back(std::forward<Ptrs>(ps)), ...);
+  }
   Composite(Composite&& other) noexcept
       : Node(std::move(other)),
         children_(std::move(other.children_)),

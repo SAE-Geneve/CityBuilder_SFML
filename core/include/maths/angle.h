@@ -7,7 +7,7 @@
 
 #include "maths/const.h"
 
-namespace core {
+namespace core::maths {
 class Degree;
 class Radian {
  public:

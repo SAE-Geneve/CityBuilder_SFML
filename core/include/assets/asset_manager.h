@@ -3,20 +3,16 @@
 
 #include <array>
 #include <span>
-#include <string>
-#include <vector>
+
 
 #include "profiling/profiling.h"
+#include "utils/string_literal.h"
 
-namespace core::experimental {
+namespace core::assets {
 
-template <size_t N>
-struct StringLiteral {
-  constexpr StringLiteral(const char (&arg)[N]) { std::copy_n(arg, N, str); }
-  char str[N]{};
-};
 
-template <typename TAsset, typename TAssetType, StringLiteral folderPath>
+
+template <typename TAsset, typename TAssetType, utils::StringLiteral folderPath>
   requires std::is_enum_v<TAssetType> && requires {
     { static_cast<size_t>(TAssetType::kLength) };
   }

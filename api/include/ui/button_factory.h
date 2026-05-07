@@ -22,7 +22,7 @@ class ButtonFactory {
       "empty.png", "button_grey.png", "button_brown.png"};
 
   sf::Font font;
-  core::experimental::AssetManager<sf::Texture, Sprite, "_assets/sprites">
+  core::assets::AssetManager<sf::Texture, Sprite, "_assets/sprites">
       textures_;
 
  public:

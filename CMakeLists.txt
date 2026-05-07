@@ -30,6 +30,7 @@ endif(ENABLE_PROFILING)
 find_package(argh CONFIG REQUIRED)
 
 # Creating Architecture and libraries
+add_subdirectory(externals/)
 add_subdirectory(core/)
 add_subdirectory(api/)
 add_subdirectory(game/)

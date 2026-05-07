@@ -35,13 +35,11 @@ inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
       break;
     default:
       core::LogError("Error: Npc type not found");
-      break;
+      throw std::runtime_error("Error: Npc type not found");
   }
 
-  if (type == NpcType::kBlueWood || type == NpcType::kRedRock ||
-      type == NpcType::kGreenFood) {
-    npcs.back().SetPosition(start_position);
-  }
+  npcs.back().SetPosition(start_position);
+
 }
 }  // namespace api::ai
 

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <expected>
 #include <mdspan>
 #include <queue>
 #include <vector>
@@ -16,38 +17,48 @@
 
 namespace core::ai::experimental {
 
+enum class PathError {
+  kStartOutOfBounds,
+  kEndOutOfBounds,
+  kStartNotWalkable,
+  kEndNotWalkable,
+  kNoPathFound,
+};
+
 template <typename tile_t, typename extends>
-std::vector<Vec2i> calculate_shortest_path(
-    std::mdspan<tile_t, extends> tilemap, Vec2i start_pos, Vec2i end_pos) {
+std::expected<std::vector<maths::Vec2i>, PathError> calculate_shortest_path(
+    std::mdspan<tile_t, extends> tilemap, maths::Vec2i start_pos, maths::Vec2i end_pos) {
   PROFILE_ZONE();
   const int width = static_cast<int>(tilemap.extent(0));
   const int height = static_cast<int>(tilemap.extent(1));
 
   if (start_pos.x < 0 || start_pos.x >= width || start_pos.y < 0 ||
       start_pos.y >= height) {
-    return {};
+    return std::unexpected(PathError::kStartOutOfBounds);
   }
   if (end_pos.x < 0 || end_pos.x >= width || end_pos.y < 0 ||
       end_pos.y >= height) {
-    return {};
+    return std::unexpected(PathError::kEndOutOfBounds);
   }
-  if (!tilemap[start_pos.x, start_pos.y].IsWalkable() ||
-      !tilemap[end_pos.x, end_pos.y].IsWalkable()) {
-    return {};
+  if (!tilemap[start_pos.x, start_pos.y].IsWalkable()) {
+    return std::unexpected(PathError::kStartNotWalkable);
+  }
+  if (!tilemap[end_pos.x, end_pos.y].IsWalkable()) {
+    return std::unexpected(PathError::kEndNotWalkable);
   }
 
-  static constexpr std::array neighbor_dirs{Vec2i(-1, 0), Vec2i(0, 1),
-                                            Vec2i(1, 0), Vec2i(0, -1)};
+  static constexpr std::array neighbor_dirs{maths::Vec2i(-1, 0), maths::Vec2i(0, 1),
+                                            maths::Vec2i(1, 0), maths::Vec2i(0, -1)};
 
   const int total = width * height;
-  auto to_index = [width](Vec2i p) { return p.x * width + p.y; };
-  auto manhattan = [](Vec2i a, Vec2i b) {
+  auto to_index = [width](maths::Vec2i p) { return p.x * width + p.y; };
+  auto manhattan = [](maths::Vec2i a, maths::Vec2i b) {
     return std::abs(a.x - b.x) + std::abs(a.y - b.y);
   };
 
   struct Node {
-    int f;
-    Vec2i pos;
+    int f = 0;
+    maths::Vec2i pos;
     bool operator<(const Node& other) const { return f > other.f; }
   };
 
@@ -65,8 +76,8 @@ std::vector<Vec2i> calculate_shortest_path(
     open_list.pop();
 
     if (current.pos == end_pos) {
-      std::vector<Vec2i> path;
-      Vec2i trace = end_pos;
+      std::vector<maths::Vec2i> path;
+      maths::Vec2i trace = end_pos;
       while (trace != start_pos) {
         path.push_back(trace);
         const int idx = came_from[to_index(trace)];
@@ -104,7 +115,7 @@ std::vector<Vec2i> calculate_shortest_path(
     }
   }
 
-  return {};
+  return std::unexpected(PathError::kNoPathFound);
 }
 
 }  // namespace core::ai::experimental
