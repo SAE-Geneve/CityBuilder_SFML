@@ -109,7 +109,7 @@ Status NpcBehaviourTree::PickResource() {
                       gen);  // C++20 ranges form
   if (picked_resource != nullptr && picked_resource->quantity() > 0) {
     current_ressource_ = picked_resource;
-    set_destination(TileMap::ScreenPosition(current_ressource_->tile_index()));
+    set_destination(tilemap_->ScreenPosition(current_ressource_->tile_index()));
 
     if (path_->valid()) return Status::kSuccess;
   }

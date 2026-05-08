@@ -1,14 +1,37 @@
 #include "game.h"
+#include "utils/log.h"
 
 #include <argh.h>
 
+namespace {
+void ApplyPositive(int& field, int parsed, const char* flag) {
+  if (parsed <= 0) {
+    core::LogWarning("Invalid value for --{} ({}); using default {}", flag,
+                     parsed, field);
+    return;
+  }
+  field = parsed;
+}
+}  // namespace
+
 int main(int argc, char** argv) {
   argh::parser cmdl;
-  cmdl.add_param("init-spawn");
+  cmdl.add_params({"init-spawn", "window-width", "window-height",
+                   "tilemap-width", "tilemap-height"});
   cmdl.parse(argc, argv);
 
   game::LaunchOptions options;
   cmdl("init-spawn", 0) >> options.initial_spawn_count;
+
+  int parsed = 0;
+  cmdl("window-width", options.window_width) >> parsed;
+  ApplyPositive(options.window_width, parsed, "window-width");
+  cmdl("window-height", options.window_height) >> parsed;
+  ApplyPositive(options.window_height, parsed, "window-height");
+  cmdl("tilemap-width", options.tilemap_width) >> parsed;
+  ApplyPositive(options.tilemap_width, parsed, "tilemap-width");
+  cmdl("tilemap-height", options.tilemap_height) >> parsed;
+  ApplyPositive(options.tilemap_height, parsed, "tilemap-height");
 
   game::Loop(options);
 

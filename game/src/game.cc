@@ -6,6 +6,7 @@
 #include "SFML/Graphics.hpp"
 #include "utils/log.h"
 #include "ai/npc_manager.h"
+#include "graphics/camera.h"
 #include "graphics/tilemap.h"
 #include "resources/resource_manager.h"
 #include "ui/button.h"
@@ -21,6 +22,7 @@ sf::RenderWindow window_;
 
 auto tilemap_ptr_ = std::make_unique<TileMap>();
 api::ai::NpcManager npc_manager_;
+api::graphics::Camera camera_;
 
 // UI Elements
 api::ui::ButtonFactory btn_factory;
@@ -41,16 +43,22 @@ void ChopEvent(int index, float quantity) {
   }
 }
 
-void Setup() {
+void Setup(const LaunchOptions& options) {
   PROFILE_ZONE();
   // Create the main window
-  window_.create(sf::VideoMode({1280, 1080}), "SFML window");
+  window_.create(sf::VideoMode({static_cast<unsigned>(options.window_width),
+                                static_cast<unsigned>(options.window_height)}),
+                 "SFML window");
 
-  tilemap_ptr_->Setup();
+  camera_.Setup(window_.getSize());
+
+  tilemap_ptr_->Setup(options.tilemap_width, options.tilemap_height);
+  tilemap_ptr_->SetCamera(window_, camera_);
   tilemap_ptr_->OnReleasedLeft = []() {
     core::LogDebug("Clicked tilemap");
-    npc_manager_.Add(npc_adding_type,
-                     TileMap::TilePos(sf::Mouse::getPosition(window_)),
+    const sf::Vector2f world = window_.mapPixelToCoords(
+        sf::Mouse::getPosition(window_), camera_.WorldView());
+    npc_manager_.Add(npc_adding_type, TileMap::TilePos(sf::Vector2i(world)),
                      tilemap_ptr_.get(), resource_manager);
     npc_adding_type = api::ai::NpcType::kNone;
   };
@@ -126,7 +134,7 @@ void SpawnInitialNpcs(int total) {
 }  // namespace
 
 void Loop(const LaunchOptions& options) {
-  Setup();
+  Setup(options);
   SpawnInitialNpcs(options.initial_spawn_count);
 
   // Start the game loop
@@ -146,10 +154,13 @@ void Loop(const LaunchOptions& options) {
       btnGreen->HandleEvent(event, buttonsWasClicked);
       btnExit->HandleEvent(event, buttonsWasClicked);
 
+      camera_.HandleEvent(*event, window_);
+
       tilemap_ptr_->HandleEvent(event, buttonsWasClicked);
     }
 
     // GamePlay, physic frame
+    camera_.Update(dt);
     npc_manager_.Update(dt);
 
     PROFILE_PLOT("Frame dt (ms)", dt * 1000.0f);
@@ -158,9 +169,11 @@ void Loop(const LaunchOptions& options) {
     // Graphic frame
     window_.clear();
 
+    camera_.Apply(window_);
     tilemap_ptr_->Draw(window_);
     npc_manager_.Draw(window_);
 
+    camera_.ApplyUi(window_);
     btnBlue->Draw(window_);
     btnRed->Draw(window_);
     btnGreen->Draw(window_);
