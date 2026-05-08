@@ -1,16 +1,18 @@
-﻿#ifndef ASTAR_H
+#ifndef ASTAR_H
 #define ASTAR_H
 
 #include <SFML/System/Vector2.hpp>
-#include <filesystem>
+#include <expected>
 
+#include "ai/a_star.h"
+#include "graphics/tilemap.h"
 #include "motion/path.h"
 
 namespace api::motion {
 namespace Astar {
 
-Path GetPath(int gridStep, sf::Vector2f start, sf::Vector2f end,
-             std::vector<sf::Vector2f> walkableTiles);
+std::expected<Path, core::ai::pathfinding::PathError> GetPath(
+    const TileMap& tilemap, sf::Vector2f start, sf::Vector2f end);
 
 }
 }  // namespace api::motion

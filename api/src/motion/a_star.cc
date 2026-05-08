@@ -1,128 +1,50 @@
-﻿#include "motion/a_star.h"
+#include "motion/a_star.h"
 
-#include <algorithm>
-#include <array>
-#include <queue>
+#include <cmath>
 
-#include "utils/log.h"
-
+#include "ai/a_star.h"
+#include "graphics/tilemap.h"
 #include "motion/path.h"
 #include "profiling/profiling.h"
 
 namespace api::motion::Astar {
 
-struct aStarNode {
-  sf::Vector2f position;
-  float g;
-  float h;
-  float f;
+namespace {
 
-  aStarNode *previous_node;
-
-  aStarNode(sf::Vector2f position, float g, float h, aStarNode *prev)
-      : position(position), g(g), h(h), f(g + h), previous_node(prev) {}
-
-  // A Star node are prioritize by the lowest f value
-  friend bool operator<(aStarNode const &left, aStarNode const &right) {
-    return left.f > right.f;
-  }
-};
-
-float heuristic(sf::Vector2f p1, sf::Vector2f p2) {
-  return (p2 - p1).length();
+core::maths::Vec2i ScreenToGrid(sf::Vector2f screen, int step) {
+  return {static_cast<int>(std::lround(screen.x / step)),
+          static_cast<int>(std::lround(screen.y / step))};
 }
 
-std::array<sf::Vector2f, 4> neighbours(int gridStep = 16) {
-  std::array<sf::Vector2f, 4> neighbours = {
-      sf::Vector2f(0, gridStep), sf::Vector2f(gridStep, 0),
-      sf::Vector2f(0, -1 * gridStep), sf::Vector2f(-1 * gridStep, 0)};
-
-  return neighbours;
+sf::Vector2f GridToScreen(core::maths::Vec2i grid, int step) {
+  return {static_cast<float>(grid.x * step),
+          static_cast<float>(grid.y * step)};
 }
 
-Path ReconstitutePath(aStarNode &start_node) {
+}  // namespace
+
+std::expected<Path, core::ai::pathfinding::PathError> GetPath(
+    const TileMap& tilemap, sf::Vector2f start, sf::Vector2f end) {
   PROFILE_ZONE();
-  Path path;
-  std::vector<sf::Vector2f> pathPoints;
-  aStarNode *current_node = &start_node;
+  const int step = TileMap::GetStep();
+  const auto start_grid = ScreenToGrid(start, step);
+  const auto end_grid = ScreenToGrid(end, step);
 
-  while (current_node != nullptr) {
-    // std::cout << "reconstiution point : " << current_node->position.x << ":"
-    // << current_node->position.y <<
-    //         std::endl;
-    pathPoints.emplace_back(current_node->position);
-    current_node = current_node->previous_node;
+  auto grid_path =
+      core::ai::pathfinding::FindPath(tilemap.AsMdspan(), start_grid, end_grid);
+  if (!grid_path) {
+    return std::unexpected(grid_path.error());
   }
 
-  std::ranges::reverse(pathPoints);
-  path.Fill(pathPoints);
+  std::vector<sf::Vector2f> screen_points;
+  screen_points.reserve(grid_path->size());
+  for (const auto& cell : *grid_path) {
+    screen_points.push_back(GridToScreen(cell, step));
+  }
 
+  Path path;
+  path.Fill(screen_points);
   return path;
 }
 
-Path GetPath(const int gridStep, const sf::Vector2f start,
-             const sf::Vector2f end,
-             const std::vector<sf::Vector2f> walkableTiles) {
-  PROFILE_ZONE();
-  Path aStarPath;
-
-  // Are start / end point in walkables tiles ?
-  auto f = std::ranges::find(walkableTiles, start);
-  if (f == walkableTiles.end()) {
-    core::LogError("Start point ({}:{}) not in walkable tiles", start.x, start.y);
-    return aStarPath;
-  }
-
-  auto g = std::ranges::find(walkableTiles, end);
-  if (g == walkableTiles.end()) {
-    core::LogError("End point ({}:{}) not in walkable tiles", end.x, end.y);
-    return aStarPath;
-  }
-
-  // ---------------------------------------------
-  std::vector<aStarNode> closedList;
-
-  std::priority_queue<aStarNode> openList;
-  openList.push(aStarNode(start, 0, heuristic(start, end), nullptr));
-
-  while (!openList.empty()) {
-    aStarNode currentNode = openList.top();
-    openList.pop();
-
-    // std::cout << "current node : " << currentNode.position.x << ":" <<
-    // currentNode.position.y << std::endl;
-
-    if (currentNode.position == end) {
-      core::LogDebug("Found path");
-      return ReconstitutePath(currentNode);
-    }
-
-    for (auto neighbour : neighbours(gridStep)) {
-      sf::Vector2f newPosition = currentNode.position + neighbour;
-
-      auto f =
-          std::ranges::find(walkableTiles, newPosition);
-
-      if (f != walkableTiles.end()) {
-        auto g = std::ranges::find_if(closedList,
-                              [&newPosition](const aStarNode &n) {
-                                return newPosition == n.position;
-                              });
-
-        //FIXME when is this "new aStarNode(currentNode)" getting deleted? This is no C#, this is memory leak!
-        // new node
-        aStarNode newNode =
-            aStarNode(newPosition, currentNode.g + 1,
-                      heuristic(newPosition, end), new aStarNode(currentNode));
-
-        if (g == closedList.end()) {
-          openList.push(newNode);
-        }
-        closedList.emplace_back(newNode);
-      }
-    }
-  }
-
-  return aStarPath;
-}
 }  // namespace api::motion::Astar

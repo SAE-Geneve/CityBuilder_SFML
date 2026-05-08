@@ -15,7 +15,7 @@
 #include "maths/vec2.h"
 #include "profiling/profiling.h"
 
-namespace core::ai::experimental {
+namespace core::ai::pathfinding {
 
 enum class PathError {
   kStartOutOfBounds,
@@ -25,10 +25,14 @@ enum class PathError {
   kNoPathFound,
 };
 
-template <typename tile_t, typename extends>
-std::expected<std::vector<maths::Vec2i>, PathError> calculate_shortest_path(
-    std::mdspan<tile_t, extends> tilemap, maths::Vec2i start_pos, maths::Vec2i end_pos) {
+template <typename tile_t, typename extents_t>
+std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
+    std::mdspan<tile_t, extents_t> tilemap, maths::Vec2i start_pos,
+    maths::Vec2i end_pos) {
   PROFILE_ZONE();
+  // extent(0) is the x-dimension (first index), extent(1) is the y-dimension
+  // (second index, fastest-varying for layout-right). The y-extent is the row
+  // stride for flat-index conversion.
   const int width = static_cast<int>(tilemap.extent(0));
   const int height = static_cast<int>(tilemap.extent(1));
 
@@ -47,11 +51,12 @@ std::expected<std::vector<maths::Vec2i>, PathError> calculate_shortest_path(
     return std::unexpected(PathError::kEndNotWalkable);
   }
 
-  static constexpr std::array neighbor_dirs{maths::Vec2i(-1, 0), maths::Vec2i(0, 1),
-                                            maths::Vec2i(1, 0), maths::Vec2i(0, -1)};
+  static constexpr std::array neighbor_dirs{
+      maths::Vec2i(-1, 0), maths::Vec2i(0, 1), maths::Vec2i(1, 0),
+      maths::Vec2i(0, -1)};
 
   const int total = width * height;
-  auto to_index = [width](maths::Vec2i p) { return p.x * width + p.y; };
+  auto to_index = [height](maths::Vec2i p) { return p.x * height + p.y; };
   auto manhattan = [](maths::Vec2i a, maths::Vec2i b) {
     return std::abs(a.x - b.x) + std::abs(a.y - b.y);
   };
@@ -81,7 +86,7 @@ std::expected<std::vector<maths::Vec2i>, PathError> calculate_shortest_path(
       while (trace != start_pos) {
         path.push_back(trace);
         const int idx = came_from[to_index(trace)];
-        trace = {idx / width, idx % width};
+        trace = {idx / height, idx % height};
       }
       path.push_back(start_pos);
       std::ranges::reverse(path);
@@ -109,8 +114,8 @@ std::expected<std::vector<maths::Vec2i>, PathError> calculate_shortest_path(
       if (tentative_g < g_cost[n_idx]) {
         g_cost[n_idx] = tentative_g;
         came_from[n_idx] = cur_idx;
-        open_list.push({tentative_g + manhattan(neighbor_pos, end_pos),
-                        neighbor_pos});
+        open_list.push(
+            {tentative_g + manhattan(neighbor_pos, end_pos), neighbor_pos});
       }
     }
   }
@@ -118,6 +123,6 @@ std::expected<std::vector<maths::Vec2i>, PathError> calculate_shortest_path(
   return std::unexpected(PathError::kNoPathFound);
 }
 
-}  // namespace core::ai::experimental
+}  // namespace core::ai::pathfinding
 
 #endif  // CITYBUILDER_A_STAR_H

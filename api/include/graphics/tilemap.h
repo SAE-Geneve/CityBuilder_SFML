@@ -2,6 +2,7 @@
 #define API_GRAPHICS_TILEMAP_H
 
 #include <SFML/Graphics.hpp>
+#include <mdspan>
 
 #include "assets/asset_manager.h"
 #include "ui/clickable.h"
@@ -25,6 +26,19 @@ class TileMap : public api::ui::Clickable {
     kLength
   };
 
+  static constexpr bool IsWalkable(Tile t) noexcept {
+    return t != Tile::kWater;
+  }
+
+  // Storage element wrapping a Tile so the core pathfinding can call
+  // .IsWalkable() on each grid cell directly.
+  struct WalkableCell {
+    Tile tile = Tile::kEmpty;
+    [[nodiscard]] constexpr bool IsWalkable() const noexcept {
+      return TileMap::IsWalkable(tile);
+    }
+  };
+
  private:
   std::array<std::string_view, static_cast<size_t>(Tile::kLength)> files_ = {
       "empty.png",
@@ -35,13 +49,13 @@ class TileMap : public api::ui::Clickable {
       "bg_plus_food.png",
       "scifiEnvironment_15.png"};
 
-  std::vector<Tile> tiles_;
+  // Storage is x-major: flat index = grid_x * tile_count_y_ + grid_y.
+  // This matches the layout-right mdspan exposed via AsMdspan().
+  std::vector<WalkableCell> tiles_;
   int tile_count_x_ = 0;
   int tile_count_y_ = 0;
   core::assets::AssetManager<sf::Texture, Tile, "_assets/sprites">
       textures_;
-
-  std::vector<sf::Vector2f> walkables_;
 
   int Index(sf::Vector2f screenPosition) const;
 
@@ -58,9 +72,18 @@ class TileMap : public api::ui::Clickable {
                  const api::graphics::Camera &camera);
   void HandleEvent(std::optional<sf::Event> event, bool &wasClicked) override;
 
-  const std::vector<sf::Vector2f> &GetWalkables() const;
+  [[nodiscard]] std::mdspan<const WalkableCell, std::dextents<std::size_t, 2>>
+  AsMdspan() const {
+    return std::mdspan(tiles_.data(),
+                       static_cast<std::size_t>(tile_count_x_),
+                       static_cast<std::size_t>(tile_count_y_));
+  }
+
+  [[nodiscard]] int tile_count_x() const { return tile_count_x_; }
+  [[nodiscard]] int tile_count_y() const { return tile_count_y_; }
 
   std::vector<int> GetCollectibles(Tile) const;
+  std::vector<sf::Vector2f> GetWalkables() const;
 
  private:
   const sf::RenderWindow *window_ = nullptr;

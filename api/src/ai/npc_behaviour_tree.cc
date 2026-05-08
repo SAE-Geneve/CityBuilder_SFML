@@ -24,12 +24,16 @@ namespace api::ai {
 
 void NpcBehaviourTree::set_destination(const sf::Vector2f& destination) const {
   PROFILE_ZONE();
-  Path path = Astar::GetPath(TileMap::GetStep(), npc_motor_->position(),
-                             destination, tilemap_->GetWalkables());
-  if (path.valid()) {
-    this->path_->Fill(path.Points());
-    this->npc_motor_->set_destination(path.StartPoint());
+  auto result =
+      Astar::GetPath(*tilemap_, npc_motor_->position(), destination);
+  if (!result) {
+    core::LogWarning("Pathfinding failed: {}",
+                     static_cast<int>(result.error()));
+    path_->Fill({});
+    return;
   }
+  path_->Fill(result->Points());
+  npc_motor_->set_destination(result->StartPoint());
 }
 
 Status NpcBehaviourTree::CheckHunger() const {

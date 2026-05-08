@@ -3,7 +3,6 @@
 #include <random>
 
 #include "ai/npc_behaviour_tree.h"
-#include "motion/a_star.h"
 #include "profiling/profiling.h"
 #include "resources/resource_manager.h"
 #include "utils/log.h"
