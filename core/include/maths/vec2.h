@@ -31,7 +31,7 @@ class Vec2 {
   constexpr explicit Vec2(VectorT v) : x(v.x), y(v.y) {}
 
   template <typename VectorT>
-    requires is_convertible_to_vector2<VectorT, T> && !is_vector2<VectorT, T>
+    requires is_convertible_to_vector2<VectorT, T> && (!is_vector2<VectorT, T>)
              constexpr explicit Vec2(VectorT v)
       : x(static_cast<T>(v.x)),
   y(static_cast<T>(v.y)) {}
