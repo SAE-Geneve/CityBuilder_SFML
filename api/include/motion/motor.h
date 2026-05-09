@@ -23,7 +23,7 @@ class Motor {
     destination_ = destination;
   }
 
-  [[nodiscard]] const sf::Vector2f &position() const { return position_; }
+  [[nodiscard]] const sf::Vector2f& position() const { return position_; }
 };
 
 inline void Motor::Update(const float dt) {

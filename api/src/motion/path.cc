@@ -25,7 +25,7 @@ sf::Vector2f Path::next_point() {
   return path_points_[idxPoint_];
 }
 
-void Path::Fill(const std::vector<sf::Vector2f> &path_points) {
+void Path::Fill(const std::vector<sf::Vector2f>& path_points) {
   PROFILE_ZONE();
   if (!path_points.empty()) {
     path_points_ = path_points;

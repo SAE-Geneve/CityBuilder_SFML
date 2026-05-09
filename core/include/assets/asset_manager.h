@@ -25,7 +25,7 @@ class AssetManager {
     }
   }
 
-  const TAsset &Get(TAssetType asset_index) {
+  const TAsset& Get(TAssetType asset_index) {
     const auto index = static_cast<size_t>(asset_index);
     if (index < 0 || index >= std::size(assets_)) {
       throw std::out_of_range("Invalid index");

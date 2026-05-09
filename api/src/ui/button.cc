@@ -13,8 +13,8 @@
 namespace api::ui {
 
 Button::Button(const sf::Vector2f pos, std::string_view label,
-               const sf::Texture &t, const sf::Texture &hover_t,
-               const sf::Font &font)
+               const sf::Texture& t, const sf::Texture& hover_t,
+               const sf::Font& font)
     : Clickable(), sprite_(t), hoverSprite_(hover_t), label_(font) {
   PROFILE_ZONE();
   sf::Vector2i int_size = {static_cast<int>(sprite_.getTexture().getSize().x),
@@ -50,7 +50,7 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
   hoverSprite_.setColor(sf::Color(0, 0, 0, 0));
 }
 
-void Button::Draw(sf::RenderWindow &window) const {
+void Button::Draw(sf::RenderWindow& window) const {
   PROFILE_ZONE();
   window.draw(sprite_);
   window.draw(hoverSprite_);

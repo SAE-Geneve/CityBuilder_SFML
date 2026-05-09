@@ -64,12 +64,12 @@ class TileMap : public api::ui::Clickable {
   static constexpr int step(){ return kPixelStep; };
 
   void Setup(size_t tile_count_x, size_t tile_count_y);
-  void Draw(sf::RenderWindow &window);
+  void Draw(sf::RenderWindow& window);
   void set_tile(size_t, Tile);
 
-  void SetCamera(const sf::RenderWindow &window,
-                 const api::graphics::Camera &camera);
-  void HandleEvent(std::optional<sf::Event> event, bool &wasClicked) override;
+  void SetCamera(const sf::RenderWindow& window,
+                 const api::graphics::Camera& camera);
+  void HandleEvent(std::optional<sf::Event> event, bool& wasClicked) override;
 
   [[nodiscard]] std::mdspan<const WalkableCell, std::dextents<std::size_t, 2>>
   AsMdspan() const {
@@ -85,7 +85,7 @@ class TileMap : public api::ui::Clickable {
   std::vector<sf::Vector2f> GetWalkables() const;
 
  private:
-  const sf::RenderWindow *window_ = nullptr;
-  const api::graphics::Camera *camera_ = nullptr;
+  const sf::RenderWindow* window_ = nullptr;
+  const api::graphics::Camera* camera_ = nullptr;
 };
 #endif  // API_GRAPHICS_TILEMAP_H_

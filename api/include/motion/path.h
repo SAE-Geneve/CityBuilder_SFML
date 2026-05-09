@@ -16,7 +16,7 @@ class Path {
   [[nodiscard]] sf::Vector2f next_point();
   [[nodiscard]] sf::Vector2f StartPoint() const;
 
-  void Fill(const std::vector<sf::Vector2f> &path_points);
+  void Fill(const std::vector<sf::Vector2f>& path_points);
   std::vector<sf::Vector2f> Points() { return path_points_; };
 };
 }  // namespace api::motion

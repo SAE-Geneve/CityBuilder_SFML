@@ -7,7 +7,7 @@
 #include "profiling/profiling.h"
 
 namespace api::ui {
-void Clickable::HandleEvent(std::optional<sf::Event> evt, bool &wasClicked) {
+void Clickable::HandleEvent(std::optional<sf::Event> evt, bool& wasClicked) {
   PROFILE_ZONE();
   const auto released = evt->getIf<sf::Event::MouseButtonReleased>();
   if (released && !wasClicked) {

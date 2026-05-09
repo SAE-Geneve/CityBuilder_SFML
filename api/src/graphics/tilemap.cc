@@ -35,19 +35,19 @@ void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
 
   // Fixed, why were weights sorted for each tile when not modified?
   std::ranges::sort(weights,
-            [](auto &a, auto &b) { return a.second < b.second; });
-  for (auto & tile : tiles_) {
+            [](auto& a, auto& b) { return a.second < b.second; });
+  for (auto& tile : tiles_) {
     auto value = dist(gen);
 
     float sumWeight = 0;
-    for (const auto &weight : weights | std::views::values) {
+    for (const auto& weight : weights | std::views::values) {
       sumWeight += weight;
     }
 
     float localWeight = 0;
     Tile goodTile = Tile::kBg;
 
-    for (auto &[weighted_tile, weight] : weights) {
+    for (auto& [weighted_tile, weight] : weights) {
       localWeight += weight;
 
       if (value * sumWeight < localWeight) {
@@ -63,7 +63,7 @@ void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
                                            static_cast<int>(tile_count_y_) * kPixelStep)));
 }
 
-void TileMap::Draw(sf::RenderWindow &window) {
+void TileMap::Draw(sf::RenderWindow& window) {
   PROFILE_ZONE();
   size_t tile_index = 0;
 
@@ -125,13 +125,13 @@ sf::Vector2f TileMap::TilePos(sf::Vector2i pos) {
           static_cast<float>(round(pos.y / kPixelStep) * kPixelStep)};
 }
 
-void TileMap::SetCamera(const sf::RenderWindow &window,
-                        const api::graphics::Camera &camera) {
+void TileMap::SetCamera(const sf::RenderWindow& window,
+                        const api::graphics::Camera& camera) {
   window_ = &window;
   camera_ = &camera;
 }
 
-void TileMap::HandleEvent(std::optional<sf::Event> event, bool &wasClicked) {
+void TileMap::HandleEvent(std::optional<sf::Event> event, bool& wasClicked) {
   PROFILE_ZONE();
   if (!event || !window_ || !camera_) {
     api::ui::Clickable::HandleEvent(event, wasClicked);
@@ -144,19 +144,19 @@ void TileMap::HandleEvent(std::optional<sf::Event> event, bool &wasClicked) {
     return sf::Vector2i(static_cast<int>(world.x), static_cast<int>(world.y));
   };
 
-  if (const auto *p = event->getIf<sf::Event::MouseButtonPressed>()) {
+  if (const auto* p = event->getIf<sf::Event::MouseButtonPressed>()) {
     sf::Event remapped{
         sf::Event::MouseButtonPressed{p->button, remap(p->position)}};
     api::ui::Clickable::HandleEvent(remapped, wasClicked);
     return;
   }
-  if (const auto *r = event->getIf<sf::Event::MouseButtonReleased>()) {
+  if (const auto* r = event->getIf<sf::Event::MouseButtonReleased>()) {
     sf::Event remapped{
         sf::Event::MouseButtonReleased{r->button, remap(r->position)}};
     api::ui::Clickable::HandleEvent(remapped, wasClicked);
     return;
   }
-  if (const auto *m = event->getIf<sf::Event::MouseMoved>()) {
+  if (const auto* m = event->getIf<sf::Event::MouseMoved>()) {
     sf::Event remapped{sf::Event::MouseMoved{remap(m->position)}};
     api::ui::Clickable::HandleEvent(remapped, wasClicked);
     return;

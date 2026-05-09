@@ -15,9 +15,9 @@ class Button : public Clickable {
   sf::Text label_;
 
  public:
-  Button(sf::Vector2f pos, std::string_view label, const sf::Texture &t,
-         const sf::Texture &hover_t, const sf::Font &font);
-  void Draw(sf::RenderWindow &window) const;
+  Button(sf::Vector2f pos, std::string_view label, const sf::Texture& t,
+         const sf::Texture& hover_t, const sf::Font& font);
+  void Draw(sf::RenderWindow& window) const;
 };
 
 }  // namespace api::ui

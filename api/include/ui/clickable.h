@@ -20,7 +20,7 @@ class Clickable {
 
  public:
   virtual ~Clickable() = default;
-  virtual void HandleEvent(std::optional<sf::Event> event, bool &wasClicked);
+  virtual void HandleEvent(std::optional<sf::Event> event, bool& wasClicked);
 
   virtual void SetZone(sf::IntRect zone);
 
