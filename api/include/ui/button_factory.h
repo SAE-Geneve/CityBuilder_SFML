@@ -17,7 +17,7 @@ class ButtonFactory {
   std::array<std::string_view, static_cast<size_t>(Sprite::kLength)> files_ = {
       "empty.png", "button_grey.png", "button_brown.png"};
 
-  sf::Font font;
+  sf::Font font_;
   core::assets::AssetManager<sf::Texture, Sprite, "_assets/sprites">
       textures_;
 
@@ -25,7 +25,7 @@ class ButtonFactory {
   ButtonFactory() {
     PROFILE_ZONE();
     textures_.Load(files_);
-    if (!font.openFromFile("_assets/fonts/ANTQUAB.TTF")) {
+    if (!font_.openFromFile("_assets/fonts/ANTQUAB.TTF")) {
       core::LogError("Failed to load font");
     }
   }
@@ -35,7 +35,7 @@ class ButtonFactory {
     PROFILE_ZONE();
     return std::make_unique<api::ui::Button>(
         pos, label, textures_.Get(Sprite::kBgBtn),
-        textures_.Get(Sprite::kHoverBtn), font);
+        textures_.Get(Sprite::kHoverBtn), font_);
   }
 };
 }  // namespace api::ui

@@ -8,7 +8,7 @@ namespace api::motion {
 
 class Path {
   std::vector<sf::Vector2f> path_points_;
-  size_t idxPoint_ = 0;
+  size_t idx_point_ = 0;
 
  public:
   [[nodiscard]] bool IsDone() const;

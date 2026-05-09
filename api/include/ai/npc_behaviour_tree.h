@@ -41,12 +41,12 @@ private:
 
   // Behaviours
   float hunger_ = 0.0f;
-  bool resourceAvailable_ = true;
-  float tick_dt = 0;
+  bool resource_available_ = true;
+  float tick_dt_ = 0;
 
   sf::Vector2f cantina_position_;
   resource::ResourceManager& resource_manager_;
-  resource::Resource* current_ressource_ = nullptr;
+  resource::Resource* current_resource_ = nullptr;
 
  public:
   void SetupBehaviourTree(motion::Motor* npc_motor, motion::Path* path, Npc* npc_,

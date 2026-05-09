@@ -9,7 +9,7 @@ namespace api::ui {
 class Clickable {
  private:
   sf::IntRect zone_;
-  bool isHover_ = false;
+  bool is_hover_ = false;
 
  protected:
   // Constructeur protected, la classe demande un heritage

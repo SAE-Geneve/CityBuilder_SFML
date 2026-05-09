@@ -6,8 +6,8 @@ namespace core::ai::behaviour_tree {
 
 Status Selector::Tick() {
   PROFILE_ZONE();
-  while (childIdx_ < std::size(children_)) {
-    Status status = children_[childIdx_]->Tick();
+  while (child_idx_ < std::size(children_)) {
+    Status status = children_[child_idx_]->Tick();
 
     if (status == Status::kSuccess) {
       Reset();
@@ -18,7 +18,7 @@ Status Selector::Tick() {
       return Status::kRunning;
     }
 
-    childIdx_++;
+    child_idx_++;
   }
 
   return Status::kFailure;

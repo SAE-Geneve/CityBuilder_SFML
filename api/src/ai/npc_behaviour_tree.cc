@@ -73,7 +73,7 @@ Status NpcBehaviourTree::Move() const {
 Status NpcBehaviourTree::Eat() {
   PROFILE_ZONE();
   // No failure, until we have food storage system
-  hunger_ -= kHungerRate * tick_dt;
+  hunger_ -= kHungerRate * tick_dt_;
   if (hunger_ > 0) {
     return Status::kRunning;
   } else {
@@ -97,8 +97,8 @@ Status NpcBehaviourTree::PickResource() {
   std::ranges::sample(resources_ptrs, &picked_resource, 1,
                       gen);  // C++20 ranges form
   if (picked_resource != nullptr && picked_resource->quantity() > 0) {
-    current_ressource_ = picked_resource;
-    set_destination(tilemap_->screen_position(static_cast<size_t>(current_ressource_->tile_index())));
+    current_resource_ = picked_resource;
+    set_destination(tilemap_->screen_position(static_cast<size_t>(current_resource_->tile_index())));
 
     if (path_->valid()) return Status::kSuccess;
   }
@@ -108,20 +108,20 @@ Status NpcBehaviourTree::PickResource() {
 
 Status NpcBehaviourTree::GetResource() {
   PROFILE_ZONE();
-  if (current_ressource_ == nullptr) return Status::kFailure;
-  if (current_ressource_->quantity() <= 0) {
-    current_ressource_ = nullptr;
+  if (current_resource_ == nullptr) return Status::kFailure;
+  if (current_resource_->quantity() <= 0) {
+    current_resource_ = nullptr;
     return Status::kSuccess;
   }
 
-  current_ressource_->Exploit(kExploitRate * tick_dt);
-  hunger_ += kHungerRate * tick_dt;
+  current_resource_->Exploit(kExploitRate * tick_dt_);
+  hunger_ += kHungerRate * tick_dt_;
   return Status::kRunning;
 }
 
 Status NpcBehaviourTree::Idle() {
   PROFILE_ZONE();
-  hunger_ += kHungerRate * tick_dt;
+  hunger_ += kHungerRate * tick_dt_;
   core::LogDebug("I'm sleeping");
   return Status::kSuccess;
 }
@@ -140,25 +140,25 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
   cantina_position_ = cantina_position;
 
 
-  auto feedSequence = std::make_unique<Sequence>();
-  auto foodPlaceSelection = std::make_unique<Selector>();
-  feedSequence->AddChild(
+  auto feed_sequence = std::make_unique<Sequence>();
+  auto food_place_selection = std::make_unique<Selector>();
+  feed_sequence->AddChild(
       std::make_unique<Action>([this]() { return CheckHunger(); }));
-  feedSequence->AddChild(std::move(foodPlaceSelection));
-  feedSequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
-  feedSequence->AddChild(std::make_unique<Action>([this]() { return Eat(); }));
+  feed_sequence->AddChild(std::move(food_place_selection));
+  feed_sequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
+  feed_sequence->AddChild(std::make_unique<Action>([this]() { return Eat(); }));
 
-  auto workSequence = std::make_unique<Sequence>();
-  workSequence->AddChild(
+  auto work_sequence = std::make_unique<Sequence>();
+  work_sequence->AddChild(
       std::make_unique<Action>([this]() { return PickResource(); }));
-  workSequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
-  workSequence->AddChild(
+  work_sequence->AddChild(std::make_unique<Action>([this]() { return Move(); }));
+  work_sequence->AddChild(
       std::make_unique<Action>([this]() { return GetResource(); }));
 
   auto selector = std::make_unique<Selector>();
   // Attach the sequence to the selector
-  selector->AddChild(std::move(feedSequence));
-  selector->AddChild(std::move(workSequence));
+  selector->AddChild(std::move(feed_sequence));
+  selector->AddChild(std::move(work_sequence));
   selector->AddChild(std::make_unique<Action>([this]() { return Idle(); }));
 
   bt_root_ = std::move(selector);
@@ -166,7 +166,7 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
 
 void NpcBehaviourTree::Update(float dt) {
   PROFILE_ZONE();
-  tick_dt = dt;
+  tick_dt_ = dt;
   bt_root_->Tick();
 }
 }  // namespace api::ai

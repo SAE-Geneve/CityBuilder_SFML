@@ -9,7 +9,7 @@ class Motor {
   sf::Vector2f destination_;
   float speed_ = 0;
 
-  float remainingDistance_ = 0;
+  float remaining_distance_ = 0;
 
  public:
   void Update(float dt);  // each frame
@@ -28,16 +28,16 @@ class Motor {
 
 inline void Motor::Update(const float dt) {
   const sf::Vector2f distance = destination_ - position_;
-  remainingDistance_ = distance.length();
+  remaining_distance_ = distance.length();
 
-  if (remainingDistance_ < speed_ * dt) {
+  if (remaining_distance_ < speed_ * dt) {
     position_ = destination_;
     return;
   }
   position_ += distance.normalized() * speed_ * dt;
 }
 
-inline float Motor::remaining_distance() const { return remainingDistance_; }
+inline float Motor::remaining_distance() const { return remaining_distance_; }
 }  // namespace api::motion
 
 #endif  // API_MOTION_MOTOR_H_

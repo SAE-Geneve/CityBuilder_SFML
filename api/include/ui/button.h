@@ -11,7 +11,7 @@
 namespace api::ui {
 class Button : public Clickable {
   sf::Sprite sprite_;
-  sf::Sprite hoverSprite_;
+  sf::Sprite hover_sprite_;
   sf::Text label_;
 
  public:

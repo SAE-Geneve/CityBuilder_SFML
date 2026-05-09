@@ -47,15 +47,15 @@ void Clickable::HandleEvent(std::optional<sf::Event> evt, bool& wasClicked) {
     }
   }
 
-  const auto mouseMove = evt->getIf<sf::Event::MouseMoved>();
-  if (mouseMove) {
-    if (zone_.contains(mouseMove->position) && !isHover_) {
+  const auto mouse_move = evt->getIf<sf::Event::MouseMoved>();
+  if (mouse_move) {
+    if (zone_.contains(mouse_move->position) && !is_hover_) {
       if (OnHoverEnter) OnHoverEnter();
-      isHover_ = true;
+      is_hover_ = true;
     }
-    if (!zone_.contains(mouseMove->position) && isHover_) {
+    if (!zone_.contains(mouse_move->position) && is_hover_) {
       if (OnHoverExit) OnHoverExit();
-      isHover_ = false;
+      is_hover_ = false;
     }
   }
 }

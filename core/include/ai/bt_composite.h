@@ -13,7 +13,7 @@ namespace core::ai::behaviour_tree {
 class Composite : public Node {
  protected:
   std::vector<std::unique_ptr<Node>> children_;
-  size_t childIdx_ = 0;
+  size_t child_idx_ = 0;
 
  public:
   using Node::Node;
@@ -26,11 +26,11 @@ class Composite : public Node {
   Composite(Composite&& other) noexcept
       : Node(std::move(other)),
         children_(std::move(other.children_)),
-        childIdx_(other.childIdx_) {}
+        child_idx_(other.child_idx_) {}
   Composite& operator=(Composite&& other) noexcept {
     Node::operator=(std::move(other));
     std::swap(children_, other.children_);
-    childIdx_ = other.childIdx_;
+    child_idx_ = other.child_idx_;
     return *this;
   }
 
