@@ -18,6 +18,8 @@ project(CityBuilder)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(${CMAKE_SOURCE_DIR}/cmake/CompilerWarnings.cmake)
+
 if(ENABLE_TESTING)
     enable_testing()
     find_package(GTest CONFIG REQUIRED)
@@ -51,7 +53,7 @@ add_executable(city_builder_game main.cc)
 add_dependencies(city_builder_game copy_resources)
 
 # This project is linked to its own libraries
-target_link_libraries(city_builder_game PRIVATE game argh)
+target_link_libraries(city_builder_game PRIVATE game argh project_warnings)
 
 target_compile_options(city_builder_game PRIVATE
         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:MSVC>>:/Od /Zi>

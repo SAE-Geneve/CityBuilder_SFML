@@ -8,9 +8,10 @@ add_library(api ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(api PUBLIC include/)
 target_link_libraries(api PUBLIC core SFML::System SFML::Graphics SFML::Window FastNoiseLit)
+target_link_libraries(api PRIVATE project_warnings)
 
 if(ENABLE_TESTING)
     file(GLOB_RECURSE TEST_FILES test/*.cc)
     add_executable(api_test ${TEST_FILES})
-    target_link_libraries(api_test PRIVATE GTest::gtest GTest::gtest_main api)
+    target_link_libraries(api_test PRIVATE GTest::gtest GTest::gtest_main api project_warnings)
 endif(ENABLE_TESTING)
