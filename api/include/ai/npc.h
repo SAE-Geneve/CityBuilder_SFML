@@ -1,6 +1,8 @@
 ﻿#ifndef API_AI_NPC_H_
 #define API_AI_NPC_H_
 
+// TODO(google-style): narrow this umbrella include to the specific SFML
+// headers actually used by this header.
 #include <SFML/Graphics.hpp>
 
 #include "graphics/tilemap.h"

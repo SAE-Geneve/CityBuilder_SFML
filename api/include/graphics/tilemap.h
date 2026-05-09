@@ -1,6 +1,8 @@
 #ifndef API_GRAPHICS_TILEMAP_H_
 #define API_GRAPHICS_TILEMAP_H_
 
+// TODO(google-style): narrow this umbrella include to the specific SFML
+// headers actually used by this header.
 #include <SFML/Graphics.hpp>
 #include <mdspan>
 

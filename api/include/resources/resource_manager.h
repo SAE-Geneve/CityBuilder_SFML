@@ -26,6 +26,8 @@ class ResourceManager {
   }
 };
 
+// TODO(google-style): move ResourceManager::LoadResources out of the header
+// (non-trivial body should not be inline in a header).
 inline void ResourceManager::LoadResources(const Resource::Type type,
                                            const std::vector<int>& indices,
                                            void (*on_chop_event)(int, float)) {

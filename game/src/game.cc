@@ -17,6 +17,9 @@
 
 namespace game {
 namespace {
+// TODO(google-style): non-trivially-destructible namespace-scope objects
+// violate Google's static/global variables rule. Move into a Game class
+// instantiated inside Loop() so the destruction order is well-defined.
 sf::Clock clock;
 sf::RenderWindow window_;
 

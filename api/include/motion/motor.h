@@ -26,6 +26,8 @@ class Motor {
   [[nodiscard]] const sf::Vector2f& position() const { return position_; }
 };
 
+// TODO(google-style): move Motor::Update out of the header (non-trivial
+// body should not be inline in a header).
 inline void Motor::Update(const float dt) {
   const sf::Vector2f distance = destination_ - position_;
   remaining_distance_ = distance.length();

@@ -18,6 +18,8 @@ concept is_convertible_to_vector2 = requires(VectorT v) {
   { v.y } -> std::convertible_to<T>;
 };
 
+// TODO(google-style): public data members on a `class` violate Google
+// style; consider `struct Vec2` (data-only types should be structs).
 template <typename T>
   requires std::is_arithmetic_v<T>
 class Vec2 {

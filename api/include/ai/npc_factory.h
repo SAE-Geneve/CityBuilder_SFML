@@ -6,6 +6,8 @@
 #include "utils/log.h"
 
 namespace api::ai {
+// TODO(google-style): move CreateNpc out of the header into a .cc
+// (non-trivial body should not be inline in a header).
 inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
                       sf::Vector2f start_position, const TileMap* tilemap,
                       resource::ResourceManager& resource_manager) {

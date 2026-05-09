@@ -15,11 +15,15 @@ class Clickable {
   // Constructeur protected, la classe demande un heritage
   Clickable() = default;
 
+  // TODO(forbidden-features): std::function is banned in this codebase.
+  // Replace with virtual hooks or function pointers + context.
   std::function<void()> on_hover_enter;
   std::function<void()> on_hover_exit;
 
  public:
   virtual ~Clickable() = default;
+  // TODO(google-style): replace `bool& wasClicked` with `bool*` per
+  // Google output-parameter convention.
   virtual void HandleEvent(std::optional<sf::Event> event, bool& wasClicked);
 
   virtual void SetZone(sf::IntRect zone);

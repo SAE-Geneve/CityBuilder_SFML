@@ -10,6 +10,9 @@
 #include "graphics/camera.h"
 #include "profiling/profiling.h"
 
+// TODO(google-style): file-scope statics with non-trivial destructors. Move
+// into an anonymous namespace at minimum, or behind a function returning a
+// reference to a function-local static.
 static std::mt19937 gen{std::random_device{}()};
 static std::uniform_real_distribution dist(0.f, 1.f);
 

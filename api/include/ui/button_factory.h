@@ -11,6 +11,8 @@
 #include "utils/log.h"
 
 namespace api::ui {
+// TODO(google-style): move ButtonFactory ctor and CreateButton out of the
+// header (non-trivial bodies should not be inline in a header).
 class ButtonFactory {
   enum class Sprite { kEmpty, kBgBtn, kHoverBtn, kLength };
 
