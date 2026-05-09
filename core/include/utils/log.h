@@ -7,7 +7,8 @@
 namespace core {
 
 template <typename... Args>
-void LogDebug(std::format_string<Args...> fmt, Args&&... args) {
+void LogDebug([[maybe_unused]] std::format_string<Args...> fmt,
+              [[maybe_unused]] Args&&... args) {
 #ifndef NDEBUG
   std::print("[DEBUG] {}\n", std::format(fmt, std::forward<Args>(args)...));
 #endif
@@ -15,16 +16,13 @@ void LogDebug(std::format_string<Args...> fmt, Args&&... args) {
 
 template <typename... Args>
 void LogWarning(std::format_string<Args...> fmt, Args&&... args) {
-#ifndef NDEBUG
   std::print("[WARNING] {}\n", std::format(fmt, std::forward<Args>(args)...));
-#endif
 }
 
 template <typename... Args>
 void LogError(std::format_string<Args...> fmt, Args&&... args) {
-#ifndef NDEBUG
-  std::print("[ERROR] {}\n", std::format(fmt, std::forward<Args>(args)...));
-#endif
+  std::print(stderr, "[ERROR] {}\n",
+             std::format(fmt, std::forward<Args>(args)...));
 }
 
 }  // namespace core

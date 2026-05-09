@@ -10,7 +10,7 @@ using namespace core::ai::behaviour_tree;
 
 Status Sequence::Tick() {
   PROFILE_ZONE();
-  while (childIdx_ < children_.size()) {
+  while (childIdx_ < std::ssize(children_)) {
     Status status = children_[childIdx_]->Tick();
 
     if (status == Status::kFailure) {

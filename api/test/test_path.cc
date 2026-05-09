@@ -28,7 +28,7 @@ TEST(Path, IsDone) {
   }
   EXPECT_TRUE(path.IsDone());
 
-  path.next_point();
+  auto nextPoint = path.next_point();
   EXPECT_TRUE(path.IsDone());
 }
 
@@ -40,7 +40,7 @@ TEST(Path, StartPoint) {
   Fill_5_Points(path);
   EXPECT_EQ(path.StartPoint(), sf::Vector2f(1, 1));
 
-  path.next_point();
+  auto nextPoint = path.next_point();
   EXPECT_EQ(path.StartPoint(), sf::Vector2f(1, 1));
 }
 
