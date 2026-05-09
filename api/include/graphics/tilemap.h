@@ -52,21 +52,20 @@ class TileMap : public api::ui::Clickable {
   // Storage is x-major: flat index = grid_x * tile_count_y_ + grid_y.
   // This matches the layout-right mdspan exposed via AsMdspan().
   std::vector<WalkableCell> tiles_;
-  int tile_count_x_ = 0;
-  int tile_count_y_ = 0;
+  size_t tile_count_x_ = 0;
+  size_t tile_count_y_ = 0;
   core::assets::AssetManager<sf::Texture, Tile, "_assets/sprites">
       textures_;
 
-  int Index(sf::Vector2f screenPosition) const;
 
  public:
-  sf::Vector2f ScreenPosition(int index) const;
+  sf::Vector2f screen_position(size_t index) const;
   static sf::Vector2f TilePos(sf::Vector2i);
-  static int GetStep() { return kPixelStep; };
+  static constexpr int step(){ return kPixelStep; };
 
-  void Setup(int tile_count_x, int tile_count_y);
+  void Setup(size_t tile_count_x, size_t tile_count_y);
   void Draw(sf::RenderWindow &window);
-  void SetTile(int, Tile);
+  void set_tile(size_t, Tile);
 
   void SetCamera(const sf::RenderWindow &window,
                  const api::graphics::Camera &camera);
@@ -79,8 +78,8 @@ class TileMap : public api::ui::Clickable {
                        static_cast<std::size_t>(tile_count_y_));
   }
 
-  [[nodiscard]] int tile_count_x() const { return tile_count_x_; }
-  [[nodiscard]] int tile_count_y() const { return tile_count_y_; }
+  [[nodiscard]] auto tile_count_x() const { return tile_count_x_; }
+  [[nodiscard]] auto tile_count_y() const { return tile_count_y_; }
 
   std::vector<int> GetCollectibles(Tile) const;
   std::vector<sf::Vector2f> GetWalkables() const;

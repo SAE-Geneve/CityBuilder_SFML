@@ -4,16 +4,16 @@
 #include <random>
 
 #include "SFML/Graphics.hpp"
-#include "utils/log.h"
 #include "ai/npc_manager.h"
 #include "graphics/camera.h"
 #include "graphics/tilemap.h"
+#include "maths/vec2.h"
+#include "profiling/profiling.h"
 #include "resources/resource_manager.h"
 #include "ui/button.h"
 #include "ui/button_factory.h"
 #include "ui/clickable.h"
-
-#include "profiling/profiling.h"
+#include "utils/log.h"
 
 namespace game {
 namespace {
@@ -39,7 +39,7 @@ api::resource::ResourceManager resource_manager;
 void ChopEvent(int index, float quantity) {
   PROFILE_ZONE();
   if (quantity <= 0) {
-    tilemap_ptr_->SetTile(index, TileMap::Tile::kBg);
+    tilemap_ptr_->set_tile(static_cast<size_t>(index), TileMap::Tile::kBg);
   }
 }
 
@@ -63,26 +63,27 @@ void Setup(const LaunchOptions& options) {
     npc_adding_type = api::ai::NpcType::kNone;
   };
 
+  const auto window_size = core::maths::Vec2f{window_.getSize()};
   btnBlue = btn_factory.CreateButton(
-      sf::Vector2f(100.f, window_.getSize().y - 100.f), "Blue");
+      sf::Vector2f(100.f, window_size.y - 100.f), "Blue");
   btnBlue->OnReleasedLeft = []() {
     npc_adding_type = api::ai::NpcType::kBlueWood;
   };
 
   btnRed = btn_factory.CreateButton(
-      sf::Vector2f(200.f, window_.getSize().y - 100.f), "Red");
+      sf::Vector2f(200.f, window_size.y - 100.f), "Red");
   btnRed->OnReleasedLeft = []() {
     npc_adding_type = api::ai::NpcType::kRedRock;
   };
 
   btnGreen = btn_factory.CreateButton(
-      sf::Vector2f(300.f, window_.getSize().y - 100.f), "Green");
+      sf::Vector2f(300.f, window_size.y - 100.f), "Green");
   btnGreen->OnReleasedLeft = []() {
     npc_adding_type = api::ai::NpcType::kGreenFood;
   };
 
   btnExit = btn_factory.CreateButton(
-      sf::Vector2f(window_.getSize().y - 30.f, 30.f), "Exit");
+      sf::Vector2f(window_size.y - 30.f, 30.f), "Exit");
   btnExit->OnReleasedLeft = []() { window_.close(); };
 
   resource_manager.LoadResources(
@@ -98,7 +99,7 @@ void Setup(const LaunchOptions& options) {
       tilemap_ptr_->GetCollectibles(TileMap::Tile::kRock), ChopEvent);
 }
 
-void SpawnInitialNpcs(int total) {
+void SpawnInitialNpcs(size_t total) {
   PROFILE_ZONE();
   if (total <= 0) {
     return;
@@ -111,8 +112,8 @@ void SpawnInitialNpcs(int total) {
   }
 
   static std::mt19937 gen{std::random_device{}()};
-  std::uniform_int_distribution<std::ptrdiff_t> tile_dist(
-      0, std::ssize(walkables) - 1);
+  std::uniform_int_distribution<size_t> tile_dist(
+      0, std::size(walkables) - 1);
 
   constexpr std::array<api::ai::NpcType, 3> kTypes = {
       api::ai::NpcType::kBlueWood,
@@ -120,12 +121,13 @@ void SpawnInitialNpcs(int total) {
       api::ai::NpcType::kGreenFood,
   };
 
-  const int base = total / 3;
-  const int remainder = total % 3;
-  for (std::ptrdiff_t t = 0; t < std::ssize(kTypes); ++t) {
-    const int count = base + (t < remainder ? 1 : 0);
-    for (int i = 0; i < count; ++i) {
-      const auto& position = walkables[tile_dist(gen)];
+  const auto base = total / 3;
+  const auto remainder = total % 3;
+  for (size_t t = 0; t < std::size(kTypes); ++t) {
+    const auto count = base + (t < remainder ? 1 : 0);
+    for (size_t i = 0; i < count; ++i) {
+      const auto random_index = tile_dist(gen);
+      const auto& position = walkables[random_index];
       npc_manager_.Add(kTypes[t], position, tilemap_ptr_.get(),
                        resource_manager);
     }

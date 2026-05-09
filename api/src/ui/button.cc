@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
+#include "maths/vec2.h"
 #include "profiling/profiling.h"
 #include "utils/log.h"
 
@@ -27,10 +28,10 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
 
   label_.setCharacterSize(24);
   label_.setString(std::string(label));
-  sf::FloatRect textRect = label_.getLocalBounds();
   label_.setOrigin(label_.getLocalBounds().getCenter());
-  label_.setPosition({pos.x + sprite_.getTexture().getSize().x / 2.f,
-                      pos.y + sprite_.getTexture().getSize().y / 2.f});
+  label_.setPosition(static_cast<sf::Vector2f>(
+      core::maths::Vec2f{pos} +
+      core::maths::Vec2f{sprite_.getTexture().getSize()} / 2.0f));
 
   Button::SetZone(sf::IntRect(int_pos, int_size));
 

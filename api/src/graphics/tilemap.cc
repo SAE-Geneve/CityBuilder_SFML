@@ -13,11 +13,11 @@
 static std::mt19937 gen{std::random_device{}()};
 static std::uniform_real_distribution dist(0.f, 1.f);
 
-void TileMap::Setup(int tile_count_x, int tile_count_y) {
+void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
   PROFILE_ZONE();
   tile_count_x_ = tile_count_x;
   tile_count_y_ = tile_count_y;
-  tiles_.assign(static_cast<std::size_t>(tile_count_x_ * tile_count_y_),
+  tiles_.assign(tile_count_x_ * tile_count_y_,
                 WalkableCell{Tile::kBg});
 
   // Create and configure FastNoise object
@@ -36,7 +36,7 @@ void TileMap::Setup(int tile_count_x, int tile_count_y) {
   // Fixed, why were weights sorted for each tile when not modified?
   std::ranges::sort(weights,
             [](auto &a, auto &b) { return a.second < b.second; });
-  for (int tileIndex = 0; tileIndex < std::ssize(tiles_); ++tileIndex) {
+  for (auto & tile : tiles_) {
     auto value = dist(gen);
 
     float sumWeight = 0;
@@ -47,25 +47,25 @@ void TileMap::Setup(int tile_count_x, int tile_count_y) {
     float localWeight = 0;
     Tile goodTile = Tile::kBg;
 
-    for (auto &[tile, weight] : weights) {
+    for (auto &[weighted_tile, weight] : weights) {
       localWeight += weight;
 
-      if ((value * sumWeight) < localWeight) {
-        goodTile = tile;
+      if (value * sumWeight < localWeight) {
+        goodTile = weighted_tile;
         break;
       }
     }
 
-    tiles_[tileIndex] = WalkableCell{goodTile};
+    tile = WalkableCell{goodTile};
   }
 
-  SetZone(sf::IntRect({0, 0}, sf::Vector2i(tile_count_x_ * kPixelStep,
-                                           tile_count_y_ * kPixelStep)));
+  SetZone(sf::IntRect({0, 0}, sf::Vector2i(static_cast<int>(tile_count_x_) * kPixelStep,
+                                           static_cast<int>(tile_count_y_) * kPixelStep)));
 }
 
 void TileMap::Draw(sf::RenderWindow &window) {
   PROFILE_ZONE();
-  int tileIndex = 0;
+  size_t tile_index = 0;
 
   //FIXME use sf::VertexArray instead of sf::Sprite
   sf::Sprite sprite(textures_.Get(Tile::kEmpty));
@@ -74,16 +74,16 @@ void TileMap::Draw(sf::RenderWindow &window) {
 
   for (auto cell : tiles_) {
     sprite.setTexture(textures_.Get(cell.tile));
-    sprite.setPosition(ScreenPosition(tileIndex));
+    sprite.setPosition(screen_position(tile_index));
     window.draw(sprite);
 
-    tileIndex++;
+    tile_index++;
   }
 }
 
-void TileMap::SetTile(int idx, Tile tile) {
+void TileMap::set_tile(size_t idx, Tile tile) {
   PROFILE_ZONE();
-  if (idx > 0 && idx < std::ssize(tiles_)) {
+  if (idx > 0 && idx < std::size(tiles_)) {
     tiles_[idx] = WalkableCell{tile};
   }
 }
@@ -91,9 +91,9 @@ void TileMap::SetTile(int idx, Tile tile) {
 std::vector<sf::Vector2f> TileMap::GetWalkables() const {
   PROFILE_ZONE();
   std::vector<sf::Vector2f> walkables;
-  for (int tile_index = 0; tile_index < std::ssize(tiles_); ++tile_index) {
+  for (size_t tile_index = 0; tile_index < std::size(tiles_); ++tile_index) {
     if (tiles_[tile_index].IsWalkable()) {
-      walkables.push_back(ScreenPosition(tile_index));
+      walkables.push_back(screen_position(tile_index));
     }
   }
   return walkables;
@@ -103,7 +103,7 @@ std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
   PROFILE_ZONE();
   std::vector<int> collectibles;
 
-  for (int tile_index = 0; tile_index < std::ssize(tiles_); ++tile_index) {
+  for (size_t tile_index = 0; tile_index < std::size(tiles_); ++tile_index) {
     if (tiles_[tile_index].tile == search_tile) {
       collectibles.emplace_back(tile_index);
     }
@@ -112,18 +112,13 @@ std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
   return collectibles;
 }
 
-sf::Vector2f TileMap::ScreenPosition(const int index) const {
+sf::Vector2f TileMap::screen_position(size_t index) const {
   // Storage is x-major: flat index = x * tile_count_y_ + y.
   float x = static_cast<float>((index / tile_count_y_) * kPixelStep);
   float y = static_cast<float>((index % tile_count_y_) * kPixelStep);
   return {x, y};
 }
 
-int TileMap::Index(const sf::Vector2f screenPosition) const {
-  return static_cast<int>(std::lround(screenPosition.x / kPixelStep)) *
-             tile_count_y_ +
-         static_cast<int>(std::lround(screenPosition.y / kPixelStep));
-}
 
 sf::Vector2f TileMap::TilePos(sf::Vector2i pos) {
   return {static_cast<float>(round(pos.x / kPixelStep) * kPixelStep),

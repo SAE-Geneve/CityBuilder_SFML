@@ -113,7 +113,7 @@ Status NpcBehaviourTree::PickResource() {
                       gen);  // C++20 ranges form
   if (picked_resource != nullptr && picked_resource->quantity() > 0) {
     current_ressource_ = picked_resource;
-    set_destination(tilemap_->ScreenPosition(current_ressource_->tile_index()));
+    set_destination(tilemap_->screen_position(static_cast<size_t>(current_ressource_->tile_index())));
 
     if (path_->valid()) return Status::kSuccess;
   }
@@ -154,7 +154,6 @@ void NpcBehaviourTree::SetupBehaviourTree(Motor* npc_motor, Path* path,
   tilemap_ = tilemap;
   cantina_position_ = cantina_position;
 
-  sf::Vector2f start = {0, 0};
 
   auto feedSequence = std::make_unique<Sequence>();
   auto foodPlaceSelection = std::make_unique<Selector>();

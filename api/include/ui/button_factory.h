@@ -37,9 +37,9 @@ class ButtonFactory {
   std::unique_ptr<Button> CreateButton(sf::Vector2f pos,
                                        std::string_view label) {
     PROFILE_ZONE();
-    return std::move(std::make_unique<api::ui::Button>(
+    return std::make_unique<api::ui::Button>(
         pos, label, textures_.Get(Sprite::kBgBtn),
-        textures_.Get(Sprite::kHoverBtn), font));
+        textures_.Get(Sprite::kHoverBtn), font);
   }
 };
 }  // namespace api::ui

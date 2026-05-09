@@ -5,7 +5,7 @@
 using namespace api::motion;
 
 bool Path::IsDone() const {
-  return idxPoint_ == path_points_.size() - 1;
+  return path_points_.empty() || idxPoint_ == path_points_.size() - 1;
 }
 
 bool Path::valid() const {

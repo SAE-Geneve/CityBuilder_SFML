@@ -24,7 +24,7 @@ class Vec2 {
  public:
   T x{}, y{};
   constexpr Vec2() = default;
-  constexpr Vec2(T x, T y) : x{x}, y{y} {}
+  constexpr Vec2(T new_x, T new_y) : x{new_x}, y{new_y} {}
 
   template <typename VectorT>
     requires is_vector2<VectorT, T>
@@ -32,12 +32,19 @@ class Vec2 {
 
   template <typename VectorT>
     requires is_convertible_to_vector2<VectorT, T> && (!is_vector2<VectorT, T>)
-             constexpr explicit Vec2(VectorT v)
-      : x(static_cast<T>(v.x)),
-  y(static_cast<T>(v.y)) {}
+  constexpr explicit Vec2(VectorT v)
+      : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
 
-  [[nodiscard]] Vec2 operator+(Vec2 other) const {
+  [[nodiscard]] constexpr Vec2 operator+(Vec2 other) const {
     return {x + other.x, y + other.y};
+  }
+
+  [[nodiscard]] constexpr Vec2 operator*(T other) const {
+    return {x * other, y * other};
+  }
+
+  [[nodiscard]] constexpr Vec2 operator/(T other) const {
+    return {x / other, y / other};
   }
 
   [[nodiscard]] constexpr bool operator==(Vec2 other) const {
@@ -50,7 +57,9 @@ class Vec2 {
     return VectorT{x, y};
   }
 
-  [[nodiscard]] static float Dot(Vec2 v1, Vec2 v2) { return v1.x * v2.x + v1.y * v2.y; }
+  [[nodiscard]] static T Dot(Vec2 v1, Vec2 v2) {
+    return v1.x * v2.x + v1.y * v2.y;
+  }
 
   [[nodiscard]] T SqrLength() const { return x * x + y * y; }
 

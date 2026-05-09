@@ -24,11 +24,11 @@ TEST(Path, IsDone) {
 
   for (int i = 0; i < 4; i++) {
     EXPECT_FALSE(path.IsDone());
-    auto p = path.next_point();
+    [[maybe_unused]]auto p = path.next_point();
   }
   EXPECT_TRUE(path.IsDone());
 
-  auto nextPoint = path.next_point();
+  [[maybe_unused]] auto nextPoint = path.next_point();
   EXPECT_TRUE(path.IsDone());
 }
 
@@ -40,7 +40,7 @@ TEST(Path, StartPoint) {
   Fill_5_Points(path);
   EXPECT_EQ(path.StartPoint(), sf::Vector2f(1, 1));
 
-  auto nextPoint = path.next_point();
+  [[maybe_unused]] auto nextPoint = path.next_point();
   EXPECT_EQ(path.StartPoint(), sf::Vector2f(1, 1));
 }
 

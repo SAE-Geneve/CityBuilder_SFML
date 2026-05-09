@@ -55,8 +55,8 @@ std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
       maths::Vec2i(-1, 0), maths::Vec2i(0, 1), maths::Vec2i(1, 0),
       maths::Vec2i(0, -1)};
 
-  const int total = width * height;
-  auto to_index = [height](maths::Vec2i p) { return p.x * height + p.y; };
+  const auto total = static_cast<size_t>(width * height);
+  auto to_index = [height](maths::Vec2i p) { return static_cast<size_t>(p.x * height + p.y); };
   auto manhattan = [](maths::Vec2i a, maths::Vec2i b) {
     return std::abs(a.x - b.x) + std::abs(a.y - b.y);
   };
@@ -68,11 +68,11 @@ std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
   };
 
   std::vector<int8_t> visited(total, 0);
-  std::vector<int> came_from(total, -1);
-  std::vector<int> g_cost(total, INT_MAX);
+  std::vector<size_t> came_from(total, std::numeric_limits<size_t>::max());
+  std::vector<int> g_cost(total, std::numeric_limits<int>::max());
   std::priority_queue<Node> open_list;
 
-  const int start_idx = to_index(start_pos);
+  const auto start_idx = to_index(start_pos);
   g_cost[start_idx] = 0;
   open_list.push({manhattan(start_pos, end_pos), start_pos});
 
@@ -85,7 +85,8 @@ std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
       maths::Vec2i trace = end_pos;
       while (trace != start_pos) {
         path.push_back(trace);
-        const int idx = came_from[to_index(trace)];
+        const auto trace_index = to_index(trace);
+        const auto idx = static_cast<int>(came_from[trace_index]);
         trace = {idx / height, idx % height};
       }
       path.push_back(start_pos);
@@ -93,7 +94,7 @@ std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
       return path;
     }
 
-    const int cur_idx = to_index(current.pos);
+    const auto cur_idx = to_index(current.pos);
     if (visited[cur_idx]) {
       continue;
     }
@@ -105,7 +106,7 @@ std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
           neighbor_pos.y < 0 || neighbor_pos.y >= height) {
         continue;
       }
-      const int n_idx = to_index(neighbor_pos);
+      const auto n_idx = to_index(neighbor_pos);
       if (visited[n_idx] ||
           !tilemap[neighbor_pos.x, neighbor_pos.y].IsWalkable()) {
         continue;

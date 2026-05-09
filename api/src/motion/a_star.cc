@@ -11,9 +11,9 @@ namespace api::motion::Astar {
 
 namespace {
 
-core::maths::Vec2i ScreenToGrid(sf::Vector2f screen, int step) {
-  return {static_cast<int>(std::lround(screen.x / step)),
-          static_cast<int>(std::lround(screen.y / step))};
+core::maths::Vec2i ScreenToGrid(sf::Vector2f screen_pos, int step) {
+  return {static_cast<int>(std::lround(screen_pos.x / static_cast<float>(step))),
+          static_cast<int>(std::lround(screen_pos.y / static_cast<float>(step)))};
 }
 
 sf::Vector2f GridToScreen(core::maths::Vec2i grid, int step) {
@@ -26,7 +26,7 @@ sf::Vector2f GridToScreen(core::maths::Vec2i grid, int step) {
 std::expected<Path, core::ai::pathfinding::PathError> GetPath(
     const TileMap& tilemap, sf::Vector2f start, sf::Vector2f end) {
   PROFILE_ZONE();
-  const int step = TileMap::GetStep();
+  const int step = TileMap::step();
   const auto start_grid = ScreenToGrid(start, step);
   const auto end_grid = ScreenToGrid(end, step);
 
