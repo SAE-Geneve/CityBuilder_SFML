@@ -4,7 +4,7 @@
 #include <argh.h>
 
 namespace {
-void ApplyPositive(int& field, int parsed, const char* flag) {
+void ApplyPositive(uint32_t& field, uint32_t parsed, const char* flag) {
   if (parsed <= 0) {
     core::LogWarning("Invalid value for --{} ({}); using default {}", flag,
                      parsed, field);
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
   game::LaunchOptions options;
   cmdl("init-spawn", 0) >> options.initial_spawn_count;
 
-  int parsed = 0;
+  uint32_t parsed = 0;
   cmdl("window-width", options.window_width) >> parsed;
   ApplyPositive(options.window_width, parsed, "window-width");
   cmdl("window-height", options.window_height) >> parsed;

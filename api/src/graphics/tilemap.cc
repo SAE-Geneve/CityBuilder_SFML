@@ -77,7 +77,7 @@ void TileMap::Draw(sf::RenderWindow& window) {
 
   for (auto cell : tiles_) {
     sprite.setTexture(textures_.Get(cell.tile));
-    sprite.setPosition(ScreenPosition(tile_index));
+    sprite.setPosition(screen_position(tile_index));
     window.draw(sprite);
 
     tile_index++;
@@ -91,18 +91,18 @@ void TileMap::set_tile(size_t idx, Tile tile) {
   }
 }
 
-std::vector<sf::Vector2f> TileMap::GetWalkables() const {
+std::vector<sf::Vector2f> TileMap::walkables() const {
   PROFILE_ZONE();
   std::vector<sf::Vector2f> walkables;
   for (size_t tile_index = 0; tile_index < std::size(tiles_); ++tile_index) {
     if (tiles_[tile_index].IsWalkable()) {
-      walkables.push_back(ScreenPosition(tile_index));
+      walkables.push_back(screen_position(tile_index));
     }
   }
   return walkables;
 }
 
-std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
+std::vector<int> TileMap::collectibles(Tile search_tile) const {
   PROFILE_ZONE();
   std::vector<int> collectibles;
 
@@ -115,20 +115,20 @@ std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
   return collectibles;
 }
 
-sf::Vector2f TileMap::ScreenPosition(size_t index) const {
+sf::Vector2f TileMap::screen_position(size_t index) const {
   // Storage is x-major: flat index = x * tile_count_y_ + y.
-  float x = static_cast<float>((index / tile_count_y_) * kPixelStep);
-  float y = static_cast<float>((index % tile_count_y_) * kPixelStep);
+  const float x = static_cast<float>(index / tile_count_y_ * kPixelStep);
+  const float y = static_cast<float>(index % tile_count_y_ * kPixelStep);
   return {x, y};
 }
 
 
-sf::Vector2f TileMap::TilePos(sf::Vector2i pos) {
-  return {static_cast<float>(round(pos.x / kPixelStep) * kPixelStep),
-          static_cast<float>(round(pos.y / kPixelStep) * kPixelStep)};
+sf::Vector2f TileMap::tile_pos(sf::Vector2i pos) {
+  return {static_cast<float>(std::round(pos.x / kPixelStep) * kPixelStep),
+          static_cast<float>(std::round(pos.y / kPixelStep) * kPixelStep)};
 }
 
-void TileMap::SetCamera(const sf::RenderWindow& window,
+void TileMap::set_camera(const sf::RenderWindow& window,
                         const api::graphics::Camera& camera) {
   window_ = &window;
   camera_ = &camera;
