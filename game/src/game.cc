@@ -88,15 +88,15 @@ void Setup(const LaunchOptions& options) {
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kWood,
-      tilemap_ptr_->GetCollectibles(TileMap::Tile::kTree), ChopEvent);
+      tilemap_ptr_->collectibles(TileMap::Tile::kTree), ChopEvent);
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kFood,
-      tilemap_ptr_->GetCollectibles(TileMap::Tile::kFood), ChopEvent);
+      tilemap_ptr_->collectibles(TileMap::Tile::kFood), ChopEvent);
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kStone,
-      tilemap_ptr_->GetCollectibles(TileMap::Tile::kRock), ChopEvent);
+      tilemap_ptr_->collectibles(TileMap::Tile::kRock), ChopEvent);
 }
 
 void SpawnInitialNpcs(size_t total) {

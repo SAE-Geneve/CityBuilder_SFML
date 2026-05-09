@@ -81,7 +81,7 @@ class TileMap : public api::ui::Clickable {
   [[nodiscard]] auto tile_count_x() const { return tile_count_x_; }
   [[nodiscard]] auto tile_count_y() const { return tile_count_y_; }
 
-  std::vector<int> GetCollectibles(Tile) const;
+  std::vector<int> collectibles(Tile) const;
   std::vector<sf::Vector2f> GetWalkables() const;
 
  private:

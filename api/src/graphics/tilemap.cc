@@ -99,13 +99,13 @@ std::vector<sf::Vector2f> TileMap::GetWalkables() const {
   return walkables;
 }
 
-std::vector<int> TileMap::GetCollectibles(Tile search_tile) const {
+std::vector<int> TileMap::collectibles(Tile search_tile) const {
   PROFILE_ZONE();
   std::vector<int> collectibles;
 
   for (size_t tile_index = 0; tile_index < std::size(tiles_); ++tile_index) {
     if (tiles_[tile_index].tile == search_tile) {
-      collectibles.emplace_back(tile_index);
+      collectibles.emplace_back(static_cast<int>(tile_index));
     }
   }
 
