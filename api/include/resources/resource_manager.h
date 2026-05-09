@@ -1,6 +1,6 @@
 ﻿
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+#ifndef API_RESOURCES_RESOURCE_MANAGER_H_
+#define API_RESOURCES_RESOURCE_MANAGER_H_
 #include <ranges>
 #include <vector>
 
@@ -39,4 +39,4 @@ inline void ResourceManager::LoadResources(const Resource::Type type,
 }
 
 }  // namespace api::resource
-#endif
+#endif  // API_RESOURCES_RESOURCE_MANAGER_H_

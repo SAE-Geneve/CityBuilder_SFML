@@ -1,5 +1,5 @@
-﻿#ifndef CORE_MATHS_ANGLE_H
-#define CORE_MATHS_ANGLE_H
+﻿#ifndef CORE_MATHS_ANGLE_H_
+#define CORE_MATHS_ANGLE_H_
 
 #include "maths/const.h"
 
@@ -30,4 +30,4 @@ class Degree {
 constexpr Radian::Radian(const Degree& angle)
     : value_(static_cast<float>(angle) / 180.0f * Pi) {}
 }  // namespace core::maths
-#endif  // CORE_MATHS_ANGLE_H
+#endif  // CORE_MATHS_ANGLE_H_

@@ -1,5 +1,5 @@
-﻿#ifndef CORE_MATHS_FUNC_H
-#define CORE_MATHS_FUNC_H
+﻿#ifndef CORE_MATHS_FUNC_H_
+#define CORE_MATHS_FUNC_H_
 #include <cmath>
 
 #include "maths/angle.h"
@@ -12,4 +12,4 @@ inline float Tan(Radian angle) { return std::tan(static_cast<float>(angle)); }
 
 }  // namespace core::maths
 
-#endif  // CORE_MATHS_FUNC_H
+#endif  // CORE_MATHS_FUNC_H_

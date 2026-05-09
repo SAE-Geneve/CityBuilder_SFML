@@ -1,5 +1,5 @@
-﻿#ifndef RESOURCE_H
-#define RESOURCE_H
+﻿#ifndef API_RESOURCES_RESOURCE_H_
+#define API_RESOURCES_RESOURCE_H_
 
 namespace api::resource {
 class Resource {
@@ -26,4 +26,4 @@ public:
   void(*on_chop_resource_)(int, float) = nullptr;
 };
 }
-#endif
+#endif  // API_RESOURCES_RESOURCE_H_

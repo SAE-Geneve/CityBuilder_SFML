@@ -1,5 +1,5 @@
-#ifndef CITYBUILDER_A_STAR_H
-#define CITYBUILDER_A_STAR_H
+#ifndef CORE_AI_A_STAR_H_
+#define CORE_AI_A_STAR_H_
 
 #include <algorithm>
 #include <climits>
@@ -122,4 +122,4 @@ std::expected<std::vector<maths::Vec2i>, PathError> FindPath(
 
 }  // namespace core::ai::pathfinding
 
-#endif  // CITYBUILDER_A_STAR_H
+#endif  // CORE_AI_A_STAR_H_

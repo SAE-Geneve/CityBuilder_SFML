@@ -1,5 +1,5 @@
-﻿#ifndef BT_COMPOSITE_H
-#define BT_COMPOSITE_H
+﻿#ifndef CORE_AI_BT_COMPOSITE_H_
+#define CORE_AI_BT_COMPOSITE_H_
 
 #include <cstdlib>
 #include <memory>
@@ -39,4 +39,4 @@ class Composite : public Node {
 };
 }  // namespace core::ai::behaviour_tree
 
-#endif  // BT_COMPOSITE_H
+#endif  // CORE_AI_BT_COMPOSITE_H_

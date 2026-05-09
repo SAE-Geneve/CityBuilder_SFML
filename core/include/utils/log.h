@@ -1,5 +1,5 @@
-﻿#ifndef CITYBUILDER_LOG_H
-#define CITYBUILDER_LOG_H
+﻿#ifndef CORE_UTILS_LOG_H_
+#define CORE_UTILS_LOG_H_
 
 #include <format>
 #include <print>
@@ -27,4 +27,4 @@ void LogError(std::format_string<Args...> fmt, Args&&... args) {
 
 }  // namespace core
 
-#endif  // CITYBUILDER_LOG_H
+#endif  // CORE_UTILS_LOG_H_

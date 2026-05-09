@@ -1,5 +1,5 @@
-﻿#ifndef BT_NODE_H
-#define BT_NODE_H
+﻿#ifndef CORE_AI_BT_NODE_H_
+#define CORE_AI_BT_NODE_H_
 
 #include <algorithm>
 
@@ -32,4 +32,4 @@ class Node {
 } // namespace core::ai::behaviour_tree
 
 
-#endif  // BT_NODE_H
+#endif  // CORE_AI_BT_NODE_H_

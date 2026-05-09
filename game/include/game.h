@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_GAME_H_
+#define GAME_GAME_H_
 
 
 #include <cstdlib>
@@ -16,4 +16,4 @@ struct LaunchOptions {
 void Loop(const LaunchOptions& options);
 }  // namespace game
 
-#endif  // GAME_H
+#endif  // GAME_GAME_H_

@@ -1,5 +1,5 @@
-﻿#ifndef ACTION_H
-#define ACTION_H
+﻿#ifndef CORE_AI_BT_ACTION_H_
+#define CORE_AI_BT_ACTION_H_
 
 #include <functional>
 
@@ -40,4 +40,4 @@ public:
 } // namespace core::ai::behaviour_tree
 
 
-#endif  // ACTION_H
+#endif  // CORE_AI_BT_ACTION_H_

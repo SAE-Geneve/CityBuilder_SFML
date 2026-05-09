@@ -1,5 +1,5 @@
-﻿#ifndef BUTTON_H
-#define BUTTON_H
+﻿#ifndef API_UI_BUTTON_H_
+#define API_UI_BUTTON_H_
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -22,4 +22,4 @@ class Button : public Clickable {
 
 }  // namespace api::ui
 
-#endif  // BUTTON_H
+#endif  // API_UI_BUTTON_H_

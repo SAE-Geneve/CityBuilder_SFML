@@ -1,5 +1,5 @@
-﻿#ifndef BT_SELECTOR_H
-#define BT_SELECTOR_H
+﻿#ifndef CORE_AI_BT_SELECTOR_H_
+#define CORE_AI_BT_SELECTOR_H_
 
 #include "bt_composite.h"
 
@@ -12,4 +12,4 @@ class Selector : public Composite {
 
 }  // namespace core::ai::behaviour_tree
 
-#endif  // BT_SELECTOR_H
+#endif  // CORE_AI_BT_SELECTOR_H_

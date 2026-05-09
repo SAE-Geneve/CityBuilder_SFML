@@ -1,5 +1,5 @@
-﻿#ifndef CITYBUILDER_STRING_LITERAL_H
-#define CITYBUILDER_STRING_LITERAL_H
+﻿#ifndef CORE_UTILS_STRING_LITERAL_H_
+#define CORE_UTILS_STRING_LITERAL_H_
 
 #include <algorithm>
 
@@ -10,4 +10,4 @@ struct StringLiteral {
   char str[N]{};
 };
 }
-#endif  // CITYBUILDER_STRING_LITERAL_H
+#endif  // CORE_UTILS_STRING_LITERAL_H_

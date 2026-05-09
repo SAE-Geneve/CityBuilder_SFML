@@ -1,5 +1,5 @@
-#ifndef CORE_PROFILING_PROFILING_H
-#define CORE_PROFILING_PROFILING_H
+#ifndef CORE_PROFILING_PROFILING_H_
+#define CORE_PROFILING_PROFILING_H_
 
 #ifdef TRACY_ENABLE
 #include <tracy/Tracy.hpp>
@@ -14,4 +14,4 @@
 #define PROFILE_PLOT(name, val)  ((void)0)
 #endif
 
-#endif  // CORE_PROFILING_PROFILING_H
+#endif  // CORE_PROFILING_PROFILING_H_

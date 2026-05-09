@@ -1,5 +1,5 @@
-﻿#ifndef CLICKABLE_H
-#define CLICKABLE_H
+﻿#ifndef API_UI_CLICKABLE_H_
+#define API_UI_CLICKABLE_H_
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Window/Event.hpp>
@@ -31,4 +31,4 @@ class Clickable {
 };
 }  // namespace api::ui
 
-#endif  // CLICKABLE_H
+#endif  // API_UI_CLICKABLE_H_

@@ -1,5 +1,5 @@
-#ifndef API_GRAPHICS_CAMERA_H
-#define API_GRAPHICS_CAMERA_H
+#ifndef API_GRAPHICS_CAMERA_H_
+#define API_GRAPHICS_CAMERA_H_
 
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -41,4 +41,4 @@ class Camera {
 
 }  // namespace api::graphics
 
-#endif  // API_GRAPHICS_CAMERA_H
+#endif  // API_GRAPHICS_CAMERA_H_

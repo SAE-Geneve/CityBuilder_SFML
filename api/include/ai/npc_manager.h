@@ -1,5 +1,5 @@
-﻿#ifndef NPC_MANAGER_H
-#define NPC_MANAGER_H
+﻿#ifndef API_AI_NPC_MANAGER_H_
+#define API_AI_NPC_MANAGER_H_
 
 #include "ai/npc.h"
 #include "ai/npc_behaviour_tree.h"
@@ -22,4 +22,4 @@ class NpcManager {
 };
 }  // namespace api::ai
 
-#endif  // NPC_MANAGER_H
+#endif  // API_AI_NPC_MANAGER_H_

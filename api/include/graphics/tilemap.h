@@ -1,5 +1,5 @@
-#ifndef API_GRAPHICS_TILEMAP_H
-#define API_GRAPHICS_TILEMAP_H
+#ifndef API_GRAPHICS_TILEMAP_H_
+#define API_GRAPHICS_TILEMAP_H_
 
 #include <SFML/Graphics.hpp>
 #include <mdspan>
@@ -88,4 +88,4 @@ class TileMap : public api::ui::Clickable {
   const sf::RenderWindow *window_ = nullptr;
   const api::graphics::Camera *camera_ = nullptr;
 };
-#endif
+#endif  // API_GRAPHICS_TILEMAP_H_

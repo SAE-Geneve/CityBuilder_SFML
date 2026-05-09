@@ -1,5 +1,5 @@
-﻿#ifndef BUTTON_FACTORY_H
-#define BUTTON_FACTORY_H
+﻿#ifndef API_UI_BUTTON_FACTORY_H_
+#define API_UI_BUTTON_FACTORY_H_
 
 #include <SFML/Graphics/Font.hpp>
 #include <array>
@@ -40,4 +40,4 @@ class ButtonFactory {
 };
 }  // namespace api::ui
 
-#endif  // BUTTON_FACTORY_H
+#endif  // API_UI_BUTTON_FACTORY_H_

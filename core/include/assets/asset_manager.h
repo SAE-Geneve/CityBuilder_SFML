@@ -1,5 +1,5 @@
-﻿#ifndef ASSET_MANAGER_H
-#define ASSET_MANAGER_H
+﻿#ifndef CORE_ASSETS_ASSET_MANAGER_H_
+#define CORE_ASSETS_ASSET_MANAGER_H_
 
 #include <array>
 #include <span>
@@ -39,4 +39,4 @@ class AssetManager {
 
 }  // namespace core::assets
 
-#endif
+#endif  // CORE_ASSETS_ASSET_MANAGER_H_

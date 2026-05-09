@@ -1,5 +1,5 @@
-﻿#ifndef NPC_H
-#define NPC_H
+﻿#ifndef API_AI_NPC_H_
+#define API_AI_NPC_H_
 
 #include <SFML/Graphics.hpp>
 
@@ -61,4 +61,4 @@ constexpr resource::Resource::Type GetResourceType(NpcType type) {
 }
 }  // namespace api::ai
 
-#endif  // NPC_H
+#endif  // API_AI_NPC_H_

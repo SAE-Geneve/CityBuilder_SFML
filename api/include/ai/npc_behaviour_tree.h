@@ -1,5 +1,5 @@
-﻿#ifndef NPC_BEHAVIOUR_TREE_H
-#define NPC_BEHAVIOUR_TREE_H
+﻿#ifndef API_AI_NPC_BEHAVIOUR_TREE_H_
+#define API_AI_NPC_BEHAVIOUR_TREE_H_
 
 #include <memory>
 
@@ -55,4 +55,4 @@ private:
 };
 }  // namespace api::ai
 
-#endif  // NPC_BEHAVIOUR_TREE_H
+#endif  // API_AI_NPC_BEHAVIOUR_TREE_H_

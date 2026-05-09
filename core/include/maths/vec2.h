@@ -1,6 +1,6 @@
 ﻿
-#ifndef MATHS_VEC2_H
-#define MATHS_VEC2_H
+#ifndef CORE_MATHS_VEC2_H_
+#define CORE_MATHS_VEC2_H_
 #include <cmath>
 #include <type_traits>
 
@@ -84,4 +84,4 @@ using Vec2d = Vec2<double>;
 using Vec2f = Vec2<float>;
 }  // namespace core::maths
 
-#endif  // MATHS_VEC2_H
+#endif  // CORE_MATHS_VEC2_H_

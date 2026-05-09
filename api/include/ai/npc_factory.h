@@ -1,5 +1,5 @@
-﻿#ifndef NPC_FACTORY_H
-#define NPC_FACTORY_H
+﻿#ifndef API_AI_NPC_FACTORY_H_
+#define API_AI_NPC_FACTORY_H_
 
 #include "npc_manager.h"
 #include "profiling/profiling.h"
@@ -37,4 +37,4 @@ inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
 }
 }  // namespace api::ai
 
-#endif  // NPC_FACTORY_H
+#endif  // API_AI_NPC_FACTORY_H_

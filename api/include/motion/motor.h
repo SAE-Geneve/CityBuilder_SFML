@@ -1,5 +1,5 @@
-﻿#ifndef MOTOR_H
-#define MOTOR_H
+﻿#ifndef API_MOTION_MOTOR_H_
+#define API_MOTION_MOTOR_H_
 
 #include <SFML/System/Vector2.hpp>
 
@@ -40,4 +40,4 @@ inline void Motor::Update(const float dt) {
 inline float Motor::remaining_distance() const { return remainingDistance_; }
 }  // namespace api::motion
 
-#endif  // MOTOR_H
+#endif  // API_MOTION_MOTOR_H_

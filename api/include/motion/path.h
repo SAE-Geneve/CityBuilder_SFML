@@ -1,6 +1,6 @@
 ﻿
-#ifndef PATH_H
-#define PATH_H
+#ifndef API_MOTION_PATH_H_
+#define API_MOTION_PATH_H_
 #include <SFML/System/Vector2.hpp>
 #include <vector>
 
@@ -21,4 +21,4 @@ class Path {
 };
 }  // namespace api::motion
 
-#endif  // PATH_H
+#endif  // API_MOTION_PATH_H_

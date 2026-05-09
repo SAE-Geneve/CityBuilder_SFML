@@ -1,5 +1,5 @@
-#ifndef ASTAR_H
-#define ASTAR_H
+#ifndef API_MOTION_A_STAR_H_
+#define API_MOTION_A_STAR_H_
 
 #include <SFML/System/Vector2.hpp>
 #include <expected>
@@ -17,4 +17,4 @@ std::expected<Path, core::ai::pathfinding::PathError> GetPath(
 }
 }  // namespace api::motion
 
-#endif  // ASTAR_H
+#endif  // API_MOTION_A_STAR_H_
