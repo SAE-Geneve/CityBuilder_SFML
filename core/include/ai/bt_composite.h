@@ -17,7 +17,7 @@ namespace core::ai::behaviour_tree {
 class Composite : public Node {
  protected:
   std::vector<std::unique_ptr<Node>> children_;
-  int64_t childIdx_ = 0;
+  size_t childIdx_ = 0;
 
  public:
   using Node::Node;
