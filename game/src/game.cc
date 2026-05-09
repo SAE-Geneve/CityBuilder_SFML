@@ -54,7 +54,7 @@ void Setup(const LaunchOptions& options) {
 
   tilemap_ptr_->Setup(options.tilemap_width, options.tilemap_height);
   tilemap_ptr_->SetCamera(window_, camera_);
-  tilemap_ptr_->OnReleasedLeft = []() {
+  tilemap_ptr_->on_released_left = []() {
     core::LogDebug("Clicked tilemap");
     const sf::Vector2f world = window_.mapPixelToCoords(
         sf::Mouse::getPosition(window_), camera_.WorldView());
@@ -66,37 +66,37 @@ void Setup(const LaunchOptions& options) {
   const auto window_size = core::maths::Vec2f{window_.getSize()};
   btnBlue = btn_factory.CreateButton(
       sf::Vector2f(100.f, window_size.y - 100.f), "Blue");
-  btnBlue->OnReleasedLeft = []() {
+  btnBlue->on_released_left = []() {
     npc_adding_type = api::ai::NpcType::kBlueWood;
   };
 
   btnRed = btn_factory.CreateButton(
       sf::Vector2f(200.f, window_size.y - 100.f), "Red");
-  btnRed->OnReleasedLeft = []() {
+  btnRed->on_released_left = []() {
     npc_adding_type = api::ai::NpcType::kRedRock;
   };
 
   btnGreen = btn_factory.CreateButton(
       sf::Vector2f(300.f, window_size.y - 100.f), "Green");
-  btnGreen->OnReleasedLeft = []() {
+  btnGreen->on_released_left = []() {
     npc_adding_type = api::ai::NpcType::kGreenFood;
   };
 
   btnExit = btn_factory.CreateButton(
       sf::Vector2f(window_size.y - 30.f, 30.f), "Exit");
-  btnExit->OnReleasedLeft = []() { window_.close(); };
+  btnExit->on_released_left = []() { window_.close(); };
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kWood,
-      tilemap_ptr_->collectibles(TileMap::Tile::kTree), ChopEvent);
+      tilemap_ptr_->GetCollectibles(TileMap::Tile::kTree), ChopEvent);
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kFood,
-      tilemap_ptr_->collectibles(TileMap::Tile::kFood), ChopEvent);
+      tilemap_ptr_->GetCollectibles(TileMap::Tile::kFood), ChopEvent);
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kStone,
-      tilemap_ptr_->collectibles(TileMap::Tile::kRock), ChopEvent);
+      tilemap_ptr_->GetCollectibles(TileMap::Tile::kRock), ChopEvent);
 }
 
 void SpawnInitialNpcs(size_t total) {

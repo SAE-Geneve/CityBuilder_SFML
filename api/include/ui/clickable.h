@@ -15,8 +15,8 @@ class Clickable {
   // Constructeur protected, la classe demande un heritage
   Clickable() = default;
 
-  std::function<void()> OnHoverEnter;
-  std::function<void()> OnHoverExit;
+  std::function<void()> on_hover_enter;
+  std::function<void()> on_hover_exit;
 
  public:
   virtual ~Clickable() = default;
@@ -24,10 +24,10 @@ class Clickable {
 
   virtual void SetZone(sf::IntRect zone);
 
-  std::function<void()> OnReleasedLeft;
-  std::function<void()> OnReleasedRight;
-  std::function<void()> OnPressedLeft;
-  std::function<void()> OnPressedRight;
+  std::function<void()> on_released_left;
+  std::function<void()> on_released_right;
+  std::function<void()> on_pressed_left;
+  std::function<void()> on_pressed_right;
 };
 }  // namespace api::ui
 

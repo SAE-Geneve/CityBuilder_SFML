@@ -59,7 +59,7 @@ class TileMap : public api::ui::Clickable {
 
 
  public:
-  sf::Vector2f screen_position(size_t index) const;
+  sf::Vector2f ScreenPosition(size_t index) const;
   static sf::Vector2f TilePos(sf::Vector2i);
   static constexpr int step(){ return kPixelStep; };
 
@@ -81,7 +81,7 @@ class TileMap : public api::ui::Clickable {
   [[nodiscard]] auto tile_count_x() const { return tile_count_x_; }
   [[nodiscard]] auto tile_count_y() const { return tile_count_y_; }
 
-  std::vector<int> collectibles(Tile) const;
+  std::vector<int> GetCollectibles(Tile) const;
   std::vector<sf::Vector2f> GetWalkables() const;
 
  private:

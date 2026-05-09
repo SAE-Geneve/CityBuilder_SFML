@@ -44,10 +44,10 @@ void Npc::Setup(const NpcType type, std::string_view filename,
 void Npc::Update(const float dt) {
   PROFILE_ZONE();
 
-  if (path_.valid()) {
+  if (path_.IsValid()) {
     motor_.Update(dt);
     if (!path_.IsDone() && motor_.remaining_distance() <= 0.001f) {
-      motor_.set_destination(path_.next_point());
+      motor_.set_destination(path_.NextPoint());
     }
   }
 

@@ -35,12 +35,12 @@ Button::Button(const sf::Vector2f pos, std::string_view label,
 
   Button::SetZone(sf::IntRect(int_pos, int_size));
 
-  OnHoverEnter = [this]() {
+  on_hover_enter = [this]() {
     sprite_.setColor(sf::Color(0, 0, 0, 0));
     hover_sprite_.setColor(sf::Color(255, 255, 255, 255));
     label_.setFillColor(sf::Color::Black);
   };
-  OnHoverExit = [this]() {
+  on_hover_exit = [this]() {
     sprite_.setColor(sf::Color(255, 255, 255, 255));
     hover_sprite_.setColor(sf::Color(0, 0, 0, 0));
     label_.setFillColor(sf::Color::White);

@@ -61,7 +61,7 @@ Status NpcBehaviourTree::CheckHunger() const {
 
 Status NpcBehaviourTree::Move() const {
   PROFILE_ZONE();
-  if (!path_->valid()) {
+  if (!path_->IsValid()) {
     return Status::kFailure;
   }
   if (!path_->IsDone()) {
@@ -98,9 +98,9 @@ Status NpcBehaviourTree::PickResource() {
                       gen);  // C++20 ranges form
   if (picked_resource != nullptr && picked_resource->quantity() > 0) {
     current_resource_ = picked_resource;
-    set_destination(tilemap_->screen_position(static_cast<size_t>(current_resource_->tile_index())));
+    set_destination(tilemap_->ScreenPosition(static_cast<size_t>(current_resource_->tile_index())));
 
-    if (path_->valid()) return Status::kSuccess;
+    if (path_->IsValid()) return Status::kSuccess;
   }
 
   return Status::kFailure;

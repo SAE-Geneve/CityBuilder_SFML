@@ -10,10 +10,10 @@ void Fill_5_Points(api::motion::Path& path) {
 
 TEST(Path, IsValid) {
   api::motion::Path path;
-  EXPECT_FALSE(path.valid());
+  EXPECT_FALSE(path.IsValid());
 
   Fill_5_Points(path);
-  EXPECT_TRUE(path.valid());
+  EXPECT_TRUE(path.IsValid());
 }
 
 TEST(Path, IsDone) {
@@ -24,11 +24,11 @@ TEST(Path, IsDone) {
 
   for (int i = 0; i < 4; i++) {
     EXPECT_FALSE(path.IsDone());
-    [[maybe_unused]]auto p = path.next_point();
+    [[maybe_unused]]auto p = path.NextPoint();
   }
   EXPECT_TRUE(path.IsDone());
 
-  [[maybe_unused]] auto nextPoint = path.next_point();
+  [[maybe_unused]] auto nextPoint = path.NextPoint();
   EXPECT_TRUE(path.IsDone());
 }
 
@@ -40,20 +40,20 @@ TEST(Path, StartPoint) {
   Fill_5_Points(path);
   EXPECT_EQ(path.StartPoint(), sf::Vector2f(1, 1));
 
-  [[maybe_unused]] auto nextPoint = path.next_point();
+  [[maybe_unused]] auto nextPoint = path.NextPoint();
   EXPECT_EQ(path.StartPoint(), sf::Vector2f(1, 1));
 }
 
 TEST(Path, FillAndPoints) {
   api::motion::Path path;
   path.Fill({});
-  EXPECT_FALSE(path.valid());
+  EXPECT_FALSE(path.IsValid());
 
   path.Fill({{1, 1}});
-  EXPECT_TRUE(path.valid());
+  EXPECT_TRUE(path.IsValid());
 
   path.Fill({{11, 11}, {12, 12}, {13, 13}, {14, 14}, {15, 15}});
-  EXPECT_TRUE(path.valid());
+  EXPECT_TRUE(path.IsValid());
 
   auto pts = path.Points();
   EXPECT_EQ(pts.size(), 5);
