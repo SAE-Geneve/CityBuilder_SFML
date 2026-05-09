@@ -1,7 +1,4 @@
-﻿//
-// Created by unite on 04.06.2025.
-//
-#include <gtest/gtest.h>
+﻿#include <gtest/gtest.h>
 
 #include <SFML/Graphics/Texture.hpp>
 

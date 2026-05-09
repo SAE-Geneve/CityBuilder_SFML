@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 19/06/2025.
-//
-
-#include "ai/npc_manager.h"
+﻿#include "ai/npc_manager.h"
 
 #include "ai/npc_factory.h"
 #include "profiling/profiling.h"

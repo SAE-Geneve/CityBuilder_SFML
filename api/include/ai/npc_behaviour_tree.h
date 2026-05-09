@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 19/06/2025.
-//
-
-#ifndef NPC_BEHAVIOUR_TREE_H
+﻿#ifndef NPC_BEHAVIOUR_TREE_H
 #define NPC_BEHAVIOUR_TREE_H
 
 #include <memory>

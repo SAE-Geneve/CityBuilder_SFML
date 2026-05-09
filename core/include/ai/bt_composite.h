@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 11/06/2025.
-//
-
-#ifndef BT_COMPOSITE_H
+﻿#ifndef BT_COMPOSITE_H
 #define BT_COMPOSITE_H
 
 #include <cstdlib>

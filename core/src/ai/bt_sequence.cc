@@ -1,12 +1,8 @@
-﻿//
-// Created by sebas on 11/06/2025.
-//
-
-#include "ai/bt_sequence.h"
+﻿#include "ai/bt_sequence.h"
 
 #include "profiling/profiling.h"
 
-using namespace core::ai::behaviour_tree;
+namespace core::ai::behaviour_tree {
 
 Status Sequence::Tick() {
   PROFILE_ZONE();
@@ -28,3 +24,5 @@ Status Sequence::Tick() {
   Reset();
   return Status::kSuccess;
 }
+
+}  // namespace core::ai::behaviour_tree

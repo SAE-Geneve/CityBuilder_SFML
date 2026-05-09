@@ -1,8 +1,6 @@
-﻿//
-// Created by unite on 07.05.2026.
-//
+﻿#include "resources/resource.h"
 
-#include "resources/resource.h"
+#include <algorithm>
 
 namespace api::resource {
 void Resource::Exploit(const float rate) {

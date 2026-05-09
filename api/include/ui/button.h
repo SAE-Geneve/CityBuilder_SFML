@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 25/06/2025.
-//
-
-#ifndef BUTTON_H
+﻿#ifndef BUTTON_H
 #define BUTTON_H
 
 #include <SFML/Graphics/RectangleShape.hpp>

@@ -1,10 +1,5 @@
-﻿//
-// Created by sebas on 19/06/2025.
-//
-
-#ifndef NPC_FACTORY_H
+﻿#ifndef NPC_FACTORY_H
 #define NPC_FACTORY_H
-#include <iostream>
 
 #include "npc_manager.h"
 #include "profiling/profiling.h"
@@ -15,7 +10,6 @@ inline void CreateNpc(std::vector<Npc>& npcs, NpcType type,
                       sf::Vector2f start_position, const TileMap* tilemap,
                       resource::ResourceManager& resource_manager) {
   PROFILE_ZONE();
-  // std::cout << "Creating npc" << std::endl;
 
   switch (type) {
     case NpcType::kBlueWood:

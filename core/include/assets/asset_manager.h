@@ -37,6 +37,6 @@ class AssetManager {
   std::array<TAsset, static_cast<size_t>(TAssetType::kLength)> assets_{};
 };
 
-}  // namespace core::experimental
+}  // namespace core::assets
 
 #endif

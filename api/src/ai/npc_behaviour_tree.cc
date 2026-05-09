@@ -1,10 +1,5 @@
-﻿//
-// Created by sebas on 19/06/2025.
-//
+﻿#include "ai/npc_behaviour_tree.h"
 
-#include "ai/npc_behaviour_tree.h"
-
-#include <functional>
 #include <random>
 #include <utility>
 
@@ -17,10 +12,15 @@
 #include "profiling/profiling.h"
 #include "utils/log.h"
 
-using namespace core::ai::behaviour_tree;
-using namespace api::motion;
-
 namespace api::ai {
+
+using core::ai::behaviour_tree::Action;
+using core::ai::behaviour_tree::Selector;
+using core::ai::behaviour_tree::Sequence;
+using core::ai::behaviour_tree::Status;
+using motion::Motor;
+using motion::Path;
+namespace Astar = motion::Astar;
 
 void NpcBehaviourTree::set_destination(const sf::Vector2f& destination) const {
   PROFILE_ZONE();
@@ -38,12 +38,7 @@ void NpcBehaviourTree::set_destination(const sf::Vector2f& destination) const {
 
 Status NpcBehaviourTree::CheckHunger() const {
   PROFILE_ZONE();
-  // std::cout << "this ? = " << this << "\n";
-  // std::cout << "Am I hungry ? " << std::to_string(hunger_);
-
   if (hunger_ >= 100) {
-    // std::cout << " : Yes, I need to find food\n";
-
     if (!tilemap_) {
       core::LogError("No tilemap");
       return Status::kFailure;
@@ -60,29 +55,19 @@ Status NpcBehaviourTree::CheckHunger() const {
     set_destination(cantina_position_);
 
     return Status::kSuccess;
-
-  } else {
-    // std::cout << " : No, I can wait\n";
-    return Status::kFailure;
   }
+  return Status::kFailure;
 }
 
 Status NpcBehaviourTree::Move() const {
   PROFILE_ZONE();
-  // if destination not reachable, return failure
   if (!path_->valid()) {
-    // std::cout << "Not reachable" << path_->IsValid() << "\n";
     return Status::kFailure;
-  } else {
-    // std::cout << "I'm moving" << "\n";
-    if (!path_->IsDone()) {
-      // still arriving, return running
-      return Status::kRunning;
-    } else {
-      // if destination reached, return success
-      return Status::kSuccess;
-    }
   }
+  if (!path_->IsDone()) {
+    return Status::kRunning;
+  }
+  return Status::kSuccess;
 }
 
 Status NpcBehaviourTree::Eat() {
@@ -183,6 +168,5 @@ void NpcBehaviourTree::Update(float dt) {
   PROFILE_ZONE();
   tick_dt = dt;
   bt_root_->Tick();
-  // std::cout << "this ? = " << this << "\n";
 }
 }  // namespace api::ai

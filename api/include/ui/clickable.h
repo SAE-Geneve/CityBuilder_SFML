@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 25/06/2025.
-//
-
-#ifndef CLICKABLE_H
+﻿#ifndef CLICKABLE_H
 #define CLICKABLE_H
 
 #include <SFML/Graphics/Rect.hpp>

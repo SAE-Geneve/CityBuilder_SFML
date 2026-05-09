@@ -1,12 +1,8 @@
-﻿//
-// Created by sebas on 05/06/2025.
-//
-
-#include "ai/bt_selector.h"
+﻿#include "ai/bt_selector.h"
 
 #include "profiling/profiling.h"
 
-using namespace core::ai::behaviour_tree;
+namespace core::ai::behaviour_tree {
 
 Status Selector::Tick() {
   PROFILE_ZONE();
@@ -27,3 +23,5 @@ Status Selector::Tick() {
 
   return Status::kFailure;
 }
+
+}  // namespace core::ai::behaviour_tree

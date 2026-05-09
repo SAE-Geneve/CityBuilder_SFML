@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 05/06/2025.
-//
-
-#ifndef BT_SELECTOR_H
+﻿#ifndef BT_SELECTOR_H
 #define BT_SELECTOR_H
 
 #include "bt_composite.h"

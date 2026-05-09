@@ -2,7 +2,7 @@
 
 #include "profiling/profiling.h"
 
-using namespace api::motion;
+namespace api::motion {
 
 bool Path::IsDone() const {
   return path_points_.empty() || idxPoint_ == path_points_.size() - 1;
@@ -37,8 +37,7 @@ sf::Vector2f Path::StartPoint() const {
   if (valid()) {
     return path_points_[0];
   }
-  return {
-      0,
-      0,
-  };
+  return {0, 0};
 }
+
+}  // namespace api::motion

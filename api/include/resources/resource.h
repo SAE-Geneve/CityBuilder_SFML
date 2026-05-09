@@ -1,11 +1,5 @@
-﻿//
-// Created by sebas on 26/06/2025.
-//
-
-#ifndef RESOURCE_H
+﻿#ifndef RESOURCE_H
 #define RESOURCE_H
-
-#include <algorithm>
 
 namespace api::resource {
 class Resource {
@@ -28,8 +22,7 @@ public:
 
   void Exploit(float);
 
-  //FIXME this generates allocation
-  //std::function<void(int, float)> OnChopResource_ = nullptr;
+  // FIXME this generates allocation
   void(*on_chop_resource_)(int, float) = nullptr;
 };
 }

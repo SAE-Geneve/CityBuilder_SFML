@@ -1,7 +1,3 @@
-//
-// Created by unite on 26.02.2026.
-//
-
 #ifndef CITYBUILDER_A_STAR_H
 #define CITYBUILDER_A_STAR_H
 

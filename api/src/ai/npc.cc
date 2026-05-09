@@ -1,13 +1,9 @@
 ﻿#include "ai/npc.h"
 
-#include <random>
-
 #include "ai/npc_behaviour_tree.h"
 #include "profiling/profiling.h"
 #include "resources/resource_manager.h"
 #include "utils/log.h"
-
-using namespace api::motion;
 
 namespace api::ai {
 
@@ -48,13 +44,6 @@ void Npc::Setup(const NpcType type, std::string_view filename,
 void Npc::Update(const float dt) {
   PROFILE_ZONE();
 
-  // // Updating
-  // std::cout << "\n";
-  // std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
-  // std::cout << "Update " << name_ << "\n";
-  // std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- \n";
-
-  // -------------------
   if (path_.valid()) {
     motor_.Update(dt);
     if (!path_.IsDone() && motor_.remaining_distance() <= 0.001f) {
@@ -67,19 +56,10 @@ void Npc::Update(const float dt) {
 
 void Npc::Draw(sf::RenderWindow& window) {
   PROFILE_ZONE();
-  // sf::Sprite sprite(texture_);
-  // sprite.setPosition(motor_->GetPosition());
-  // window.draw(sprite);
-
   if (sprite_.has_value()) {
     sprite_.value().setPosition(motor_.position());
     window.draw(sprite_.value());
   }
 }
-
-// void Npc::SetPath(const Path& path){
-//     path_ = path;
-//     motor_.SetDestination(path_.StartPoint());
-// }
 
 }  // namespace api::ai

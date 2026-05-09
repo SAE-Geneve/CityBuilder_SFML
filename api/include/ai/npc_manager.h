@@ -1,8 +1,4 @@
-﻿//
-// Created by sebas on 19/06/2025.
-//
-
-#ifndef NPC_MANAGER_H
+﻿#ifndef NPC_MANAGER_H
 #define NPC_MANAGER_H
 
 #include "ai/npc.h"

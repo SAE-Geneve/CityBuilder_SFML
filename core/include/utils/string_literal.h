@@ -1,8 +1,4 @@
-﻿//
-// Created by unite on 07.05.2026.
-//
-
-#ifndef CITYBUILDER_STRING_LITERAL_H
+﻿#ifndef CITYBUILDER_STRING_LITERAL_H
 #define CITYBUILDER_STRING_LITERAL_H
 
 #include <algorithm>

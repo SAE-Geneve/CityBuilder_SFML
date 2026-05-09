@@ -23,10 +23,8 @@ class Npc {
   std::unique_ptr<sf::Texture> texture_ = std::make_unique<sf::Texture>();
   std::optional<sf::Sprite> sprite_;
 
-  /*
-   * FIXME each npc has its own bt_tree that allocates which is the same...
-   * What about 4 bt_trees (one for each role) shared between all NPC
-   */
+  // FIXME each npc has its own bt_tree that allocates which is the same...
+  // What about 4 bt_trees (one for each role) shared between all NPC
   std::unique_ptr<NpcBehaviourTree> bt_tree_;
 
   // Movement
@@ -34,12 +32,7 @@ class Npc {
   motion::Motor motor_;
   motion::Path path_;
 
-  // Replace with type
   NpcType type_ = NpcType::kNone;
-
-  // World informations
-  // Tilemap
-  // const TileMap *tileMap_;
 
  public:
   void Setup(NpcType type, std::string_view filename, const TileMap* tilemap,
@@ -51,8 +44,6 @@ class Npc {
     motor_.set_position(position);
   }
   [[nodiscard]] NpcType type() const { return type_; }
-  // Motion
-  // void SetPath(const motion::Path &path);
 };
 
 constexpr resource::Resource::Type GetResourceType(NpcType type) {

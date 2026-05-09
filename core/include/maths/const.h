@@ -1,8 +1,4 @@
-﻿//
-// Created by unite on 28.05.2025.
-//
-
-#ifndef CORE_MATHS_CONST_H
+﻿#ifndef CORE_MATHS_CONST_H
 #define CORE_MATHS_CONST_H
 #include <numbers>
 

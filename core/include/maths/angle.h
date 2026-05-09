@@ -1,8 +1,4 @@
-﻿//
-// Created by unite on 28.05.2025.
-//
-
-#ifndef CORE_MATHS_ANGLE_H
+﻿#ifndef CORE_MATHS_ANGLE_H
 #define CORE_MATHS_ANGLE_H
 
 #include "maths/const.h"
@@ -33,5 +29,5 @@ class Degree {
 
 constexpr Radian::Radian(const Degree& angle)
     : value_(static_cast<float>(angle) / 180.0f * Pi) {}
-}  // namespace core
+}  // namespace core::maths
 #endif  // CORE_MATHS_ANGLE_H

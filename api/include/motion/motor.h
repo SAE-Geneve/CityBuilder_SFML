@@ -20,8 +20,6 @@ class Motor {
   void set_position(sf::Vector2f position) { position_ = position; }
 
   void set_destination(const sf::Vector2f destination) {
-    // std::cout << "new destination : " << destination.x << ":" <<
-    // destination.y << "\n";
     destination_ = destination;
   }
 

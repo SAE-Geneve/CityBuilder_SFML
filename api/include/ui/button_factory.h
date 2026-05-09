@@ -1,18 +1,14 @@
-﻿//
-// Created by sebas on 25/06/2025.
-//
-
-#ifndef BUTTON_FACTORY_H
+﻿#ifndef BUTTON_FACTORY_H
 #define BUTTON_FACTORY_H
 
 #include <SFML/Graphics/Font.hpp>
 #include <array>
-#include <iostream>
 #include <string_view>
 
 #include "assets/asset_manager.h"
 #include "button.h"
 #include "profiling/profiling.h"
+#include "utils/log.h"
 
 namespace api::ui {
 class ButtonFactory {
@@ -30,7 +26,7 @@ class ButtonFactory {
     PROFILE_ZONE();
     textures_.Load(files_);
     if (!font.openFromFile("_assets/fonts/ANTQUAB.TTF")) {
-      std::cout << "Failed to load font" << std::endl;
+      core::LogError("Failed to load font");
     }
   }
 
