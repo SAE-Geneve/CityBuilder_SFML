@@ -17,7 +17,7 @@ struct NpcHandle {
 };
 
 class NpcManager {
-  static constexpr std::ptrdiff_t kChunkSize = 64;
+  static constexpr size_t kChunkSize = 64;
 
   struct Chunk {
     std::array<Npc, kChunkSize> npcs;

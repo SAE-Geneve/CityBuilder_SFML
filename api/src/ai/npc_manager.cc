@@ -42,17 +42,17 @@ NpcHandle NpcManager::Add(NpcType type, sf::Vector2f start_position,
       handle = {std::ssize(chunks_) - 1, 0};
     } else {
       auto& occ = chunks_.back()->occupied;
-      std::ptrdiff_t slot = 0;
+      size_t slot = 0;
       while (slot < kChunkSize && occ[slot]) ++slot;
-      handle = {std::ssize(chunks_) - 1, slot};
+      handle = {std::ssize(chunks_) - 1, static_cast<std::ptrdiff_t>(slot)};
     }
   }
 
-  Chunk& chunk = *chunks_[handle.chunk];
-  chunk.occupied[handle.slot] = true;
+  Chunk& chunk = *chunks_[static_cast<size_t>(handle.chunk)];
+  chunk.occupied[static_cast<size_t>(handle.slot)] = true;
   ++alive_count_;
 
-  Npc& npc = chunk.npcs[handle.slot];
+  Npc& npc = chunk.npcs[static_cast<size_t>(handle.slot)];
   npc.Setup(type, SpriteFor(type), tilemap, start_position, resource_manager);
   npc.set_position(start_position);
   return handle;
@@ -61,10 +61,11 @@ NpcHandle NpcManager::Add(NpcType type, sf::Vector2f start_position,
 void NpcManager::Erase(NpcHandle handle) {
   PROFILE_ZONE();
   assert(handle.chunk >= 0 && handle.chunk < std::ssize(chunks_));
-  assert(handle.slot >= 0 && handle.slot < kChunkSize);
-  Chunk& chunk = *chunks_[handle.chunk];
-  assert(chunk.occupied[handle.slot]);
-  chunk.occupied[handle.slot] = false;
+  assert(handle.slot >= 0 &&
+         static_cast<size_t>(handle.slot) < kChunkSize);
+  Chunk& chunk = *chunks_[static_cast<size_t>(handle.chunk)];
+  assert(chunk.occupied[static_cast<size_t>(handle.slot)]);
+  chunk.occupied[static_cast<size_t>(handle.slot)] = false;
   free_slots_.push_back(handle);
   --alive_count_;
 }
@@ -73,7 +74,7 @@ void NpcManager::Update(float dt) {
   PROFILE_ZONE();
   for (auto& chunk_ptr : chunks_) {
     Chunk& chunk = *chunk_ptr;
-    for (std::ptrdiff_t i = 0; i < kChunkSize; ++i) {
+    for (size_t i = 0; i < kChunkSize; ++i) {
       if (chunk.occupied[i]) chunk.npcs[i].Update(dt);
     }
   }
@@ -83,7 +84,7 @@ void NpcManager::Draw(sf::RenderWindow& window) {
   PROFILE_ZONE();
   for (auto& chunk_ptr : chunks_) {
     Chunk& chunk = *chunk_ptr;
-    for (std::ptrdiff_t i = 0; i < kChunkSize; ++i) {
+    for (size_t i = 0; i < kChunkSize; ++i) {
       if (chunk.occupied[i]) chunk.npcs[i].Draw(window);
     }
   }
