@@ -5,45 +5,31 @@
 #include "graphics/tilesheet.h"
 
 namespace game {
-
-enum class BackgroundTiles {
-  kGrassA,
-  kGrassB,
-  kWaterA,
-  kWaterB
-};
-
-enum class [[maybe_unused]] RessourcesTiles {
-  kWood,
-  kRock,
-  kFood
-};
-
     namespace {
-        sf::Clock clock;
+        // [[maybe_unused]] sf::Clock clock;
         sf::RenderWindow window_;
 
 
         graphics::TilemapRenderer tilemap_;
         graphics::Tilesheet<BackgroundTiles> tilesheet_;
 
-        void Setup() {
+        void Setup(){
             // Create the main window
             window_.create(sf::VideoMode({1920, 1080}), "SFML window");
 
             if (tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins.png", 128)) {
-              tilesheet_.AddTile(BackgroundTiles::kGrassA, 0, 0);
-              tilesheet_.AddTile(BackgroundTiles::kGrassB, 1, 0);
-              tilesheet_.AddTile(BackgroundTiles::kWaterA, 0, 2);
-              tilesheet_.AddTile(BackgroundTiles::kWaterB, 1, 2);
+                tilesheet_.AddTile(BackgroundTiles::kGrassA, 0, 0);
+                tilesheet_.AddTile(BackgroundTiles::kGrassB, 1, 0);
+                tilesheet_.AddTile(BackgroundTiles::kWaterA, 0, 2);
+                tilesheet_.AddTile(BackgroundTiles::kWaterB, 1, 2);
 
-              tilemap_.Setup(tilesheet_.GetTexture(), {1920, 1080}, {64, 64}, tilesheet_.GetBounds(BackgroundTiles::kGrassA));
+                tilemap_.Setup(tilesheet_.GetTexture(), {1920, 1080}, {64, 64},
+                               tilesheet_.GetBounds(BackgroundTiles::kGrassA));
             }
-
         }
     } // namespace
 
-    void Loop() {
+    void Loop(){
         Setup();
 
         // Start the game loop
