@@ -1,7 +1,8 @@
 ﻿#include <optional>
 #include "SFML/Graphics.hpp"
 #include "game.h"
-#include "graphics/tilemap.h"
+#include "graphics/tilemap_renderer.h"
+#include "graphics/tilesheet.h"
 
 namespace game {
     namespace {
@@ -9,14 +10,15 @@ namespace game {
         sf::RenderWindow window_;
 
         sf::Texture tilesheet;
-        graphics::TileMap tilemap_;
+        graphics::TilemapRenderer tilemap_;
 
         void Setup() {
             // Create the main window
             window_.create(sf::VideoMode({1920, 1080}), "SFML window");
 
             tilesheet.loadFromFile("_assets/tiles/RTS_medieval@2_no_margins.png");
-            tilemap_.Setup(&tilesheet, {1920, 1080}, {64, 64}, {128, 128});
+
+            tilemap_.Setup(&tilesheet, {1920, 1080}, {64, 64}, graphics::tilesheet::ConstructRect(0,0,128,128));
         }
     } // namespace
 
