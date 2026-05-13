@@ -5,20 +5,41 @@
 #include "graphics/tilesheet.h"
 
 namespace game {
+
+enum class BackgroundTiles {
+  kGrassA,
+  kGrassB,
+  kWaterA,
+  kWaterB
+};
+
+enum class [[maybe_unused]] RessourcesTiles {
+  kWood,
+  kRock,
+  kFood
+};
+
     namespace {
         sf::Clock clock;
         sf::RenderWindow window_;
 
-        sf::Texture tilesheet;
+
         graphics::TilemapRenderer tilemap_;
+        graphics::Tilesheet<BackgroundTiles> tilesheet_;
 
         void Setup() {
             // Create the main window
             window_.create(sf::VideoMode({1920, 1080}), "SFML window");
 
-            tilesheet.loadFromFile("_assets/tiles/RTS_medieval@2_no_margins.png");
+            if (tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins.png", 128)) {
+              tilesheet_.AddTile(BackgroundTiles::kGrassA, 0, 0);
+              tilesheet_.AddTile(BackgroundTiles::kGrassB, 1, 0);
+              tilesheet_.AddTile(BackgroundTiles::kWaterA, 0, 2);
+              tilesheet_.AddTile(BackgroundTiles::kWaterB, 1, 2);
 
-            tilemap_.Setup(&tilesheet, {1920, 1080}, {64, 64}, graphics::tilesheet::ConstructRect(0,0,128,128));
+              tilemap_.Setup(tilesheet_.GetTexture(), {1920, 1080}, {64, 64}, tilesheet_.GetBounds(BackgroundTiles::kGrassA));
+            }
+
         }
     } // namespace
 
@@ -27,7 +48,7 @@ namespace game {
 
         // Start the game loop
         while (window_.isOpen()) {
-            auto dt = clock.restart().asSeconds();
+            //auto dt = clock.restart().asSeconds();
 
             // Process events = Input frame
             while (const std::optional event = window_.pollEvent()) {
