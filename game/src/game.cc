@@ -1,6 +1,8 @@
 ﻿#include <optional>
 #include "SFML/Graphics.hpp"
 #include "game.h"
+
+#include "tilemap.h"
 #include "graphics/tilemap_renderer.h"
 #include "graphics/tilesheet.h"
 
@@ -8,24 +10,14 @@ namespace game {
     namespace {
         // [[maybe_unused]] sf::Clock clock;
         sf::RenderWindow window_;
-
-
-        graphics::TilemapRenderer tilemap_;
-        graphics::Tilesheet<BackgroundTiles> tilesheet_;
+        Tilemap tilemap_;
 
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode({1920, 1080}), "SFML window");
+            tilemap_.Setup({1920,1080}, {64, 64});
 
-            if (tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins.png", 128)) {
-                tilesheet_.AddTile(BackgroundTiles::kGrassA, 0, 0);
-                tilesheet_.AddTile(BackgroundTiles::kGrassB, 1, 0);
-                tilesheet_.AddTile(BackgroundTiles::kWaterA, 0, 2);
-                tilesheet_.AddTile(BackgroundTiles::kWaterB, 1, 2);
 
-                tilemap_.Setup(tilesheet_.GetTexture(), {1920, 1080}, {64, 64},
-                               tilesheet_.GetBounds(BackgroundTiles::kGrassA));
-            }
         }
     } // namespace
 

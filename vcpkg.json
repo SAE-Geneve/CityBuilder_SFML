@@ -1,8 +1,6 @@
-﻿{
-  "name": "city-builder",
-  "version-string": "1.0",
-  "dependencies": [
-    "sfml"
-  ],
-  "builtin-baseline": "80f9bcfa455e875d9c1bf7a7c6692d7e1e481061"
+{
+  "name" : "citybuilder",
+  "version-string" : "1.0.0",
+  "dependencies" : [ "sfml"],
+  "builtin-baseline" : "e5a4f54c0d562059e9ccc6f7e7150667da58fe41"
 }

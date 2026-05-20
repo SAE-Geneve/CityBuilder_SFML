@@ -17,21 +17,6 @@ namespace graphics {
                                     texBounds.position + sf::Vector2f(0.f, texBounds.size.y))); // + Y
     }
 
-    void TilemapRenderer::Setup(sf::Texture *texture, sf::Vector2f gridSize,
-                                sf::Vector2f gridOffset, sf::FloatRect texBounds){
-        // init textures
-        texture_ = texture;
-        vertices_.clear();
-
-        for (float x = 0.f; x < gridSize.x; x += gridOffset.x) { // NOLINT(*-flp30-c)
-            for (float y = 0.f; y < gridSize.y;
-                 y += gridOffset.x) { // NOLINT(*-flp30-c)
-
-                AddTile({x, y}, gridOffset, texBounds);
-            }
-        }
-    }
-
     void TilemapRenderer::Draw(sf::RenderWindow &window) const{
         sf::RenderStates states;
         if (texture_) {
@@ -41,4 +26,12 @@ namespace graphics {
             window.draw(vertices_, states);
         }
     }
+
+    void TilemapRenderer::SetTexture(sf::Texture *texture){
+        texture_ = texture;
+    }
+    void TilemapRenderer::Clear(){
+        vertices_.clear();
+    }
+
 } // namespace graphics

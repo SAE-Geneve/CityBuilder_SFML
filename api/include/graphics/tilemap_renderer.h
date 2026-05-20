@@ -2,8 +2,8 @@
 // Created by sebas on 07.05.2026.
 //
 
-#ifndef CITYBUILDER_TILEMAP_H
-#define CITYBUILDER_TILEMAP_H
+#ifndef CITYBUILDER_TILEMAP_RENDERER_H
+#define CITYBUILDER_TILEMAP_RENDERER_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
@@ -21,10 +21,14 @@ namespace graphics {
     public:
         void AddTile(sf::Vector2f pos, sf::Vector2f offset, sf::FloatRect texBounds);
 
-        void Setup(sf::Texture *texture, sf::Vector2f gridSize, sf::Vector2f gridOffset, sf::FloatRect texBounds);
+        //void Setup(sf::Texture *texture, sf::Vector2f gridSize, sf::Vector2f gridOffset, sf::FloatRect texBounds);
 
         void Draw(sf::RenderWindow &window) const;
+
+        void SetTexture(sf::Texture *texture);
+        void Clear();
+
     };
 }
 
-#endif  // CITYBUILDER_TILEMAP_H
+#endif  // CITYBUILDER_TILEMAP_RENDERER_H

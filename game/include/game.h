@@ -3,4 +3,8 @@
 
 #include "game_types.h"
 
+namespace game {
+    void Loop();
+}
+
 #endif  // GAME_H
