@@ -13,7 +13,7 @@
 class Tilemap {
 
     graphics::TilemapRenderer renderer_;
-    graphics::Tilesheet<BackgroundTiles> tilesheet_;
+    graphics::Tilesheet<TerrainTiles> tilesheet_;
 
 public:
     void Setup(sf::Vector2f gridSize, sf::Vector2f gridOffset);

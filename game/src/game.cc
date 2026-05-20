@@ -3,8 +3,6 @@
 #include "game.h"
 
 #include "tilemap.h"
-#include "graphics/tilemap_renderer.h"
-#include "graphics/tilesheet.h"
 
 namespace game {
     namespace {
@@ -15,13 +13,12 @@ namespace game {
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode({1920, 1080}), "SFML window");
-            tilemap_.Setup({1920,1080}, {64, 64});
-
-
+            tilemap_.Setup({1920,1080}, {32, 32});
         }
     } // namespace
 
     void Loop(){
+
         Setup();
 
         // Start the game loop
