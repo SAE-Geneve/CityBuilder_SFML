@@ -9,8 +9,7 @@
 
 void Tilemap::Setup(sf::Vector2f gridSize, sf::Vector2f gridOffset){
     std::vector<tiles::Tile<TerrainTiles> > terrain = tiles::generator::GenerateTerrain(gridSize, gridOffset);
-    std::vector<tiles::Tile<RessourcesTiles> > resources = tiles::generator::SeedAndGrow(
-        terrain, RessourcesTiles::kWood);
+    std::vector<tiles::Tile<RessourcesTiles> > resources = tiles::generator::SeedAndGrow(terrain, RessourcesTiles::kWood);
 
     if (terrain_tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins_transparent.png", 128)) {
         terrain_tilesheet_.AddTile(TerrainTiles::kGrassA, 0, 0);

@@ -16,7 +16,7 @@ namespace tiles::generator {
 
     inline std::vector<Tile<TerrainTiles>> GenerateTerrain(sf::Vector2f size, sf::Vector2f offset){
 
-        std::vector<Tile<TerrainTiles>> map;
+        std::vector<Tile<TerrainTiles>> terrainMap;
 
         FastNoiseLite noise;
         noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
@@ -27,29 +27,34 @@ namespace tiles::generator {
             for (float y = 0.f; y < size.y; y += offset.y) {// NOLINT(*-flp30-c)
 
                 // Generator stuff -----------------------------
-                float noiseValue = abs(noise.GetNoise(x,y));
-                if (noiseValue <= 0.3f) {
-                    map.push_back(Tile{{x, y}, TerrainTiles::kGrassA});
+                if (abs(noise.GetNoise(x,y)) <= 0.3f) {
+                    terrainMap.emplace_back(Tile{{x, y}, TerrainTiles::kGrassA});
                 }else {
-                    map.push_back(Tile{{x, y}, TerrainTiles::kWaterA});
+                    terrainMap.emplace_back(Tile{{x, y}, TerrainTiles::kWaterA});
                 }
 
             }
         }
-        return map;
+        return terrainMap;
     }
 
     inline std::vector<Tile<RessourcesTiles>> SeedAndGrow(std::span<Tile<TerrainTiles>> terrain, RessourcesTiles _seed){
+
+        std::vector<Tile<RessourcesTiles>> ressourceMap;
 
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_real_distribution rnd(0.f, 1.f);
 
-        return terrain
+        auto map = terrain
         | std::views::filter([] (auto tile){ return tile.type == TerrainTiles::kGrassA;})
         | std::views::filter([&rnd, &gen] (auto tile){ return rnd(gen) <= 0.25f;})
-        | std::views::transform([&_seed] (auto tile){ return Tile{tile.pos, _seed};})
-        | std::ranges::to<std::vector<Tile<RessourcesTiles>>>();
+        | std::views::transform([&_seed] (auto tile){ return Tile<RessourcesTiles>{tile.pos, _seed};});
+
+        for (auto tile: map) {
+            ressourceMap.emplace_back(tile);
+        }
+        return ressourceMap;
 
     }
 
