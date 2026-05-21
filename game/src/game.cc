@@ -15,14 +15,28 @@ namespace game {
 
         sf::Clock clock_;
         sf::RenderWindow window_;
+        bool isFullscreen_ = false;
 
-        Tilemap tilemap_;
+        Tilemap map_;
         graphics::Camera camera_;
 
         void Setup(){
             // Create the main window
-            window_.create(sf::VideoMode({1920, 1080}), "SFML window");
-            tilemap_.Setup({1920,1080}, {32, 32});
+            window_.create(sf::VideoMode(window_size_u), "SFML window", sf::Style::Default);
+            camera_.Setup(window_size_f);
+            map_.Setup(world_size, {32, 32});
+        }
+
+        void ToggleFullscreen(){
+            isFullscreen_ = !isFullscreen_;
+            if (isFullscreen_) {
+                window_.create(sf::VideoMode::getDesktopMode(), "SFML window",
+                               sf::State::Fullscreen);
+            } else {
+                window_.create(sf::VideoMode(window_size_u), "SFML window",
+                               sf::Style::Default);
+            }
+            camera_.OnWindowResized(window_.getSize());
         }
     } // namespace
 
@@ -40,6 +54,12 @@ namespace game {
                 if (event->is<sf::Event::Closed>()) {
                     window_.close();
                 }
+                if (const auto *key = event->getIf<sf::Event::KeyPressed>()) {
+                    if (key->code == sf::Keyboard::Key::Enter && key->alt) {
+                        ToggleFullscreen();
+                        continue;
+                    }
+                }
                 camera_.HandleEvent(*event, window_);
             }
 
@@ -48,7 +68,7 @@ namespace game {
 
             // Graphic frame
             window_.clear();
-            tilemap_.Draw(window_);
+            map_.Draw(window_);
             window_.display();
         }
     }

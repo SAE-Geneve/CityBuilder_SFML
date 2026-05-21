@@ -26,7 +26,7 @@ namespace graphics {
         void Draw(sf::RenderWindow &window) const;
 
         void SetTexture(sf::Texture *texture);
-        void Clear();
+        void ClearVertices();
 
     };
 }

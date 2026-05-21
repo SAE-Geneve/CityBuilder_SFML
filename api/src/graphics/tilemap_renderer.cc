@@ -30,7 +30,7 @@ namespace graphics {
     void TilemapRenderer::SetTexture(sf::Texture *texture){
         texture_ = texture;
     }
-    void TilemapRenderer::Clear(){
+    void TilemapRenderer::ClearVertices(){
         vertices_.clear();
     }
 

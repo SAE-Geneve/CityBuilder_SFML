@@ -11,6 +11,7 @@ namespace graphics {
 
         bool dragging_ = false;
         sf::Vector2i lastMousePixel_{};
+        sf::Vector2f lastWindowSize_{};
 
         float panSpeed_ = 600.f;
         float keyZoomRate_ = 1.5f;
@@ -23,7 +24,8 @@ namespace graphics {
         void Setup(sf::Vector2f windowSize);
         void HandleEvent(const sf::Event &event, const sf::RenderWindow &window);
         void Update(float dt);
-        void Apply(sf::RenderWindow &window) const;
+        void Apply(sf::RenderWindow &window);
+        void OnWindowResized(sf::Vector2u newSize);
 
     private:
         void Zoom(float factor, sf::Vector2f anchorWorld);

@@ -5,6 +5,11 @@
 #ifndef CITYBUILDER_TILEMAP_GENERATOR_H
 #define CITYBUILDER_TILEMAP_GENERATOR_H
 
+#include <random>
+#include <ranges>
+#include <span>
+#include <__msvc_ranges_to.hpp>
+
 #include "tile.h"
 
 namespace tiles::generator {
@@ -34,7 +39,19 @@ namespace tiles::generator {
         return map;
     }
 
-    // inline std::vector<Tile<RessourcesTiles>>
+    inline std::vector<Tile<RessourcesTiles>> SeedAndGrow(std::span<Tile<TerrainTiles>> terrain, RessourcesTiles _seed){
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution rnd(0.f, 1.f);
+
+        return terrain
+        | std::views::filter([] (auto tile){ return tile.type == TerrainTiles::kGrassA;})
+        | std::views::filter([&rnd, &gen] (auto tile){ return rnd(gen) <= 0.25f;})
+        | std::views::transform([&_seed] (auto tile){ return Tile{tile.pos, _seed};})
+        | std::ranges::to<std::vector<Tile<RessourcesTiles>>>();
+
+    }
 
 };
 

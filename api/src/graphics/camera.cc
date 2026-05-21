@@ -12,9 +12,15 @@ namespace graphics {
         view_.setSize(windowSize);
         view_.setCenter(windowSize * 0.5f);
         currentZoom_ = 1.f;
+        lastWindowSize_ = windowSize;
     }
 
-    void Camera::Apply(sf::RenderWindow &window) const {
+    void Camera::Apply(sf::RenderWindow &window) {
+        const sf::Vector2u currentSize = window.getSize();
+        if (static_cast<float>(currentSize.x) != lastWindowSize_.x ||
+            static_cast<float>(currentSize.y) != lastWindowSize_.y) {
+            OnWindowResized(currentSize);
+        }
         window.setView(view_);
     }
 
@@ -64,10 +70,23 @@ namespace graphics {
         }
 
         if (const auto *resized = event.getIf<sf::Event::Resized>()) {
-            const sf::Vector2f newSize{static_cast<float>(resized->size.x),
-                                       static_cast<float>(resized->size.y)};
-            view_.setSize(newSize * currentZoom_);
+            OnWindowResized(resized->size);
         }
+    }
+
+    void Camera::OnWindowResized(sf::Vector2u newSize) {
+        if (newSize.x == 0 || newSize.y == 0) return;
+        const sf::Vector2f sizeF{static_cast<float>(newSize.x),
+                                 static_cast<float>(newSize.y)};
+        if (lastWindowSize_.x <= 0.f || lastWindowSize_.y <= 0.f) {
+            view_.setSize(sizeF);
+        } else {
+            const sf::Vector2f viewSize = view_.getSize();
+            view_.setSize({viewSize.x * (sizeF.x / lastWindowSize_.x),
+                           viewSize.y * (sizeF.y / lastWindowSize_.y)});
+            view_.setViewport(sf::FloatRect({0.f, 0.f}, {1.f, 1.f}));
+        }
+        lastWindowSize_ = sizeF;
     }
 
     void Camera::Update(float dt) {
