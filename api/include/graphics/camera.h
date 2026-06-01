@@ -13,12 +13,12 @@ namespace graphics {
         sf::Vector2i lastMousePixel_{};
         sf::Vector2f lastWindowSize_{};
 
-        float panSpeed_ = 600.f;
-        float keyZoomRate_ = 1.5f;
-        float wheelZoomStep_ = 1.1f;
-        float minZoom_ = 0.25f;
-        float maxZoom_ = 4.f;
-        float currentZoom_ = 1.f;
+        // float panSpeed_ = 600.f;
+        // float keyZoomRate_ = 1.5f;
+        // float wheelZoomStep_ = 1.1f;
+        // float minZoom_ = 0.25f;
+        // float maxZoom_ = 4.f;
+        // float currentZoom_ = 1.f;
 
     public:
         void Setup(sf::Vector2f windowSize);

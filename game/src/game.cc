@@ -16,13 +16,16 @@ namespace game {
         sf::Clock clock_;
         sf::RenderWindow window_;
         bool isFullscreen_ = false;
+        // Size the window/GL context was last (re)created at.
+        sf::Vector2u appliedSize_{};
 
         Tilemap map_;
         graphics::Camera camera_;
 
         void Setup(){
             // Create the main window
-            window_.create(sf::VideoMode(window_size_u), "SFML window", sf::Style::Default);
+            window_.create(sf::VideoMode(window_size_u), "SFML window", sf::State::Fullscreen);
+            isFullscreen_ = true;
             camera_.Setup(window_size_f);
             map_.Setup(world_size, {32, 32});
         }
@@ -30,14 +33,13 @@ namespace game {
         void ToggleFullscreen(){
             isFullscreen_ = !isFullscreen_;
             if (isFullscreen_) {
-                window_.create(sf::VideoMode::getDesktopMode(), "SFML window",
-                               sf::State::Fullscreen);
+                window_.create(sf::VideoMode::getDesktopMode(), "SFML window", sf::State::Fullscreen);
             } else {
-                window_.create(sf::VideoMode(window_size_u), "SFML window",
-                               sf::Style::Default);
+                window_.create(sf::VideoMode(window_size_u), "SFML window", sf::Style::Default);
             }
-            camera_.OnWindowResized(window_.getSize());
+            appliedSize_ = window_.getSize();
         }
+
     } // namespace
 
     void Loop(){
@@ -63,6 +65,7 @@ namespace game {
                 camera_.HandleEvent(*event, window_);
             }
 
+            // Rebuild the GL context if the window was resized/maximized.
             camera_.Update(dt);
             camera_.Apply(window_);
 

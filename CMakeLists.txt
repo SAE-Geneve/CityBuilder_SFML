@@ -27,6 +27,9 @@ add_custom_target(copy_resources ALL
 
 # Add executable project
 add_executable(city_builder_game main.cc)
+if(WIN32)
+    target_sources(city_builder_game PRIVATE app.manifest)
+endif()
 add_dependencies(city_builder_game copy_resources)
 
 # This project is linked to its own libraries

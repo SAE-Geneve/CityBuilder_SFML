@@ -14,6 +14,8 @@
 
 namespace tiles::generator {
 
+    int getRng(int min, int max) {}
+
     inline std::vector<Tile<TerrainTiles>> GenerateTerrain(sf::Vector2f size, sf::Vector2f offset){
 
         std::vector<Tile<TerrainTiles>> terrainMap;
@@ -40,11 +42,11 @@ namespace tiles::generator {
 
     inline std::vector<Tile<RessourcesTiles>> SeedAndGrow(std::span<Tile<TerrainTiles>> terrain, RessourcesTiles _seed){
 
-        std::vector<Tile<RessourcesTiles>> ressourceMap;
-
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_real_distribution rnd(0.f, 1.f);
+
+        std::vector<Tile<RessourcesTiles>> ressourceMap;
 
         auto map = terrain
         | std::views::filter([] (auto tile){ return tile.type == TerrainTiles::kGrassA;})

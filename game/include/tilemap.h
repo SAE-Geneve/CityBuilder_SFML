@@ -5,6 +5,8 @@
 #ifndef CITYBUILDER_TILEMAP_H
 #define CITYBUILDER_TILEMAP_H
 
+#include <random>
+
 #include "FastNoiseLite.h"
 #include "game_types.h"
 #include "graphics/tilemap_renderer.h"
@@ -23,20 +25,5 @@ public:
     void Draw(sf::RenderWindow &window);
 
 };
-
-
-
-// void GenerateTilemap(){
-//
-//     FastNoiseLite noise;
-//
-//     noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
-//     noise.SetFrequency(10);
-//     noise.SetFractalOctaves(1);
-//     noise.SetFractalLacunarity(2);
-//     noise.SetFractalGain(0.5);
-//     noise.GetNoise(1.f,1.f);
-//
-// }
 
 #endif //CITYBUILDER_TILEMAP_H
