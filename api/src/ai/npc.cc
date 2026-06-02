@@ -1,18 +1,14 @@
 #include "ai/npc.h"
 
 #include <algorithm>
-#include <format>
+#include <string>
 
-#include "ai/bt_action.h"
-#include "ai/bt_selector.h"
-#include "ai/bt_sequence.h"
+#include "ai/bt_builder.h"
 
 namespace api::ai {
 
-using core::ai::behaviour_tree::Action;
-using core::ai::behaviour_tree::Selector;
-using core::ai::behaviour_tree::Sequence;
 using core::ai::behaviour_tree::Status;
+using core::ai::behaviour_tree::TreeBuilder;
 
 void Npc::Setup(std::string_view sprite_path, const sf::Vector2f world_size,
                 const sf::Vector2f start_position) {
@@ -26,27 +22,24 @@ void Npc::Setup(std::string_view sprite_path, const sf::Vector2f world_size,
   motor_.SetDestination(start_position);  // stay put until the first pick
   motor_.SetSpeed(kSpeed);
 
-  // Priority behaviour:
+  // Priority behaviour, built with the fluent TreeBuilder:
   //   Selector(
   //     Sequence( IsTired, Rest ),                       // rest when tired
   //     Sequence( PickRandomDestination, MoveToDestination ) )  // else wander
   // The Selector tries to rest first; IsTired fails while energy is high, so
   // the NPC falls through to wandering. Moving drains energy, resting refills.
-  auto rest = std::make_unique<Sequence>();
-  rest->AddChild(std::make_unique<Action>([this] { return IsTired(); }));
-  rest->AddChild(std::make_unique<Action>([this] { return Rest(); }));
-
-  auto wander = std::make_unique<Sequence>();
-  wander->AddChild(
-      std::make_unique<Action>([this] { return PickRandomDestination(); }));
-  wander->AddChild(
-      std::make_unique<Action>([this] { return MoveToDestination(); }));
-
-  auto root = std::make_unique<Selector>();
-  root->AddChild(std::move(rest));
-  root->AddChild(std::move(wander));
-
-  bt_root_ = std::move(root);
+  bt_root_ = TreeBuilder()
+                 .Selector()
+                     .Sequence()
+                         .Action([this] { return IsTired(); })
+                         .Action([this] { return Rest(); })
+                     .End()
+                     .Sequence()
+                         .Action([this] { return PickRandomDestination(); })
+                         .Action([this] { return MoveToDestination(); })
+                     .End()
+                 .End()
+                 .Build();
 }
 
 void Npc::Update(const float dt) {
