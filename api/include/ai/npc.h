@@ -28,9 +28,15 @@ class Npc {
  private:
   // Behaviour-tree actions (bound into the tree via lambdas in Setup()).
   core::ai::behaviour_tree::Status PickRandomDestination();
-  [[nodiscard]] core::ai::behaviour_tree::Status MoveToDestination() const;
+  core::ai::behaviour_tree::Status MoveToDestination();
+  [[nodiscard]] core::ai::behaviour_tree::Status IsTired() const;
+  core::ai::behaviour_tree::Status Rest();
 
   static constexpr float kSpeed = 200.f;
+  static constexpr float kMaxEnergy = 100.f;
+  static constexpr float kTiredThreshold = 20.f;
+  static constexpr float kEnergyDrain = 6.f;   // per second while moving
+  static constexpr float kEnergyRegen = 25.f;  // per second while resting
 
   std::unique_ptr<sf::Texture> texture_ = std::make_unique<sf::Texture>();
   std::optional<sf::Sprite> sprite_;
@@ -40,6 +46,9 @@ class Npc {
 
   sf::Vector2f world_size_{};
   std::mt19937 rng_{std::random_device{}()};
+
+  float energy_ = kMaxEnergy;
+  float tick_dt_ = 0.f;
 };
 
 }  // namespace api::ai
