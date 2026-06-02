@@ -1,0 +1,6 @@
+{
+  "texture": "bg_plus_rock.png",
+  "sprites": [
+    { "name": "full", "x": 0, "y": 0, "w": 64, "h": 64, "origin_x": 0, "origin_y": 0 }
+  ]
+}

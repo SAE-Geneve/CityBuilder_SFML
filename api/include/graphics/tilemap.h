@@ -4,9 +4,19 @@
 // TODO(google-style): narrow this umbrella include to the specific SFML
 // headers actually used by this header.
 #include <SFML/Graphics.hpp>
+#include <array>
 #include <mdspan>
+#include <string_view>
+#include <vector>
 
-#include "assets/asset_manager.h"
+#include "graphics/generated/bg_plus_food.h"
+#include "graphics/generated/bg_plus_rock.h"
+#include "graphics/generated/bg_plus_tree.h"
+#include "graphics/generated/bg_tile_a.h"
+#include "graphics/generated/empty.h"
+#include "graphics/generated/scifienvironment_15.h"
+#include "graphics/generated/water.h"
+#include "graphics/sprite_sheet.h"
 #include "ui/clickable.h"
 
 namespace api::graphics {
@@ -42,22 +52,35 @@ class TileMap : public api::ui::Clickable {
   };
 
  private:
-  std::array<std::string_view, static_cast<size_t>(Tile::kLength)> files_ = {
-      "empty.png",
-      "bg_tile_a.png",
-      "water.png",
-      "bg_plus_rock.png",
-      "bg_plus_tree.png",
-      "bg_plus_food.png",
-      "scifiEnvironment_15.png"};
+  // Each tile is drawn from its own single-sprite spritesheet, addressed by the
+  // SpriteRect constants emitted into the editor-generated headers. Indexed by
+  // the Tile enum (same order as the enum declaration).
+  static constexpr std::array<api::graphics::SpriteRect,
+                              static_cast<size_t>(Tile::kLength)>
+      kTileRects = {api::graphics::sprites::empty::kFull,
+                    api::graphics::sprites::bg_tile_a::kFull,
+                    api::graphics::sprites::water::kFull,
+                    api::graphics::sprites::bg_plus_rock::kFull,
+                    api::graphics::sprites::bg_plus_tree::kFull,
+                    api::graphics::sprites::bg_plus_food::kFull,
+                    api::graphics::sprites::scifienvironment_15::kFull};
+
+  static constexpr std::array<std::string_view,
+                              static_cast<size_t>(Tile::kLength)>
+      kTileTextures = {api::graphics::sprites::empty::kTexture,
+                       api::graphics::sprites::bg_tile_a::kTexture,
+                       api::graphics::sprites::water::kTexture,
+                       api::graphics::sprites::bg_plus_rock::kTexture,
+                       api::graphics::sprites::bg_plus_tree::kTexture,
+                       api::graphics::sprites::bg_plus_food::kTexture,
+                       api::graphics::sprites::scifienvironment_15::kTexture};
 
   // Storage is x-major: flat index = grid_x * tile_count_y_ + grid_y.
   // This matches the layout-right mdspan exposed via AsMdspan().
   std::vector<WalkableCell> tiles_;
   size_t tile_count_x_ = 0;
   size_t tile_count_y_ = 0;
-  core::assets::AssetManager<sf::Texture, Tile, "_assets/sprites">
-      textures_;
+  std::vector<api::graphics::SpriteSheet> tile_sheets_;
 
 
  public:

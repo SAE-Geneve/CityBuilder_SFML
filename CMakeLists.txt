@@ -11,6 +11,11 @@ if(ENABLE_PROFILING)
     list(APPEND VCPKG_MANIFEST_FEATURES "profiling")
 endif(ENABLE_PROFILING)
 
+option(ENABLE_TOOLS "Enable editor tools (sprite editor)" OFF)
+if(ENABLE_TOOLS)
+    list(APPEND VCPKG_MANIFEST_FEATURES "tools")
+endif(ENABLE_TOOLS)
+
 # Create Solution
 project(CityBuilder)
 
@@ -36,6 +41,10 @@ add_subdirectory(externals/)
 add_subdirectory(core/)
 add_subdirectory(api/)
 add_subdirectory(game/)
+
+if(ENABLE_TOOLS)
+    add_subdirectory(tools/)
+endif(ENABLE_TOOLS)
 
 # Manage Ressources
 # Delete all and copy

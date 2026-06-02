@@ -1,8 +1,9 @@
 #include "graphics/tilemap.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+#include <algorithm>
 #include <cmath>
+#include <format>
 #include <random>
 #include <ranges>
 
@@ -29,7 +30,11 @@ void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
   noise.SetSeed(1309);
   noise.SetFrequency(0.01f);
 
-  textures_.Load(files_);
+  tile_sheets_.clear();
+  tile_sheets_.reserve(kTileTextures.size());
+  for (const auto& texture : kTileTextures) {
+    tile_sheets_.emplace_back(std::format("_assets/sprites/{}", texture));
+  }
 
   std::array weights = {std::pair{Tile::kWater, 3.f},
                         std::pair{Tile::kRock, 1.f},
@@ -70,16 +75,11 @@ void TileMap::Draw(sf::RenderWindow& window) {
   PROFILE_ZONE();
   size_t tile_index = 0;
 
-  //FIXME use sf::VertexArray instead of sf::Sprite
-  sf::Sprite sprite(textures_.Get(Tile::kEmpty));
-
-  sprite.setTextureRect(sf::IntRect({0, 0}, {kPixelStep, kPixelStep}));
-
+  // FIXME use sf::VertexArray instead of per-tile SpriteSheet draws
   for (auto cell : tiles_) {
-    sprite.setTexture(textures_.Get(cell.tile));
-    sprite.setPosition(screen_position(tile_index));
-    window.draw(sprite);
-
+    const auto index = static_cast<size_t>(cell.tile);
+    tile_sheets_[index].Draw(window, kTileRects[index],
+                             screen_position(tile_index));
     tile_index++;
   }
 }
