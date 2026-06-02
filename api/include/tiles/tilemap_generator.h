@@ -14,8 +14,6 @@
 
 namespace tiles::generator {
 
-    int getRng(int min, int max) {}
-
     inline std::vector<Tile<TerrainTiles>> GenerateTerrain(sf::Vector2f size, sf::Vector2f offset){
 
         std::vector<Tile<TerrainTiles>> terrainMap;
