@@ -3,6 +3,7 @@
 #include "game.h"
 
 #include "tilemap.h"
+#include "ai/npc.h"
 #include "graphics/camera.h"
 #include "graphics/tilemap_renderer.h"
 #include "graphics/tilesheet.h"
@@ -21,6 +22,7 @@ namespace game {
 
         Tilemap map_;
         graphics::Camera camera_;
+        api::ai::Npc npc_;
 
         void Setup(){
             // Create the main window
@@ -28,6 +30,8 @@ namespace game {
             isFullscreen_ = true;
             camera_.Setup(window_size_f);
             map_.Setup(world_size, {32, 32});
+            npc_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png",
+                       world_size, {world_size.x * 0.5f, world_size.y * 0.5f});
         }
 
         void ToggleFullscreen(){
@@ -69,9 +73,13 @@ namespace game {
             camera_.Update(dt);
             camera_.Apply(window_);
 
+            // Logic frame
+            npc_.Update(dt);
+
             // Graphic frame
             window_.clear();
             map_.Draw(window_);
+            npc_.Draw(window_);
             window_.display();
         }
     }
