@@ -22,7 +22,7 @@
       "h": 54,
       "name": "sprite_2",
       "origin_x": 32.0,
-      "origin_y": 32.0,
+      "origin_y": 28.0,
       "w": 64,
       "x": 128,
       "y": 0
@@ -93,7 +93,7 @@
     {
       "h": 64,
       "name": "sprite_12",
-      "origin_x": 32.0,
+      "origin_x": 31.0,
       "origin_y": 32.0,
       "w": 62,
       "x": 256,
@@ -102,7 +102,7 @@
     {
       "h": 64,
       "name": "sprite_13",
-      "origin_x": 32.0,
+      "origin_x": 22.0,
       "origin_y": 32.0,
       "w": 44,
       "x": 318,
@@ -110,7 +110,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_16",
+      "name": "ice1",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -128,7 +128,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_18",
+      "name": "forest3",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -137,7 +137,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_19",
+      "name": "forest4",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -155,7 +155,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_24",
+      "name": "ice2",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -192,8 +192,8 @@
     {
       "h": 56,
       "name": "sprite_28",
-      "origin_x": 32.0,
-      "origin_y": 32.0,
+      "origin_x": 28.0,
+      "origin_y": 28.0,
       "w": 56,
       "x": 256,
       "y": 184
@@ -209,7 +209,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_33",
+      "name": "round_forest4",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -218,12 +218,12 @@
     },
     {
       "h": 64,
-      "name": "sprite_34",
+      "name": "forest1",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
       "x": 128,
-      "y": 247
+      "y": 246
     },
     {
       "h": 64,
@@ -241,11 +241,11 @@
       "origin_y": 32.0,
       "w": 64,
       "x": 0,
-      "y": 304
+      "y": 303
     },
     {
       "h": 64,
-      "name": "sprite_41",
+      "name": "round_forest3",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -254,7 +254,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_42",
+      "name": "forest2",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -281,7 +281,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_49",
+      "name": "round_forest2",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -317,7 +317,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_57",
+      "name": "round_forest1",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -350,6 +350,78 @@
       "w": 60,
       "x": 192,
       "y": 461
+    },
+    {
+      "h": 35,
+      "name": "orange_stone3",
+      "origin_x": 19.5,
+      "origin_y": 17.0,
+      "w": 37,
+      "x": 257,
+      "y": 426
+    },
+    {
+      "h": 32,
+      "name": "orange_stone2",
+      "origin_x": 19.0,
+      "origin_y": 16.0,
+      "w": 38,
+      "x": 312,
+      "y": 208
+    },
+    {
+      "h": 28,
+      "name": "orange_stone1",
+      "origin_x": 16.0,
+      "origin_y": 14.0,
+      "w": 32,
+      "x": 356,
+      "y": 180
+    },
+    {
+      "h": 35,
+      "name": "green_crystal2",
+      "origin_x": 19.5,
+      "origin_y": 17.5,
+      "w": 37,
+      "x": 433,
+      "y": 370
+    },
+    {
+      "h": 32,
+      "name": "green_crystal1",
+      "origin_x": 10.0,
+      "origin_y": 16.0,
+      "w": 20,
+      "x": 471,
+      "y": 368
+    },
+    {
+      "h": 35,
+      "name": "grey_stone3",
+      "origin_x": 18.5,
+      "origin_y": 17.0,
+      "w": 38,
+      "x": 396,
+      "y": 136
+    },
+    {
+      "h": 32,
+      "name": "grey_stone2",
+      "origin_x": 19.0,
+      "origin_y": 16.0,
+      "w": 38,
+      "x": 396,
+      "y": 171
+    },
+    {
+      "h": 28,
+      "name": "grey_stone1",
+      "origin_x": 16.0,
+      "origin_y": 13.5,
+      "w": 32,
+      "x": 394,
+      "y": 485
     }
   ],
   "texture": "scifiRTS_spritesheet.png"
