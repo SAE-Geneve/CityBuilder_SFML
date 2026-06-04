@@ -173,7 +173,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_26",
+      "name": "base",
       "origin_x": 32.0,
       "origin_y": 32.0,
       "w": 64,
@@ -422,6 +422,51 @@
       "w": 32,
       "x": 394,
       "y": 485
+    },
+    {
+      "h": 16,
+      "name": "orange_stone0",
+      "origin_x": 9.0,
+      "origin_y": 8.0,
+      "w": 18,
+      "x": 0,
+      "y": 495
+    },
+    {
+      "h": 16,
+      "name": "grey_stone0",
+      "origin_x": 9.0,
+      "origin_y": 8.0,
+      "w": 18,
+      "x": 18,
+      "y": 495
+    },
+    {
+      "h": 37,
+      "name": "tank_orange",
+      "origin_x": 25.5,
+      "origin_y": 18.5,
+      "w": 51,
+      "x": 256,
+      "y": 240
+    },
+    {
+      "h": 38,
+      "name": "tank_blue",
+      "origin_x": 26.0,
+      "origin_y": 19.0,
+      "w": 51,
+      "x": 256,
+      "y": 278
+    },
+    {
+      "h": 38,
+      "name": "tank_grey",
+      "origin_x": 25.5,
+      "origin_y": 18.0,
+      "w": 51,
+      "x": 256,
+      "y": 316
     }
   ],
   "texture": "scifiRTS_spritesheet.png"

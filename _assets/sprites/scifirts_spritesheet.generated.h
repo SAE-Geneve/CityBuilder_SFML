@@ -28,7 +28,7 @@ inline constexpr SpriteRect kForest4{ .x=192, .y=128, .w=64, .h=64, .origin_x=32
 inline constexpr SpriteRect kSprite20{ .x=256, .y=128, .w=56, .h=56, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kIce2{ .x=0, .y=192, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kSprite25{ .x=64, .y=192, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite26{ .x=128, .y=182, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
+inline constexpr SpriteRect kBase{ .x=128, .y=182, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kSprite27{ .x=192, .y=192, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kSprite28{ .x=256, .y=184, .w=56, .h=56, .origin_x=28.0f, .origin_y=28.0f };
 inline constexpr SpriteRect kSprite32{ .x=0, .y=256, .w=64, .h=47, .origin_x=32.0f, .origin_y=32.0f };
@@ -56,6 +56,11 @@ inline constexpr SpriteRect kGreenCrystal1{ .x=471, .y=368, .w=20, .h=32, .origi
 inline constexpr SpriteRect kGreyStone3{ .x=396, .y=136, .w=38, .h=35, .origin_x=18.5f, .origin_y=17.0f };
 inline constexpr SpriteRect kGreyStone2{ .x=396, .y=171, .w=38, .h=32, .origin_x=19.0f, .origin_y=16.0f };
 inline constexpr SpriteRect kGreyStone1{ .x=394, .y=485, .w=32, .h=28, .origin_x=16.0f, .origin_y=13.5f };
+inline constexpr SpriteRect kOrangeStone0{ .x=0, .y=495, .w=18, .h=16, .origin_x=9.0f, .origin_y=8.0f };
+inline constexpr SpriteRect kGreyStone0{ .x=18, .y=495, .w=18, .h=16, .origin_x=9.0f, .origin_y=8.0f };
+inline constexpr SpriteRect kTankOrange{ .x=256, .y=240, .w=51, .h=37, .origin_x=25.5f, .origin_y=18.5f };
+inline constexpr SpriteRect kTankBlue{ .x=256, .y=278, .w=51, .h=38, .origin_x=26.0f, .origin_y=19.0f };
+inline constexpr SpriteRect kTankGrey{ .x=256, .y=316, .w=51, .h=38, .origin_x=25.5f, .origin_y=18.0f };
 
 }  // namespace api::graphics::sprites::scifirts_spritesheet
 
