@@ -9,12 +9,10 @@
 #include <string_view>
 #include <vector>
 
-#include "sprites/bg_plus_food.generated.h"
-#include "sprites/bg_plus_rock.generated.h"
-#include "sprites/bg_plus_tree.generated.h"
 #include "sprites/bg_tile_a.generated.h"
 #include "sprites/empty.generated.h"
 #include "sprites/scifienvironment_15.generated.h"
+#include "sprites/scifirts_spritesheet.generated.h"
 #include "sprites/water.generated.h"
 #include "graphics/sprite_sheet.h"
 #include "ui/clickable.h"
@@ -28,24 +26,29 @@ class TileMap : public api::ui::Clickable {
   static constexpr int kPixelStep = 64;
 
   enum class Tile {
+    // Procedurally generated biomes (drawn from the scifirts atlas).
+    kIce,
     kEmpty,
-    kBg,
+    kForest,
+    kRoundForest,
+    // Gameplay/resource tiles (kept for NPC gathering).
     kWater,
     kRock,
-    kTree,
     kFood,
     kCutTree,
     kLength
   };
 
   static constexpr bool IsWalkable(Tile t) noexcept {
-    return t != Tile::kWater;
+    return t == Tile::kEmpty;
   }
 
   // Storage element wrapping a Tile so the core pathfinding can call
-  // .IsWalkable() on each grid cell directly.
+  // .IsWalkable() on each grid cell directly. Carries the concrete sprite rect
+  // so per-tile biome variants can be chosen at generation time.
   struct WalkableCell {
     Tile tile = Tile::kEmpty;
+    api::graphics::SpriteRect rect{};
     [[nodiscard]] constexpr bool IsWalkable() const noexcept {
       return TileMap::IsWalkable(tile);
     }
@@ -57,22 +60,26 @@ class TileMap : public api::ui::Clickable {
   // the Tile enum (same order as the enum declaration).
   static constexpr std::array<api::graphics::SpriteRect,
                               static_cast<size_t>(Tile::kLength)>
-      kTileRects = {api::graphics::sprites::empty::kFull,
-                    api::graphics::sprites::bg_tile_a::kFull,
+      kTileRects = {api::graphics::sprites::scifirts_spritesheet::kIce1,
+                    api::graphics::sprites::scifirts_spritesheet::kEmpty1,
+                    api::graphics::sprites::scifirts_spritesheet::kForest1,
+                    api::graphics::sprites::scifirts_spritesheet::kRoundForest1,
                     api::graphics::sprites::water::kFull,
-                    api::graphics::sprites::bg_plus_rock::kFull,
-                    api::graphics::sprites::bg_plus_tree::kFull,
-                    api::graphics::sprites::bg_plus_food::kFull,
+                    api::graphics::sprites::scifirts_spritesheet::kGreyStone3,
+                    api::graphics::sprites::scifirts_spritesheet::kGreenCrystal2,
                     api::graphics::sprites::scifienvironment_15::kFull};
 
+  // The four biome entries intentionally point at the same atlas texture; each
+  // is loaded into its own SpriteSheet (one extra 512x512 copy each, negligible).
   static constexpr std::array<std::string_view,
                               static_cast<size_t>(Tile::kLength)>
-      kTileTextures = {api::graphics::sprites::empty::kTexture,
-                       api::graphics::sprites::bg_tile_a::kTexture,
+      kTileTextures = {api::graphics::sprites::scifirts_spritesheet::kTexture,
+                       api::graphics::sprites::scifirts_spritesheet::kTexture,
+                       api::graphics::sprites::scifirts_spritesheet::kTexture,
+                       api::graphics::sprites::scifirts_spritesheet::kTexture,
                        api::graphics::sprites::water::kTexture,
-                       api::graphics::sprites::bg_plus_rock::kTexture,
-                       api::graphics::sprites::bg_plus_tree::kTexture,
-                       api::graphics::sprites::bg_plus_food::kTexture,
+                       api::graphics::sprites::scifirts_spritesheet::kTexture,
+                       api::graphics::sprites::scifirts_spritesheet::kTexture,
                        api::graphics::sprites::scifienvironment_15::kTexture};
 
   // Storage is x-major: flat index = grid_x * tile_count_y_ + grid_y.

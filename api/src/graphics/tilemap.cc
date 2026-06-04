@@ -3,32 +3,74 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <algorithm>
 #include <cmath>
+#include <array>
 #include <format>
 #include <random>
-#include <ranges>
 
 #include "FastNoiseLite.h"
 #include "graphics/camera.h"
 #include "profiling/profiling.h"
 
+namespace {
+namespace sci = api::graphics::sprites::scifirts_spritesheet;
+
 // TODO(google-style): file-scope statics with non-trivial destructors. Move
-// into an anonymous namespace at minimum, or behind a function returning a
-// reference to a function-local static.
-static std::mt19937 gen{std::random_device{}()};
-static std::uniform_real_distribution dist(0.f, 1.f);
+// behind a function returning a reference to a function-local static.
+std::mt19937 gen{std::random_device{}()};
+std::uniform_real_distribution dist(0.f, 1.f);
+
+// Per-biome sprite variants; one is picked at random for each generated tile.
+constexpr std::array kIceVariants{sci::kIce1, sci::kIce2};
+constexpr std::array kEmptyVariants{sci::kEmpty1, sci::kEmpty2};
+constexpr std::array kForestVariants{sci::kForest1, sci::kForest2, sci::kForest3,
+                                     sci::kForest4};
+constexpr std::array kRoundForestVariants{sci::kRoundForest1, sci::kRoundForest2,
+                                          sci::kRoundForest3, sci::kRoundForest4};
+
+// Gatherable resources drawn from the same atlas; one variant is picked per tile.
+constexpr std::array kStoneVariants{sci::kGreyStone0, sci::kGreyStone1,
+                                    sci::kGreyStone2, sci::kGreyStone3};
+constexpr std::array kCrystalVariants{sci::kGreenCrystal1, sci::kGreenCrystal2};
+
+// Noise frequency in cycles per tile. ~1/freq tiles per biome blob, so this is
+// tuned so several biomes are visible across the default ~20-tile-wide map.
+constexpr float kNoiseFrequency = 0.08f;
+
+// Biome selection thresholds for the two noise fields (Perlin output ~[-1, 1]).
+constexpr float kColdThreshold = -0.3f;    // temperature below this -> ice
+constexpr float kDenseThreshold = 0.4f;    // moisture above this -> round forest
+constexpr float kForestThreshold = 0.0f;   // moisture above this -> forest
+
+// Fraction of empty tiles seeded with a gatherable resource so NPC behaviour
+// trees still have collectibles to target.
+constexpr float kResourceChance = 0.06f;
+
+template <std::size_t N>
+const api::graphics::SpriteRect& PickVariant(
+    const std::array<api::graphics::SpriteRect, N>& variants) {
+  const auto i = static_cast<std::size_t>(dist(gen) * static_cast<float>(N));
+  return variants[std::min(i, N - 1)];
+}
+}  // namespace
 
 void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
   PROFILE_ZONE();
   tile_count_x_ = tile_count_x;
   tile_count_y_ = tile_count_y;
   tiles_.assign(tile_count_x_ * tile_count_y_,
-                WalkableCell{Tile::kBg});
+                WalkableCell{Tile::kEmpty, sci::kEmpty1});
 
-  // Create and configure FastNoise object
-  FastNoiseLite noise;
-  noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-  noise.SetSeed(1309);
-  noise.SetFrequency(0.01f);
+  // Two independent noise fields drive the biome at each tile: "temperature"
+  // selects ice, "moisture" selects the forest density.
+  FastNoiseLite temperature;
+  temperature.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+  temperature.SetSeed(1309);
+  temperature.SetFrequency(kNoiseFrequency);
+
+  FastNoiseLite moisture;
+  moisture.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+  moisture.SetSeed(4231);
+  moisture.SetFrequency(kNoiseFrequency);
 
   tile_sheets_.clear();
   tile_sheets_.reserve(kTileTextures.size());
@@ -36,35 +78,35 @@ void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
     tile_sheets_.emplace_back(std::format("_assets/sprites/{}", texture));
   }
 
-  std::array weights = {std::pair{Tile::kWater, 3.f},
-                        std::pair{Tile::kRock, 1.f},
-                        std::pair{Tile::kTree, 1.f},
-                        std::pair{Tile::kFood, 1.f}, std::pair{Tile::kBg, 6.f}};
+  // Storage is x-major: flat index = grid_x * tile_count_y_ + grid_y.
+  for (size_t gx = 0; gx < tile_count_x_; ++gx) {
+    for (size_t gy = 0; gy < tile_count_y_; ++gy) {
+      const auto fx = static_cast<float>(gx);
+      const auto fy = static_cast<float>(gy);
+      const float t = temperature.GetNoise(fx, fy);
+      const float m = moisture.GetNoise(fx, fy);
 
-  // Fixed, why were weights sorted for each tile when not modified?
-  std::ranges::sort(weights,
-            [](auto& a, auto& b) { return a.second < b.second; });
-  for (auto& tile : tiles_) {
-    auto value = dist(gen);
-
-    float sumWeight = 0;
-    for (const auto& weight : weights | std::views::values) {
-      sumWeight += weight;
-    }
-
-    float localWeight = 0;
-    Tile goodTile = Tile::kBg;
-
-    for (auto& [weighted_tile, weight] : weights) {
-      localWeight += weight;
-
-      if (value * sumWeight < localWeight) {
-        goodTile = weighted_tile;
-        break;
+      WalkableCell cell;
+      if (t < kColdThreshold) {
+        cell = {Tile::kIce, PickVariant(kIceVariants)};
+      } else if (m > kDenseThreshold) {
+        cell = {Tile::kRoundForest, PickVariant(kRoundForestVariants)};
+      } else if (m > kForestThreshold) {
+        cell = {Tile::kForest, PickVariant(kForestVariants)};
+      } else {
+        cell = {Tile::kEmpty, PickVariant(kEmptyVariants)};
+        // Sprinkle gatherable resources onto open ground so NPCs have targets.
+        // Trees are not seeded here: wood NPCs gather from the forest biomes.
+        if (dist(gen) < kResourceChance) {
+          if (dist(gen) < 0.5f) {
+            cell = {Tile::kRock, PickVariant(kStoneVariants)};
+          } else {
+            cell = {Tile::kFood, PickVariant(kCrystalVariants)};
+          }
+        }
       }
+      tiles_[gx * tile_count_y_ + gy] = cell;
     }
-
-    tile = WalkableCell{goodTile};
   }
 
   SetZone(sf::IntRect({0, 0}, sf::Vector2i(static_cast<int>(tile_count_x_) * kPixelStep,
@@ -73,13 +115,32 @@ void TileMap::Setup(size_t tile_count_x, size_t tile_count_y) {
 
 void TileMap::Draw(sf::RenderWindow& window) {
   PROFILE_ZONE();
-  size_t tile_index = 0;
 
+  // Draws one atlas sprite centered inside the cell at `screen`, then re-applies
+  // the rect origin (which SpriteSheet::Draw subtracts). Sub-cell sprites (stone,
+  // crystal) end up centered; full 64x64 tiles get a zero offset and so are
+  // unaffected, regardless of their origin convention.
+  const auto draw_in_cell = [this, &window](size_t sheet,
+                                            const api::graphics::SpriteRect& rect,
+                                            sf::Vector2f screen) {
+    auto position = screen;
+    position += sf::Vector2f(static_cast<float>(kPixelStep - rect.w) * 0.5f,
+                             static_cast<float>(kPixelStep - rect.h) * 0.5f);
+    position += sf::Vector2f(rect.origin_x, rect.origin_y);
+    tile_sheets_[sheet].Draw(window, rect, position);
+  };
+
+  size_t tile_index = 0;
   // FIXME use sf::VertexArray instead of per-tile SpriteSheet draws
   for (auto cell : tiles_) {
-    const auto index = static_cast<size_t>(cell.tile);
-    tile_sheets_[index].Draw(window, kTileRects[index],
-                             screen_position(tile_index));
+    const auto screen = screen_position(tile_index);
+    // Sub-cell resource sprites don't cover their cell, so paint empty ground
+    // behind them first.
+    if (cell.tile == Tile::kRock || cell.tile == Tile::kFood) {
+      constexpr auto kEmptyIndex = static_cast<size_t>(Tile::kEmpty);
+      draw_in_cell(kEmptyIndex, kTileRects[kEmptyIndex], screen);
+    }
+    draw_in_cell(static_cast<size_t>(cell.tile), cell.rect, screen);
     tile_index++;
   }
 }
@@ -87,7 +148,7 @@ void TileMap::Draw(sf::RenderWindow& window) {
 void TileMap::set_tile(size_t idx, Tile tile) {
   PROFILE_ZONE();
   if (idx > 0 && idx < std::size(tiles_)) {
-    tiles_[idx] = WalkableCell{tile};
+    tiles_[idx] = WalkableCell{tile, kTileRects[static_cast<size_t>(tile)]};
   }
 }
 

@@ -42,7 +42,7 @@ api::resource::ResourceManager resource_manager;
 void ChopEvent(int index, float quantity) {
   PROFILE_ZONE();
   if (quantity <= 0) {
-    tilemap_ptr_->set_tile(static_cast<size_t>(index), TileMap::Tile::kBg);
+    tilemap_ptr_->set_tile(static_cast<size_t>(index), TileMap::Tile::kEmpty);
   }
 }
 
@@ -88,9 +88,14 @@ void Setup(const LaunchOptions& options) {
                                      "Exit");
   btnExit->on_released_left = []() { window_.close(); };
 
-  resource_manager.LoadResources(
-      api::resource::Resource::Type::kWood,
-      tilemap_ptr_->collectibles(TileMap::Tile::kTree), ChopEvent);
+  // Wood is gathered from the forest biome tiles (the tilemap already renders
+  // trees there), so merge both forest variants into the wood collectibles.
+  auto forest = tilemap_ptr_->collectibles(TileMap::Tile::kForest);
+  const auto round_forest =
+      tilemap_ptr_->collectibles(TileMap::Tile::kRoundForest);
+  forest.insert(forest.end(), round_forest.begin(), round_forest.end());
+  resource_manager.LoadResources(api::resource::Resource::Type::kWood, forest,
+                                 ChopEvent);
 
   resource_manager.LoadResources(
       api::resource::Resource::Type::kFood,

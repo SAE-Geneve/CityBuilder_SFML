@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
   size_t parsed2 = 0;
   cmdl("tilemap-width", options.tilemap_width) >> parsed2;
   ApplyPositive(options.tilemap_width, parsed2, "tilemap-width");
-  cmdl("tilemap-height", options.tilemap_height) >> parsed;
+  cmdl("tilemap-height", options.tilemap_height) >> parsed2;
   ApplyPositive(options.tilemap_height, parsed2, "tilemap-height");
 
   game::Loop(options);
