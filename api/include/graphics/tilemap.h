@@ -9,13 +9,13 @@
 #include <string_view>
 #include <vector>
 
-#include "graphics/generated/bg_plus_food.h"
-#include "graphics/generated/bg_plus_rock.h"
-#include "graphics/generated/bg_plus_tree.h"
-#include "graphics/generated/bg_tile_a.h"
-#include "graphics/generated/empty.h"
-#include "graphics/generated/scifienvironment_15.h"
-#include "graphics/generated/water.h"
+#include "sprites/bg_plus_food.generated.h"
+#include "sprites/bg_plus_rock.generated.h"
+#include "sprites/bg_plus_tree.generated.h"
+#include "sprites/bg_tile_a.generated.h"
+#include "sprites/empty.generated.h"
+#include "sprites/scifienvironment_15.generated.h"
+#include "sprites/water.generated.h"
 #include "graphics/sprite_sheet.h"
 #include "ui/clickable.h"
 

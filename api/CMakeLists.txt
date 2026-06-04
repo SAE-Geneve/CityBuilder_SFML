@@ -7,6 +7,10 @@ file(GLOB_RECURSE HEADER_FILES include/*.h)
 add_library(api ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(api PUBLIC include/)
+# Generated sprite headers live next to the spritesheets under _assets/sprites/
+# and are included as "sprites/<stem>.generated.h"; expose the source _assets
+# tree (not the build copy) so api and its dependents resolve them.
+target_include_directories(api PUBLIC ${CMAKE_SOURCE_DIR}/_assets)
 target_link_libraries(api PUBLIC core SFML::System SFML::Graphics SFML::Window FastNoiseLit)
 target_link_libraries(api PRIVATE project_warnings)
 

@@ -10,16 +10,14 @@
 
 namespace {
 
-// Headless mode: regenerate the .h for every "<sheet>.sprites.json" sidecar in
-// the assets directory, without opening the GUI. Useful for build pipelines.
-int RunRegen(const std::filesystem::path& assets_dir,
-             const std::filesystem::path& generated_dir) {
+// Headless mode: regenerate the "<stem>.generated.h" header next to every
+// "<sheet>.sprites.json" sidecar in the assets directory, without opening the
+// GUI. Useful for build pipelines.
+int RunRegen(const std::filesystem::path& assets_dir) {
   namespace fs = std::filesystem;
   constexpr std::string_view kSuffix = ".sprites.json";
 
   std::error_code ec;
-  fs::create_directories(generated_dir, ec);
-
   int count = 0;
   for (const auto& entry : fs::directory_iterator(assets_dir, ec)) {
     const std::string name = entry.path().filename().string();
@@ -36,7 +34,7 @@ int RunRegen(const std::filesystem::path& assets_dir,
     const std::string stem = name.substr(0, name.size() - kSuffix.size());
     const std::string header = sprite_editor::GenerateHeader(*document, stem);
     const auto out_path =
-        generated_dir / (sprite_editor::ToSnakeIdentifier(stem) + ".h");
+        assets_dir / (sprite_editor::ToSnakeIdentifier(stem) + ".generated.h");
 
     std::ofstream out(out_path);
     if (!out) {
@@ -59,10 +57,7 @@ int main(int argc, char** argv) {
     const std::filesystem::path assets =
         (argc >= 3) ? std::filesystem::path(argv[2])
                     : std::filesystem::path("_assets/sprites");
-    const std::filesystem::path generated =
-        (argc >= 4) ? std::filesystem::path(argv[3])
-                    : std::filesystem::path("api/include/graphics/generated");
-    return RunRegen(assets, generated);
+    return RunRegen(assets);
   }
 
   sprite_editor::EditorApp app;

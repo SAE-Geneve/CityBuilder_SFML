@@ -27,14 +27,13 @@ namespace sprite_editor {
 EditorApp::EditorApp()
     : window_(sf::VideoMode({1280u, 800u}), "Sprite Editor"),
       canvas_view_(window_.getDefaultView()),
-      assets_dir_("_assets/sprites"),
-      generated_dir_("api/include/graphics/generated") {
+      assets_dir_("_assets/sprites") {
   window_.setFramerateLimit(60);
+  // Init(loadDefaultFont = true) loads the default font and builds the atlas via
+  // the classic static-texture path. The project pins imgui to 1.91 / imgui-sfml
+  // 3.0#2 (see vcpkg.json overrides) precisely to keep this path, because the
+  // 1.92 dynamic-texture backend in imgui-sfml 3.0#3 scrambles every glyph.
   static_cast<void>(ImGui::SFML::Init(window_));
-  // ImGui-SFML 3.0 against Dear ImGui 1.92 no longer auto-loads a default font
-  // in Init (it uses the dynamic-texture backend), but Update still asserts at
-  // least one font exists, so add the default font explicitly here.
-  ImGui::GetIO().Fonts->AddFontDefault();
 
   // Reopen on the last-used folder when it still exists; otherwise keep the
   // default sprites directory.
@@ -119,6 +118,12 @@ std::filesystem::path EditorApp::SidecarPath() const {
   return assets_dir_ / (stem + ".sprites.json");
 }
 
+std::filesystem::path EditorApp::HeaderPath() const {
+  const std::string stem =
+      std::filesystem::path(sheet_filename_).stem().string();
+  return assets_dir_ / (ToSnakeIdentifier(stem) + ".generated.h");
+}
+
 void EditorApp::OpenSheet(const std::string& filename) {
   const auto texture_path = assets_dir_ / filename;
   if (!sheet_texture_.loadFromFile(texture_path)) {
@@ -160,8 +165,6 @@ void EditorApp::Save() {
   if (!has_sheet_) {
     return;
   }
-  std::error_code ec;
-  std::filesystem::create_directories(generated_dir_, ec);
 
   const auto json_path = SidecarPath();
   if (auto result = SaveDocument(document_, json_path); !result) {
@@ -172,7 +175,7 @@ void EditorApp::Save() {
   const std::string stem =
       std::filesystem::path(sheet_filename_).stem().string();
   const std::string header = GenerateHeader(document_, stem);
-  const auto header_path = generated_dir_ / (ToSnakeIdentifier(stem) + ".h");
+  const auto header_path = HeaderPath();
   std::ofstream out(header_path);
   if (!out) {
     status_message_ = std::format("cannot write {}", header_path.string());

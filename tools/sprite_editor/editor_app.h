@@ -57,13 +57,15 @@ class EditorApp {
   // used to reset the target after drawing the zoomable canvas and on resize.
   [[nodiscard]] sf::View ScreenView() const;
   [[nodiscard]] sf::Vector2f MouseToWorld(sf::Vector2i pixel) const;
+  // The ".sprites.json" sidecar and generated "<stem>.generated.h" header both
+  // live next to the spritesheet in the opened assets folder.
   [[nodiscard]] std::filesystem::path SidecarPath() const;
+  [[nodiscard]] std::filesystem::path HeaderPath() const;
 
   sf::RenderWindow window_;
   sf::View canvas_view_;
 
   std::filesystem::path assets_dir_;
-  std::filesystem::path generated_dir_;
   std::vector<std::string> png_files_;
   FolderBrowser folder_browser_;
 

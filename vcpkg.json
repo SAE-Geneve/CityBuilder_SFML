@@ -15,5 +15,16 @@
       "nlohmann-json"
     ] }
   },
-  "builtin-baseline": "80f9bcfa455e875d9c1bf7a7c6692d7e1e481061"
+  "builtin-baseline": "80f9bcfa455e875d9c1bf7a7c6692d7e1e481061",
+  "overrides": [
+    {
+      "$reason": "imgui-sfml 3.0#3 carries a buggy local patch adapting it to imgui 1.92's dynamic font-texture backend (strided partial atlas uploads scramble every glyph). Pin to 3.0#2 + imgui 1.91.9, the last combination using the stable static-atlas path.",
+      "name": "imgui-sfml",
+      "version": "3.0#2"
+    },
+    {
+      "name": "imgui",
+      "version": "1.91.9"
+    }
+  ]
 }

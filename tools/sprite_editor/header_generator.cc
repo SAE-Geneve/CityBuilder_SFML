@@ -85,7 +85,7 @@ std::string ToPascalIdentifier(std::string_view raw) {
 std::string GenerateHeader(const SheetDocument& document,
                            std::string_view sheet_stem) {
   const std::string snake = ToSnakeIdentifier(sheet_stem);
-  const std::string guard = std::format("API_GRAPHICS_GENERATED_{}_H_",
+  const std::string guard = std::format("ASSETS_SPRITES_{}_GENERATED_H_",
                                         ToUpperGuard(snake));
 
   std::string out;
