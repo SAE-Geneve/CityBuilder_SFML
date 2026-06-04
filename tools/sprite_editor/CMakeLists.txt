@@ -7,6 +7,13 @@ file(GLOB HEADER_FILES *.h)
 
 add_executable(sprite_editor ${SRC_FILES} ${HEADER_FILES})
 
+# HiDPI fix: declare the tool DPI-unaware so the GL framebuffer stays 1:1 with
+# sf::Window::getSize(), which ImGui-SFML 3.0 assumes. CMake embeds .manifest
+# source files via the MSVC linker. See dpi_unaware.manifest for the rationale.
+if(WIN32)
+    target_sources(sprite_editor PRIVATE dpi_unaware.manifest)
+endif()
+
 target_link_libraries(sprite_editor PRIVATE
         core
         SFML::System SFML::Graphics SFML::Window

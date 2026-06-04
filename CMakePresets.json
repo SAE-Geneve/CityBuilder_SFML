@@ -41,7 +41,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "ENABLE_TESTING": "ON",
-        "ENABLE_PROFILING": "OFF"
+        "ENABLE_PROFILING": "OFF",
+        "ENABLE_TOOLS": "ON"
       }
     },
     {
@@ -74,7 +75,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "ENABLE_TESTING": "ON",
-        "ENABLE_PROFILING": "OFF"
+        "ENABLE_PROFILING": "OFF",
+        "ENABLE_TOOLS": "ON"
       }
     },
     {

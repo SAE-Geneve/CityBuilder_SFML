@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "folder_browser.h"
 #include "grid_slicer.h"
 #include "sheet_document.h"
 
@@ -36,6 +37,7 @@ class EditorApp {
   enum class Mode { kSelect, kDraw };
 
   void ScanAssets();
+  void ChangeAssetsDir(const std::filesystem::path& dir);
   void OpenSheet(const std::string& filename);
   void Save();
 
@@ -51,6 +53,9 @@ class EditorApp {
 
   void FitView();
   void SyncNameBuffer();
+  // A screen-space view matching the current window size (top-left origin),
+  // used to reset the target after drawing the zoomable canvas and on resize.
+  [[nodiscard]] sf::View ScreenView() const;
   [[nodiscard]] sf::Vector2f MouseToWorld(sf::Vector2i pixel) const;
   [[nodiscard]] std::filesystem::path SidecarPath() const;
 
@@ -60,6 +65,7 @@ class EditorApp {
   std::filesystem::path assets_dir_;
   std::filesystem::path generated_dir_;
   std::vector<std::string> png_files_;
+  FolderBrowser folder_browser_;
 
   bool has_sheet_ = false;
   std::string sheet_filename_;

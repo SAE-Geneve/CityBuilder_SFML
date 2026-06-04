@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
@@ -16,6 +17,7 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
+#include "editor_settings.h"
 #include "grid_slicer.h"
 #include "header_generator.h"
 #include "utils/log.h"
@@ -33,6 +35,16 @@ EditorApp::EditorApp()
   // in Init (it uses the dynamic-texture backend), but Update still asserts at
   // least one font exists, so add the default font explicitly here.
   ImGui::GetIO().Fonts->AddFontDefault();
+
+  // Reopen on the last-used folder when it still exists; otherwise keep the
+  // default sprites directory.
+  const EditorSettings settings = LoadSettings();
+  std::error_code ec;
+  if (!settings.last_assets_dir.empty() &&
+      std::filesystem::is_directory(settings.last_assets_dir, ec)) {
+    assets_dir_ = settings.last_assets_dir;
+  }
+
   ScanAssets();
 }
 
@@ -48,11 +60,14 @@ void EditorApp::Run() {
 
     ImGui::SFML::Update(window_, delta_clock.restart());
     DrawUi();
+    if (auto picked = folder_browser_.Draw()) {
+      ChangeAssetsDir(*picked);
+    }
 
     window_.clear(sf::Color(40, 40, 40));
     if (has_sheet_) {
       DrawCanvas();
-      window_.setView(window_.getDefaultView());
+      window_.setView(ScreenView());
     }
     ImGui::SFML::Render(window_);
     window_.display();
@@ -77,6 +92,25 @@ void EditorApp::ScanAssets() {
     }
   }
   std::ranges::sort(png_files_);
+}
+
+void EditorApp::ChangeAssetsDir(const std::filesystem::path& dir) {
+  assets_dir_ = dir;
+
+  // Drop any sheet from the previous folder so a stale document is not shown.
+  has_sheet_ = false;
+  sheet_filename_.clear();
+  sheet_sprite_.reset();
+  document_ = SheetDocument{};
+  selected_ = -1;
+
+  ScanAssets();
+
+  if (auto result = SaveSettings({.last_assets_dir = assets_dir_}); !result) {
+    status_message_ = result.error();
+    return;
+  }
+  status_message_ = std::format("assets folder: {}", assets_dir_.string());
 }
 
 std::filesystem::path EditorApp::SidecarPath() const {
@@ -151,6 +185,11 @@ void EditorApp::Save() {
   core::LogDebug("Saved {} and {}", json_path.string(), header_path.string());
 }
 
+sf::View EditorApp::ScreenView() const {
+  return sf::View(
+      sf::FloatRect({0.f, 0.f}, sf::Vector2f(window_.getSize())));
+}
+
 sf::Vector2f EditorApp::MouseToWorld(sf::Vector2i pixel) const {
   return window_.mapPixelToCoords(pixel, canvas_view_);
 }
@@ -158,6 +197,20 @@ sf::Vector2f EditorApp::MouseToWorld(sf::Vector2i pixel) const {
 void EditorApp::HandleEvent(const sf::Event& event) {
   if (event.is<sf::Event::Closed>()) {
     window_.close();
+    return;
+  }
+
+  if (const auto* resized = event.getIf<sf::Event::Resized>()) {
+    // SFML does not adjust views on resize. Keep a 1:1 screen view so the UI and
+    // overlays are never stretched; the canvas view is rebuilt every frame in
+    // DrawCanvas() from the current window size, so it follows along. Ignore the
+    // zero size reported while minimised.
+    if (resized->size.x != 0u && resized->size.y != 0u) {
+      window_.setView(ScreenView());
+      if (has_sheet_) {
+        FitView();  // recenter the sheet and refit it to the new window size
+      }
+    }
     return;
   }
 
@@ -337,6 +390,11 @@ void EditorApp::DrawUi() {
 
 void EditorApp::DrawSheetsPanel() {
   ImGui::Begin("Sheets");
+  ImGui::TextWrapped("Folder: %s", assets_dir_.string().c_str());
+  if (ImGui::Button("Open folder...")) {
+    folder_browser_.Open(assets_dir_);
+  }
+  ImGui::SameLine();
   if (ImGui::Button("Rescan")) {
     ScanAssets();
   }
