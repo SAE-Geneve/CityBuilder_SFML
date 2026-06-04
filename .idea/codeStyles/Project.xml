@@ -202,6 +202,7 @@
       <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/ALLOW_FAR_ALIGNMENT/@EntryValue" value="true" type="bool" />
       <option name="/Default/CodeStyle/CodeFormatting/CppClangFormat/ExecutableToUse/@EntryValue" value="Custom" type="string" />
       <option name="/Default/CodeStyle/CodeFormatting/CppClangFormat/ExternalClangFormatPath/@EntryValue" value="D:\_dev\repos\C++\925-4FSC0PF003-CityBuilder_SFML\.clang-format" type="string" />
+      <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=1614FE0CB2DBED43B819FD68CE142655/@EntryIndexedValue" value="&lt;NamingElement Priority=&quot;0&quot; Title=&quot;accessors&quot;&gt;&lt;Descriptor Static=&quot;Indeterminate&quot; Constexpr=&quot;Indeterminate&quot; Const=&quot;Indeterminate&quot; Volatile=&quot;Indeterminate&quot; Accessibility=&quot;NOT_APPLICABLE&quot;&gt;&lt;type Name=&quot;member function&quot; /&gt;&lt;/Descriptor&gt;&lt;Policy Inspect=&quot;True&quot; WarnAboutPrefixesAndSuffixes=&quot;False&quot; Prefix=&quot;&quot; Suffix=&quot;&quot; Style=&quot;aa_bb&quot; /&gt;&lt;/NamingElement&gt;" type="string" />
     </RiderCodeStyleSettings>
     <files>
       <extensions>

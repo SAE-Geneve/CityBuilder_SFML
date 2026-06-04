@@ -2,6 +2,7 @@
 #define CORE_AI_BT_NODE_H
 
 #include <algorithm>
+#include <print>
 
 namespace core::ai::behaviour_tree {
 
@@ -17,8 +18,12 @@ class Node {
   Node(const Node&) = delete;
   Node& operator=(const Node&) = delete;
 
-  Node(Node&& node) noexcept { std::swap(status_, node.status_); }
+  Node(Node&& node) noexcept{
+      std::println("Move semantic move constructor");
+      std::swap(status_, node.status_);
+  }
   Node& operator=(Node&& node) noexcept {
+      std::println("Move semantic move operator");
     std::swap(status_, node.status_);
     return *this;
   }

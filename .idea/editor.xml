@@ -399,6 +399,7 @@
     <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=0B82708A1BA7774EB13D27F245698A56/@EntryIndexedValue" value="" type="string" />
     <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=1350D079A82E0740947E85445B5AF47C/@EntryIndexRemoved" value="true" type="bool" />
     <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=1350D079A82E0740947E85445B5AF47C/@EntryIndexedValue" value="" type="string" />
+    <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=1614FE0CB2DBED43B819FD68CE142655/@EntryIndexedValue" value="&lt;NamingElement Priority=&quot;0&quot; Title=&quot;accessors&quot;&gt;&lt;Descriptor Static=&quot;Indeterminate&quot; Constexpr=&quot;Indeterminate&quot; Const=&quot;Indeterminate&quot; Volatile=&quot;Indeterminate&quot; Accessibility=&quot;NOT_APPLICABLE&quot;&gt;&lt;type Name=&quot;member function&quot; /&gt;&lt;/Descriptor&gt;&lt;Policy Inspect=&quot;True&quot; WarnAboutPrefixesAndSuffixes=&quot;False&quot; Prefix=&quot;&quot; Suffix=&quot;&quot; Style=&quot;aa_bb&quot; /&gt;&lt;/NamingElement&gt;" type="string" />
     <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=18392FF80FA40749AA8CC53981A32AE0/@EntryIndexRemoved" value="true" type="bool" />
     <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=18392FF80FA40749AA8CC53981A32AE0/@EntryIndexedValue" value="" type="string" />
     <option name="/Default/CodeStyle/Naming/CppNamingOptions/Rules/=1CBDD658AEE8EA4382EE1F914B5B3314/@EntryIndexRemoved" value="true" type="bool" />

@@ -1,56 +1,81 @@
 ﻿#include "ai/npc.h"
 
 #include <format>
+#include <print>
+
+#include "ai/bt_action.h"
+#include "ai/bt_node_factory.h"
+#include "ai/bt_selector.h"
+#include "ai/bt_sequence.h"
 
 
 namespace api::ai {
+    using core::ai::behaviour_tree::Status;
 
+    void Npc::Setup(std::string_view sprite_path, const sf::Vector2f world_size,
+                    const sf::Vector2f start_position){
+        world_size_ = world_size;
 
-using core::ai::behaviour_tree::Status;
+        if (texture_->loadFromFile(std::string(sprite_path))) {
+            sprite_ = sf::Sprite(*texture_);
+        }
 
-void Npc::Setup(std::string_view sprite_path, const sf::Vector2f world_size,
-                const sf::Vector2f start_position) {
-  world_size_ = world_size;
+        motor_.set_position(start_position);
+        motor_.set_destination(start_position); // stay put until the first pick
+        motor_.set_speed(kSpeed);
 
-  if (texture_->loadFromFile(std::string(sprite_path))) {
-    sprite_ = sf::Sprite(*texture_);
-  }
+        using namespace core::ai::behaviour_tree::node_factory;
 
-  motor_.SetPosition(start_position);
-  motor_.SetDestination(start_position);  // stay put until the first pick
-  motor_.SetSpeed(kSpeed);
+        auto testSequence = MakeSequence();
+        testSequence->AddChild(MakeAction([] {return Status::kSuccess;}));
+        testSequence->AddChild(MakeAction([] {return Status::kFailure;}));
+        testSequence->AddChild(MakeAction([this] { return Locked();}));
 
-  // Rough wander behaviour:
-  //   Sequence( pick a random destination, then move to it )
-  // PickRandomDestination always succeeds, MoveToDestination stays kRunning
-  // until the motor reaches the target. When the sequence completes it resets
+        auto wanderSequence = MakeSequence();
+        wanderSequence->AddChild(MakeAction([this] { return MoveToDestination(); }));
+        wanderSequence->AddChild(MakeAction([this] { return PickRandomDestination(); }));
 
-}
+        auto basicSelector = MakeSelector();
+        basicSelector->AddChild(std::move(testSequence));
+        basicSelector->AddChild(std::move(wanderSequence));
 
-void Npc::Update(const float dt) {
-  motor_.Update(dt);
-  if (bt_root_) {
-    bt_root_->Tick();
-  }
-}
+        bt_root_ = std::move(basicSelector);
 
-void Npc::Draw(sf::RenderWindow& window) {
-  if (sprite_.has_value()) {
-    sprite_->setPosition(motor_.GetPosition());
-    window.draw(*sprite_);
-  }
-}
+        // Rough wander behaviour:
+        //   Sequence( pick a random destination, then move to it )
+        // PickRandomDestination always succeeds, MoveToDestination stays kRunning
+        // until the motor reaches the target. When the sequence completes it resets
+    }
 
-Status Npc::PickRandomDestination() {
-  std::uniform_real_distribution<float> x_dist(0.f, world_size_.x);
-  std::uniform_real_distribution<float> y_dist(0.f, world_size_.y);
-  motor_.SetDestination({x_dist(rng_), y_dist(rng_)});
-  return Status::kSuccess;
-}
+    void Npc::Update(const float dt){
+        motor_.Update(dt);
+        if (bt_root_) {
+            bt_root_->Tick();
+        }
+    }
 
-Status Npc::MoveToDestination() const {
-  return motor_.RemainingDistance() <= 0.001f ? Status::kSuccess
-                                              : Status::kRunning;
-}
+    void Npc::Draw(sf::RenderWindow &window){
+        if (sprite_.has_value()) {
+            sprite_->setPosition(motor_.position());
+            window.draw(*sprite_);
+        }
+    }
 
-}  // namespace api::ai
+    Status Npc::PickRandomDestination(){
+        std::uniform_real_distribution<float> x_dist(0.f, world_size_.x);
+        std::uniform_real_distribution<float> y_dist(0.f, world_size_.y);
+        motor_.set_destination({x_dist(rng_), y_dist(rng_)});
+        return Status::kSuccess;
+    }
+
+    Status Npc::MoveToDestination() const{
+        return motor_.remaining_distance() <= 0.001f
+                   ? Status::kSuccess
+                   : Status::kRunning;
+    }
+
+    Status Npc::Locked(){
+        std::println("locked");
+        return Status::kRunning;
+    }
+} // namespace api::ai

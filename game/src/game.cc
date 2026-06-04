@@ -5,12 +5,10 @@
 #include "tilemap.h"
 #include "ai/npc.h"
 #include "graphics/camera.h"
-#include "graphics/tilemap_renderer.h"
-#include "graphics/tilesheet.h"
 
 namespace game {
     namespace {
-        constexpr sf::Vector2f world_size = {1920.f * 5, 1080.f * 5};
+        constexpr sf::Vector2f world_size = {1920.f, 1080.f};
         constexpr sf::Vector2f window_size_f = {1920.f, 1080.f};
         constexpr sf::Vector2u window_size_u = {1920u, 1080u};
 
@@ -31,7 +29,7 @@ namespace game {
             camera_.Setup(window_size_f);
             map_.Setup(world_size, {32, 32});
             npc_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png",
-                       world_size, {world_size.x * 0.5f, world_size.y * 0.5f});
+                       world_size, {100, 100});
         }
 
         void ToggleFullscreen(){
@@ -43,11 +41,9 @@ namespace game {
             }
             appliedSize_ = window_.getSize();
         }
-
     } // namespace
 
     void Loop(){
-
         Setup();
 
         // Start the game loop
