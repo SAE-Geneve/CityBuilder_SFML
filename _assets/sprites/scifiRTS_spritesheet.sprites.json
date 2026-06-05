@@ -20,7 +20,7 @@
     },
     {
       "h": 54,
-      "name": "sprite_2",
+      "name": "building1",
       "origin_x": 32.0,
       "origin_y": 27.0,
       "w": 64,
@@ -92,7 +92,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_12",
+      "name": "building2",
       "origin_x": 31.0,
       "origin_y": 32.0,
       "w": 62,
@@ -101,7 +101,7 @@
     },
     {
       "h": 64,
-      "name": "sprite_13",
+      "name": "building3",
       "origin_x": 22.0,
       "origin_y": 32.0,
       "w": 44,
@@ -146,7 +146,7 @@
     },
     {
       "h": 56,
-      "name": "sprite_20",
+      "name": "building4",
       "origin_x": 28.0,
       "origin_y": 28.0,
       "w": 56,
@@ -191,7 +191,7 @@
     },
     {
       "h": 56,
-      "name": "sprite_28",
+      "name": "building5",
       "origin_x": 28.0,
       "origin_y": 28.0,
       "w": 56,
@@ -308,7 +308,7 @@
     },
     {
       "h": 48,
-      "name": "sprite_42",
+      "name": "building6",
       "origin_x": 30.0,
       "origin_y": 24.0,
       "w": 60,
@@ -539,6 +539,105 @@
       "w": 32,
       "x": 362,
       "y": 96
+    },
+    {
+      "h": 38,
+      "name": "blue_big_truck",
+      "origin_x": 14.0,
+      "origin_y": 24.5,
+      "w": 42,
+      "x": 313,
+      "y": 130
+    },
+    {
+      "h": 36,
+      "name": "grey_big_truck",
+      "origin_x": 21.0,
+      "origin_y": 18.0,
+      "w": 42,
+      "x": 313,
+      "y": 170
+    },
+    {
+      "h": 40,
+      "name": "green_green_truck",
+      "origin_x": 20.5,
+      "origin_y": 20.0,
+      "w": 41,
+      "x": 351,
+      "y": 417
+    },
+    {
+      "h": 38,
+      "name": "orange_big_truck",
+      "origin_x": 21.5,
+      "origin_y": 19.0,
+      "w": 43,
+      "x": 351,
+      "y": 459
+    },
+    {
+      "h": 36,
+      "name": "blue_flat_truck",
+      "origin_x": 15.5,
+      "origin_y": 18.0,
+      "w": 31,
+      "x": 467,
+      "y": 296
+    },
+    {
+      "h": 40,
+      "name": "orange_flat_truck",
+      "origin_x": 15.5,
+      "origin_y": 20.0,
+      "w": 31,
+      "x": 436,
+      "y": 71
+    },
+    {
+      "h": 39,
+      "name": "green_flat_truck",
+      "origin_x": 16.0,
+      "origin_y": 19.5,
+      "w": 32,
+      "x": 441,
+      "y": 1
+    },
+    {
+      "h": 38,
+      "name": "grey_tractor",
+      "origin_x": 19.0,
+      "origin_y": 19.0,
+      "w": 38,
+      "x": 394,
+      "y": 410
+    },
+    {
+      "h": 38,
+      "name": "grey_flat_truck",
+      "origin_x": 13.5,
+      "origin_y": 19.0,
+      "w": 27,
+      "x": 437,
+      "y": 255
+    },
+    {
+      "h": 50,
+      "name": "electric_pillar_off",
+      "origin_x": 14.5,
+      "origin_y": 25.0,
+      "w": 29,
+      "x": 467,
+      "y": 176
+    },
+    {
+      "h": 53,
+      "name": "electric_pillar_on",
+      "origin_x": 17.5,
+      "origin_y": 26.5,
+      "w": 35,
+      "x": 358,
+      "y": 259
     }
   ],
   "texture": "scifiRTS_spritesheet.png"

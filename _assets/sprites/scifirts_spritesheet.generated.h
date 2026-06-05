@@ -11,7 +11,7 @@ inline constexpr std::string_view kTexture = "scifiRTS_spritesheet.png";
 
 inline constexpr SpriteRect kEmpty1{ .x=0, .y=0, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadEndTop{ .x=64, .y=0, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite2{ .x=128, .y=0, .w=64, .h=54, .origin_x=32.0f, .origin_y=27.0f };
+inline constexpr SpriteRect kBuilding1{ .x=128, .y=0, .w=64, .h=54, .origin_x=32.0f, .origin_y=27.0f };
 inline constexpr SpriteRect kRoadLeftBottom{ .x=192, .y=0, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadHorizontalTop{ .x=256, .y=0, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kSprite5{ .x=320, .y=0, .w=44, .h=44, .origin_x=22.0f, .origin_y=22.0f };
@@ -19,18 +19,18 @@ inline constexpr SpriteRect kEmpty2{ .x=0, .y=64, .w=64, .h=64, .origin_x=32.0f,
 inline constexpr SpriteRect kRoadEndRight{ .x=64, .y=64, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadVerticalRight{ .x=128, .y=54, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadRightBottom{ .x=192, .y=64, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite12{ .x=256, .y=64, .w=62, .h=64, .origin_x=31.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite13{ .x=318, .y=64, .w=44, .h=64, .origin_x=22.0f, .origin_y=32.0f };
+inline constexpr SpriteRect kBuilding2{ .x=256, .y=64, .w=62, .h=64, .origin_x=31.0f, .origin_y=32.0f };
+inline constexpr SpriteRect kBuilding3{ .x=318, .y=64, .w=44, .h=64, .origin_x=22.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kIce1{ .x=0, .y=128, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadLeftTop{ .x=64, .y=128, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kForest3{ .x=128, .y=118, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kForest4{ .x=192, .y=128, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite20{ .x=256, .y=128, .w=56, .h=56, .origin_x=28.0f, .origin_y=28.0f };
+inline constexpr SpriteRect kBuilding4{ .x=256, .y=128, .w=56, .h=56, .origin_x=28.0f, .origin_y=28.0f };
 inline constexpr SpriteRect kIce2{ .x=0, .y=192, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadRightTop{ .x=64, .y=192, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kBase{ .x=128, .y=182, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadHorizontal{ .x=192, .y=192, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite28{ .x=256, .y=184, .w=56, .h=56, .origin_x=28.0f, .origin_y=28.0f };
+inline constexpr SpriteRect kBuilding5{ .x=256, .y=184, .w=56, .h=56, .origin_x=28.0f, .origin_y=28.0f };
 inline constexpr SpriteRect kRoundForest4{ .x=64, .y=256, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kForest1{ .x=128, .y=246, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadVerticalRight_1{ .x=0, .y=303, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
@@ -43,7 +43,7 @@ inline constexpr SpriteRect kRoadHorizontalBottom{ .x=192, .y=350, .w=64, .h=64,
 inline constexpr SpriteRect kRoadEndBottom{ .x=0, .y=431, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoundForest1{ .x=64, .y=448, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
 inline constexpr SpriteRect kRoadEndLeft{ .x=128, .y=438, .w=64, .h=64, .origin_x=32.0f, .origin_y=32.0f };
-inline constexpr SpriteRect kSprite42{ .x=192, .y=461, .w=60, .h=48, .origin_x=30.0f, .origin_y=24.0f };
+inline constexpr SpriteRect kBuilding6{ .x=192, .y=461, .w=60, .h=48, .origin_x=30.0f, .origin_y=24.0f };
 inline constexpr SpriteRect kOrangeStone3{ .x=256, .y=426, .w=38, .h=35, .origin_x=19.0f, .origin_y=17.5f };
 inline constexpr SpriteRect kOrangeStone2{ .x=312, .y=208, .w=38, .h=32, .origin_x=19.0f, .origin_y=16.0f };
 inline constexpr SpriteRect kOrangeStone1{ .x=356, .y=180, .w=32, .h=28, .origin_x=16.0f, .origin_y=14.0f };
@@ -69,6 +69,17 @@ inline constexpr SpriteRect kBlueCar{ .x=434, .y=136, .w=32, .h=32, .origin_x=16
 inline constexpr SpriteRect kOrangeCar{ .x=466, .y=336, .w=32, .h=32, .origin_x=16.0f, .origin_y=16.0f };
 inline constexpr SpriteRect kGreyCar{ .x=434, .y=335, .w=32, .h=32, .origin_x=16.0f, .origin_y=16.0f };
 inline constexpr SpriteRect kGreenCar{ .x=362, .y=96, .w=32, .h=31, .origin_x=16.0f, .origin_y=15.5f };
+inline constexpr SpriteRect kBlueBigTruck{ .x=313, .y=130, .w=42, .h=38, .origin_x=14.0f, .origin_y=24.5f };
+inline constexpr SpriteRect kGreyBigTruck{ .x=313, .y=170, .w=42, .h=36, .origin_x=21.0f, .origin_y=18.0f };
+inline constexpr SpriteRect kGreenGreenTruck{ .x=351, .y=417, .w=41, .h=40, .origin_x=20.5f, .origin_y=20.0f };
+inline constexpr SpriteRect kOrangeBigTruck{ .x=351, .y=459, .w=43, .h=38, .origin_x=21.5f, .origin_y=19.0f };
+inline constexpr SpriteRect kBlueFlatTruck{ .x=467, .y=296, .w=31, .h=36, .origin_x=15.5f, .origin_y=18.0f };
+inline constexpr SpriteRect kOrangeFlatTruck{ .x=436, .y=71, .w=31, .h=40, .origin_x=15.5f, .origin_y=20.0f };
+inline constexpr SpriteRect kGreenFlatTruck{ .x=441, .y=1, .w=32, .h=39, .origin_x=16.0f, .origin_y=19.5f };
+inline constexpr SpriteRect kGreyTractor{ .x=394, .y=410, .w=38, .h=38, .origin_x=19.0f, .origin_y=19.0f };
+inline constexpr SpriteRect kGreyFlatTruck{ .x=437, .y=255, .w=27, .h=38, .origin_x=13.5f, .origin_y=19.0f };
+inline constexpr SpriteRect kElectricPillarOff{ .x=467, .y=176, .w=29, .h=50, .origin_x=14.5f, .origin_y=25.0f };
+inline constexpr SpriteRect kElectricPillarOn{ .x=358, .y=259, .w=35, .h=53, .origin_x=17.5f, .origin_y=26.5f };
 
 }  // namespace api::graphics::sprites::scifirts_spritesheet
 
