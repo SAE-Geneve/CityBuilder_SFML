@@ -14,12 +14,12 @@ class ResourceManager {
   void LoadResources(Resource::Type type, const std::vector<int>& indices,
                      void (*on_chop_event)(int, float));
 
-  auto resources(const Resource::Type type) {
+  [[nodiscard]] auto resources(const Resource::Type type) {
     return resources_ | std::ranges::views::filter([type](const Resource& t) {
              return t.type() == type;
            });
   }
-  auto resources(const Resource::Type type) const {
+  [[nodiscard]] auto resources(const Resource::Type type) const {
     return resources_ | std::ranges::views::filter([type](const Resource& t) {
              return t.type() == type;
            });
