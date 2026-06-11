@@ -11,8 +11,16 @@
 namespace core::ai::behaviour_tree {
     class SelectorNode : public CompositeNode {
     public:
+        SelectorNode() = default;
         ~SelectorNode() override = default;
-        void Reset() override{ currentChild_ = 0; };
+        SelectorNode(const SelectorNode&) = delete;
+        SelectorNode& operator=(const SelectorNode&) = delete;
+        SelectorNode(SelectorNode&& node) noexcept : CompositeNode(std::move(node)){}
+        SelectorNode& operator=(SelectorNode&& node) noexcept
+        {
+            CompositeNode::operator=(std::move(node));
+            return *this;
+        }
 
         Status Tick() override{
             Status status = children_[currentChild_]->Tick();

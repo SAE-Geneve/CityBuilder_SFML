@@ -19,6 +19,14 @@ namespace core::ai::behaviour_tree{
         ActionNode(const Taction& callback_action) : callback_action_(callback_action) {}
 
         ~ActionNode() override = default;
+        ActionNode(const ActionNode&) = delete;
+        ActionNode& operator=(const ActionNode&) = delete;
+        ActionNode(ActionNode&& node) noexcept : Node(std::move(node)){}
+        ActionNode& operator=(Node&& node) noexcept {
+            Node::operator=(std::move(node));
+            return *this;
+        }
+
         void Reset() override {}
         Status Tick() override{
             return callback_action_();

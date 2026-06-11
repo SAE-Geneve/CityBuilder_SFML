@@ -11,12 +11,18 @@
 
 namespace core::ai::behaviour_tree{
     class SequenceNode : public CompositeNode {
-
-
-
-    public:
+        public:
+        SequenceNode() = default;
         ~SequenceNode() override = default;
-        void Reset() override {currentChild_ = 0;}
+        SequenceNode(const SequenceNode&) = delete;
+        SequenceNode& operator=(const SequenceNode&) = delete;
+        SequenceNode(SequenceNode&& node) noexcept : CompositeNode(std::move(node)){}
+        SequenceNode& operator=(SequenceNode&& node) noexcept
+        {
+            CompositeNode::operator=(std::move(node));
+            return *this;
+        }
+
         Status Tick() override{
 
             Status status = children_[currentChild_]->Tick();

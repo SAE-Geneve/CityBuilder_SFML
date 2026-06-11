@@ -5,36 +5,39 @@
 #include <print>
 
 namespace core::ai::behaviour_tree {
+    enum class Status { kFailure, kRunning, kSuccess };
 
-enum class Status { kFailure, kRunning, kSuccess };
+    // Base class for every node of the tree. Movable-only (rule of five):
+    // a node belongs to exactly one parent, so copying is forbidden.
+    class Node {
+    protected:
+        virtual void Reset() = 0;
 
-// Base class for every node of the tree. Movable-only (rule of five):
-// a node belongs to exactly one parent, so copying is forbidden.
-class Node {
- public:
-  Node() = default;
-  virtual ~Node() = default;
+    public:
+        Node() = default;
 
-  Node(const Node&) = delete;
-  Node& operator=(const Node&) = delete;
+        virtual ~Node() = default;
 
-  Node(Node&& node) noexcept{
-      std::println("Move semantic move constructor");
-      std::swap(status_, node.status_);
-  }
-  Node& operator=(Node&& node) noexcept {
-      std::println("Move semantic move operator");
-    std::swap(status_, node.status_);
-    return *this;
-  }
+        Node(const Node &) = delete;
 
-  virtual void Reset() = 0;
-  virtual Status Tick() = 0;
+        Node &operator=(const Node &) = delete;
 
- protected:
-  Status status_ = Status::kFailure;
-};
+        Node(Node &&node) noexcept{
+            std::println("Move semantic move constructor");
+            std::swap(status_, node.status_);
+        }
 
-}  // namespace core::ai::behaviour_tree
+        Node &operator=(Node &&node) noexcept{
+            std::println("Move semantic move operator");
+            std::swap(status_, node.status_);
+            return *this;
+        }
+
+        virtual Status Tick() = 0;
+
+    protected:
+        Status status_ = Status::kFailure;
+    };
+} // namespace core::ai::behaviour_tree
 
 #endif  // CORE_AI_BT_NODE_H

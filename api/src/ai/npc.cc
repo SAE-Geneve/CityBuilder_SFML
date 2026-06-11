@@ -7,17 +7,18 @@
 #include "ai/bt_node_factory.h"
 #include "ai/bt_selector.h"
 #include "ai/bt_sequence.h"
+#include "rng/rng.h"
 
 
 namespace api::ai {
     using core::ai::behaviour_tree::Status;
 
-    void Npc::Setup(std::string_view sprite_path, const sf::Vector2f world_size,
+    void Npc::Setup(const sf::Texture* texture, const sf::Vector2f world_size,
                     const sf::Vector2f start_position){
         world_size_ = world_size;
 
-        if (texture_->loadFromFile(std::string(sprite_path))) {
-            sprite_ = sf::Sprite(*texture_);
+        if (texture != nullptr) {
+            sprite_ = sf::Sprite(*texture);
         }
 
         motor_.set_position(start_position);
@@ -41,10 +42,11 @@ namespace api::ai {
 
         bt_root_ = std::move(basicSelector);
 
-        // Rough wander behaviour:
-        //   Sequence( pick a random destination, then move to it )
+        // Rough wander behavior :
+        // Sequence (pick a random destination, then move to it)
         // PickRandomDestination always succeeds, MoveToDestination stays kRunning
-        // until the motor reaches the target. When the sequence completes it resets
+        // until the motor reaches the target. When the sequence completes, it resets
+
     }
 
     void Npc::Update(const float dt){
@@ -62,13 +64,16 @@ namespace api::ai {
     }
 
     Status Npc::PickRandomDestination(){
-        std::uniform_real_distribution<float> x_dist(0.f, world_size_.x);
-        std::uniform_real_distribution<float> y_dist(0.f, world_size_.y);
-        motor_.set_destination({x_dist(rng_), y_dist(rng_)});
+
+        motor_.set_destination({core::rng::get_value(0.f,12.f),core::rng::get_value(0.f,12.f)});
+        // get the path
         return Status::kSuccess;
     }
 
     Status Npc::MoveToDestination() const{
+
+        // on parcourt case par case, waypoints
+
         return motor_.remaining_distance() <= 0.001f
                    ? Status::kSuccess
                    : Status::kRunning;

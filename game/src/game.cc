@@ -8,7 +8,7 @@
 
 namespace game {
     namespace {
-        constexpr sf::Vector2f world_size = {1920.f, 1080.f};
+        constexpr sf::Vector2f world_size = {1920.f * 5, 1080.f * 5};
         constexpr sf::Vector2f window_size_f = {1920.f, 1080.f};
         constexpr sf::Vector2u window_size_u = {1920u, 1080u};
 
@@ -25,8 +25,8 @@ namespace game {
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode(window_size_u), "SFML window", sf::State::Fullscreen);
-            isFullscreen_ = true;
-            camera_.Setup(window_size_f);
+            //isFullscreen_ = true;
+            camera_.Setup(window_size_f, sf::FloatRect({0.f, 0.f}, {world_size.x, world_size.y}));
             map_.Setup(world_size, {32, 32});
             npc_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png",
                        world_size, {100, 100});
