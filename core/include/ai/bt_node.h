@@ -23,12 +23,12 @@ namespace core::ai::behaviour_tree {
         Node &operator=(const Node &) = delete;
 
         Node(Node &&node) noexcept{
-            std::println("Move semantic move constructor");
+            std::println("Node : Move semantic move constructor");
             std::swap(status_, node.status_);
         }
 
         Node &operator=(Node &&node) noexcept{
-            std::println("Move semantic move operator");
+            std::println("Node : Move semantic move operator");
             std::swap(status_, node.status_);
             return *this;
         }

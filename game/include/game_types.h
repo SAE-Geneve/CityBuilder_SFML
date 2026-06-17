@@ -5,14 +5,16 @@
 #ifndef CITYBUILDER_GAME_TYPES_H
 #define CITYBUILDER_GAME_TYPES_H
 
-enum class TerrainTile {
+#include "tiles/tile.h"
+
+enum class TerrainTile : uint8_t {
     kGrassA,
     kGrassB,
     kWaterA,
     kWaterB
 };
 
-enum class ResourceTile {
+enum class ResourceTile : uint8_t {
     kWood,
     kRock,
     kFood

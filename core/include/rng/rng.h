@@ -8,6 +8,23 @@
 #include <SFML/System/Vector2.hpp>
 
 namespace core::rng {
+
+    template<typename T>
+    requires std::is_floating_point_v<T>
+    T get_value(T min, T max){
+        std::uniform_real_distribution<T> dist(min, max);
+        std::mt19937 rng_{std::random_device{}()};
+        return dist(rng_);
+    }
+
+    template<typename T>
+    requires std::is_integral_v<T>
+    T get_value(T min, T max){
+        std::uniform_int_distribution<T> dist(min, max);
+        std::mt19937 rng_{std::random_device{}()};
+        return dist(rng_);
+    }
+
     template<typename T>
     sf::Vector2<T> get_vector(sf::Vector2<T> bounds){
 
@@ -17,12 +34,6 @@ namespace core::rng {
         return result;
     }
 
-    template<typename T>
-    T get_value(T min, T max){
-        std::uniform_real_distribution<T> dist(min, max);
-        std::mt19937 rng_{std::random_device{}()};
-        return dist(rng_);
-    }
 }
 
 #endif //CITYBUILDER_RNG_H

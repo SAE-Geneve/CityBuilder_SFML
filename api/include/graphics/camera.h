@@ -5,7 +5,7 @@
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Window/Event.hpp>
 
-namespace graphics {
+namespace api::graphics {
     class Camera {
         sf::View view_;
         sf::FloatRect mapBounds_;

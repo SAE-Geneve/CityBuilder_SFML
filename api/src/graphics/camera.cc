@@ -5,7 +5,7 @@
 #include <print>
 #include <format>
 
-namespace graphics {
+namespace api::graphics {
 
     // ReSharper disable once CppParameterMayBeConst
     void Camera::Setup(sf::Vector2f windowSize, sf::FloatRect mapBounds) {

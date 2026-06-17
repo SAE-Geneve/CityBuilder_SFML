@@ -8,7 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
-namespace graphics {
+namespace api::graphics {
     class TilemapRenderer {
 
         const sf::Color color = sf::Color::White;

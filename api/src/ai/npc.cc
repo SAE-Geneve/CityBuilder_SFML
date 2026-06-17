@@ -7,14 +7,15 @@
 #include "ai/bt_node_factory.h"
 #include "ai/bt_selector.h"
 #include "ai/bt_sequence.h"
+#include "ai/a_star_graph.h"
 #include "rng/rng.h"
 
 
 namespace api::ai {
     using core::ai::behaviour_tree::Status;
 
-    void Npc::Setup(const sf::Texture* texture, const sf::Vector2f world_size,
-                    const sf::Vector2f start_position){
+    void Npc::Setup(const sf::Texture* texture, sf::Vector2f world_size, sf::Vector2f start_position, AStarGraph& astar_graph){
+
         world_size_ = world_size;
 
         if (texture != nullptr) {
@@ -46,8 +47,10 @@ namespace api::ai {
         // Sequence (pick a random destination, then move to it)
         // PickRandomDestination always succeeds, MoveToDestination stays kRunning
         // until the motor reaches the target. When the sequence completes, it resets
+        astar_graph_ = &astar_graph;
 
     }
+
 
     void Npc::Update(const float dt){
         motor_.Update(dt);
@@ -64,19 +67,28 @@ namespace api::ai {
     }
 
     Status Npc::PickRandomDestination(){
-
-        motor_.set_destination({core::rng::get_value(0.f,12.f),core::rng::get_value(0.f,12.f)});
+        // core::rng::get_value<long long>(0, walkable_tiles_.extent(0) * walkable_tiles_.extent(1));
         // get the path
+        path_ = astar_graph_->GetPath(sf::Vector2i{motor_.position()}, core::rng::get_vector(sf::Vector2i{world_size_}));
+        path_idx_ = 0;
+        motor_.set_destination(sf::Vector2f{path_[path_idx_]});
         return Status::kSuccess;
     }
 
-    Status Npc::MoveToDestination() const{
+    Status Npc::MoveToDestination(){
 
         // on parcourt case par case, waypoints
+        // TODO : path increment
+        if (motor_.remaining_distance() <= 0.001f) {
+            path_idx_++;
+            if (path_idx_ >= path_.size()) {
+                return Status::kSuccess;
+            }else {
+                motor_.set_destination(sf::Vector2f{path_[path_idx_]});
+            }
+        }
 
-        return motor_.remaining_distance() <= 0.001f
-                   ? Status::kSuccess
-                   : Status::kRunning;
+        return Status::kRunning;
     }
 
     Status Npc::Locked(){

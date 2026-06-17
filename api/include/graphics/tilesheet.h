@@ -10,7 +10,7 @@
 #include <string_view>
 #include <unordered_map>
 
-namespace graphics {
+namespace api::graphics {
     template<typename T>
     class Tilesheet {
         std::unordered_map<T, sf::FloatRect> tile_rects;

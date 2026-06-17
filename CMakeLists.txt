@@ -8,7 +8,6 @@ project(CityBuilder)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
 # Creating Architecture and libraries
 add_subdirectory(core/)
 add_subdirectory(api/)

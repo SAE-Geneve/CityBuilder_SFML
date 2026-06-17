@@ -7,14 +7,19 @@
 #include <type_traits>
 #include <SFML/System/Vector2.hpp>
 
-namespace tiles {
+namespace api::tiles {
+
+    struct BasicTile {
+        sf::Vector2f  Pos;
+        bool IsWalkable = false;
+    };
 
     template<typename T>
     requires std::is_enum_v<T>
-    struct Tile {
-        sf::Vector2f  pos;
+    struct Tile : BasicTile {
         T type;
     };
+
 
 }
 

@@ -7,9 +7,14 @@
 #include "game_types.h"
 #include "tiles\tilemap_generator.h"
 
-void Tilemap::Setup(sf::Vector2f gridSize, sf::Vector2f gridOffset){
-    std::vector<tiles::Tile<TerrainTile> > terrain = tiles::generator::GenerateTerrain(gridSize, gridOffset);
-    std::vector<tiles::Tile<ResourceTile> > resources = tiles::generator::SeedAndGrow(terrain, ResourceTile::kWood);
+void Tilemap::Setup(sf::Vector2f grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph &astar_graph){
+    using namespace api::tiles;
+
+    grid_size_ = grid_size;
+    grid_offset_ = gridOffset;
+
+    terrain_ = generator::GenerateTerrain(grid_size_, gridOffset);
+    resources_ = generator::SeedAndGrow(terrain_, ResourceTile::kWood);
 
     if (terrain_tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins_transparent.png", 128)) {
         terrain_tilesheet_.AddTile(TerrainTile::kGrassA, 0, 0);
@@ -22,28 +27,31 @@ void Tilemap::Setup(sf::Vector2f gridSize, sf::Vector2f gridOffset){
         terrain_renderer_.SetTexture(terrain_tilesheet_.GetTexture());
         terrain_renderer_.ClearVertices();
 
-        for (auto &tile: terrain) {
-            terrain_renderer_.AddTile(tile.pos, gridOffset, terrain_tilesheet_.GetBounds(tile.type));
+        for (auto &tile: terrain_) {
+            astar_graph.AddNode(sf::Vector2i{tile.Pos});
+            terrain_renderer_.AddTile(tile.Pos, gridOffset, terrain_tilesheet_.GetBounds(tile.type));
         }
     }
 
-    if (ressources_tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins_transparent.png", 128)) {
-        ressources_tilesheet_.AddTile(ResourceTile::kWood, 5, 3);
-        ressources_tilesheet_.AddTile(ResourceTile::kRock, 5, 4);
-        ressources_tilesheet_.AddTile(ResourceTile::kFood, 5, 5);
+    if (resources_tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins_transparent.png", 128)) {
+        resources_tilesheet_.AddTile(ResourceTile::kWood, 5, 3);
+        resources_tilesheet_.AddTile(ResourceTile::kRock, 5, 4);
+        resources_tilesheet_.AddTile(ResourceTile::kFood, 5, 5);
 
 
         // init textures -------------------------------------------------------------------
-        ressources_renderer_.SetTexture(ressources_tilesheet_.GetTexture());
-        ressources_renderer_.ClearVertices();
+        resources_renderer_.SetTexture(resources_tilesheet_.GetTexture());
+        resources_renderer_.ClearVertices();
 
-        for (auto &tile: resources) {
-            ressources_renderer_.AddTile(tile.pos, gridOffset, ressources_tilesheet_.GetBounds(tile.type));
+        for (auto &tile: resources_) {
+            astar_graph.RemoveNode(sf::Vector2i{tile.Pos});
+            resources_renderer_.AddTile(tile.Pos, gridOffset, resources_tilesheet_.GetBounds(tile.type));
         }
     }
+
 }
 
 void Tilemap::Draw(sf::RenderWindow &window){
     terrain_renderer_.Draw(window);
-    ressources_renderer_.Draw(window);
+    resources_renderer_.Draw(window);
 }
