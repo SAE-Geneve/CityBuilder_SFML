@@ -61,7 +61,8 @@ namespace api::ai {
         void AddNode(sf::Vector2i node);
         void RemoveNode(sf::Vector2i node);
         [[nodiscard]] bool ContainsNode(sf::Vector2i node) const;
-        const sf::Vector2i GetRandomNode();
+
+        sf::Vector2i GetRandomNode();
 
         std::vector<sf::Vector2i> GetPath(sf::Vector2i start, sf::Vector2i end);
 

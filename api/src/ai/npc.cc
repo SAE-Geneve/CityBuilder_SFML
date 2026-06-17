@@ -9,7 +9,6 @@
 #include "ai/bt_selector.h"
 #include "ai/bt_sequence.h"
 #include "ai/a_star_graph.h"
-#include "rng/rng.h"
 
 
 namespace api::ai {
@@ -21,13 +20,10 @@ namespace api::ai {
 
         if (texture != nullptr) {
             sprite_ = sf::Sprite(*texture);
-            sprite_->setOrigin({16,16});
+            sprite_->setOrigin({16, 16});
         }
-
-        sf::Vector2f start_position_f = sf::Vector2f{static_cast<float>(start_position.x), static_cast<float>(start_position.y)};
-
-        motor_.set_position(start_position_f);
-        motor_.set_destination(start_position_f); // stay put until the first pick
+        motor_.set_position(start_position);
+        motor_.set_destination(start_position); // stay put until the first pick
         motor_.set_speed(kSpeed);
 
         using namespace core::ai::behaviour_tree::node_factory;
@@ -65,7 +61,6 @@ namespace api::ai {
 
     void Npc::Draw(sf::RenderWindow &window){
         if (sprite_.has_value()) {
-
             // sf::RectangleShape rect{sprite_->getLocalBounds().size};
             // sprite_->setPosition({32,32});
             // rect.setPosition(sprite_->getPosition());
@@ -73,7 +68,6 @@ namespace api::ai {
 
             sprite_->setPosition(motor_.position());
             window.draw(*sprite_);
-
         }
     }
 
@@ -88,11 +82,10 @@ namespace api::ai {
         if (ManhattanDistance(sf::Vector2i{motor_.position()}, destination) > 200) {
             return Status::kFailure;
         }
-        path_ = astar_graph_->GetPath(sf::Vector2i{motor_.position()}, destination);
-
-        if (!path_.empty()) {
-            path_idx_ = 0;
-            motor_.set_destination(sf::Vector2f{path_[path_idx_]});
+        path_.SetPath(astar_graph_->GetPath(sf::Vector2i{motor_.position()}, destination));
+        if (path_.IsValid()) {
+            path_.NextPosition();
+            motor_.set_destination(path_.CurrentPosition());
             return Status::kSuccess;
         }
 
@@ -100,15 +93,12 @@ namespace api::ai {
     }
 
     Status Npc::MoveToDestination(){
-        // on parcourt case par case, waypoints
-        // TODO : path increment
         if (motor_.remaining_distance() <= 0.001f) {
-            path_idx_++;
-            if (path_idx_ >= path_.size()) {
+            if (path_.IsGoalReached()) {
                 return Status::kSuccess;
-            } else {
-                motor_.set_destination(sf::Vector2f{path_[path_idx_]});
             }
+            path_.NextPosition();
+            motor_.set_destination(path_.CurrentPosition());
         }
 
         return Status::kRunning;

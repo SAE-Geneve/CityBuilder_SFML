@@ -25,8 +25,8 @@ namespace api::ai {
         return walkables_.contains(node);
     }
 
-    const sf::Vector2i AStarGraph::GetRandomNode(){
-        int rnd_idx = core::rng::get_value(static_cast<size_t>(0), walkables_.size() - 1);
+    sf::Vector2i AStarGraph::GetRandomNode(){
+        size_t rnd_idx = core::rng::get_value(static_cast<size_t>(0), walkables_.size() - 1);
         // Accessing third element
         auto it = next(walkables_.begin(), rnd_idx);
         return {it->x, it->y};
