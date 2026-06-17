@@ -6,6 +6,7 @@
 #define CITYBUILDER_PATH_H
 
 #include <array>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 #include <SFML/System/Vector2.hpp>
@@ -20,6 +21,7 @@ namespace api::ai {
             return h;
         }
     };
+
     //
     // // TODO : Slide about hash and unordered_set
     // struct Vec2iEq {
@@ -30,32 +32,28 @@ namespace api::ai {
         sf::Vector2i position = sf::Vector2i(-1, -1);
         int g = 0; // Dijkstra cost
         int h = 0; // Heuristic value
-        // AStarVertex* parent = nullptr;
-        int parent_idx = -1;
+        // Position we reached this vertex from; recorded into the came_from map when settled.
+        sf::Vector2i parent_position = sf::Vector2i(-1, -1);
 
         [[nodiscard]] int F() const{return g + h;};
 
+        // Ordering for the open-queue (min-heap via std::greater).
         bool operator>(const AStarVertex& other) const{return F() > other.F();};
-        bool operator==(const AStarVertex &other) const{return position == other.position && F() == other.F();};
-
-        struct AStarVertexHash {
-            size_t operator()(const AStarVertex& vertex) const noexcept{
-                return Vec2iHash{}(vertex.position);
-            }
-        };
 
     };
 
     class AStarGraph {
 
-        // TODO : Slide about hash
         std::unordered_set<sf::Vector2i, Vec2iHash> walkables_;
-        std::vector<AStarVertex> visited_vertices;
         sf::Vector2i world_offset_;
+
+        // Scratch reused across GetPath calls: doubles as the closed set (key = settled)
+        // and the reverse parent chain (value = parent). mutable so the const GetPath can
+        // clear and fill it; clear() keeps capacity, so steady-state pathing reallocates nothing.
+        mutable std::unordered_map<sf::Vector2i, sf::Vector2i, Vec2iHash> came_from_;
 
     public:
         explicit AStarGraph(sf::Vector2i world_size, sf::Vector2i world_offset) : world_offset_(world_offset){
-            visited_vertices.reserve(world_size.x * world_size.y);
         };
 
         void AddNode(sf::Vector2i node);
@@ -64,7 +62,7 @@ namespace api::ai {
 
         sf::Vector2i GetRandomNode();
 
-        std::vector<sf::Vector2i> GetPath(sf::Vector2i start, sf::Vector2i end);
+        [[nodiscard]] std::vector<sf::Vector2i> GetPath(sf::Vector2i start, sf::Vector2i end) const;
 
     };
 

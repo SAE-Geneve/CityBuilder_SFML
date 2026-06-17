@@ -32,11 +32,13 @@ namespace api::ai {
         return {it->x, it->y};
     }
 
-    std::vector<sf::Vector2i> AStarGraph::GetPath(sf::Vector2i start, sf::Vector2i end){
-        std::vector<sf::Vector2i> path;
-
+    std::vector<sf::Vector2i> AStarGraph::GetPath(sf::Vector2i start, sf::Vector2i end) const{
         std::priority_queue<AStarVertex, std::vector<AStarVertex>, std::greater<>> open_queue;
-        visited_vertices.clear();
+
+        // came_from_ (a reused member) doubles as the closed set: a position is a key iff
+        // it has been settled, and the stored value is the parent we reached it from. This
+        // gives O(1) membership AND the reverse chain for path reconstruction.
+        came_from_.clear();
 
         sf::Vector2i rounded_start = {start.x - (start.x % world_offset_.x),  start.y - (start.y % world_offset_.y)};
         sf::Vector2i rounded_end = {end.x - (end.x % world_offset_.x),  end.y - (end.y % world_offset_.y)};
@@ -45,26 +47,24 @@ namespace api::ai {
             return {};
         }
 
-        open_queue.push(AStarVertex(rounded_start, 0, ManhattanDistance(start, end), -1));
+        // Start is its own parent; the reconstruction loop stops at rounded_start so it is never followed.
+        open_queue.push(AStarVertex(rounded_start, 0, ManhattanDistance(rounded_start, rounded_end), rounded_start));
 
         while (!open_queue.empty()) {
 
             AStarVertex v = open_queue.top(); open_queue.pop();
 
-            // Check doubled positions in open queue
-            auto visited = std::ranges::find_if(visited_vertices, [v](AStarVertex vCheck){return vCheck.position == v.position;});
-            if (visited != visited_vertices.end()) {
+            // Closed-set membership in O(1): skip if this position was already settled.
+            if (came_from_.contains(v.position)) {
                 continue;
             }
-            visited_vertices.push_back(v);
-            size_t visited_idx = visited_vertices.size() - 1;
+            came_from_.emplace(v.position, v.parent_position);
 
-            if (v.position == end){
-                // Research parents + reverse
-                auto pathVertex = v;
-                while (pathVertex.parent_idx > -1) {
-                    path.push_back(pathVertex.position);
-                    pathVertex = visited_vertices[pathVertex.parent_idx];
+            if (v.position == rounded_end){
+                // Walk the reverse chain from end back to start (start excluded), then reverse.
+                std::vector<sf::Vector2i> path;
+                for (sf::Vector2i cur = rounded_end; cur != rounded_start; cur = came_from_.at(cur)) {
+                    path.push_back(cur);
                 }
                 std::ranges::reverse(path);
                 return path;
@@ -72,22 +72,13 @@ namespace api::ai {
 
             for (sf::Vector2i neighbour: kNeighbours) {
                 sf::Vector2i new_position = v.position + sf::Vector2i{neighbour.x * world_offset_.x, neighbour.y * world_offset_.y};
-
-                auto visited = std::ranges::find_if(visited_vertices, [new_position](AStarVertex v){return v.position == new_position;});
-
-                int distance_from_start = ManhattanDistance(new_position, start);
-                if (visited == visited_vertices.end() && walkables_.contains(new_position) && distance_from_start <= 200) {
-                    open_queue.push(AStarVertex(new_position, v.g + 1, ManhattanDistance(new_position, end), visited_idx));
+                if (!came_from_.contains(new_position) && walkables_.contains(new_position)) {
+                    open_queue.push(AStarVertex(new_position, v.g + world_offset_.x, ManhattanDistance(new_position, rounded_end), v.position));
                 }
-
             }
-
         }
 
-        // path.push_back(start);
-        // path.push_back(end);
-
-        return path;
+        return {};
     }
 
     int ManhattanDistance(sf::Vector2i a, sf::Vector2i b){
