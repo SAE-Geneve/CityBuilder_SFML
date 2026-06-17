@@ -2,6 +2,7 @@
 
 #include <format>
 #include <print>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 #include "ai/bt_action.h"
 #include "ai/bt_node_factory.h"
@@ -14,28 +15,32 @@
 namespace api::ai {
     using core::ai::behaviour_tree::Status;
 
-    void Npc::Setup(const sf::Texture* texture, sf::Vector2f world_size, sf::Vector2f start_position, AStarGraph& astar_graph){
-
+    void Npc::Setup(const sf::Texture *texture, sf::Vector2i world_size, sf::Vector2i start_position,
+                    AStarGraph &astar_graph){
         world_size_ = world_size;
 
         if (texture != nullptr) {
             sprite_ = sf::Sprite(*texture);
+            sprite_->setOrigin({16,16});
         }
 
-        motor_.set_position(start_position);
-        motor_.set_destination(start_position); // stay put until the first pick
+        sf::Vector2f start_position_f = sf::Vector2f{static_cast<float>(start_position.x), static_cast<float>(start_position.y)};
+
+        motor_.set_position(start_position_f);
+        motor_.set_destination(start_position_f); // stay put until the first pick
         motor_.set_speed(kSpeed);
 
         using namespace core::ai::behaviour_tree::node_factory;
 
         auto testSequence = MakeSequence();
-        testSequence->AddChild(MakeAction([] {return Status::kSuccess;}));
-        testSequence->AddChild(MakeAction([] {return Status::kFailure;}));
-        testSequence->AddChild(MakeAction([this] { return Locked();}));
+        testSequence->AddChild(MakeAction([] { return Status::kSuccess; }));
+        testSequence->AddChild(MakeAction([] { return Status::kFailure; }));
+        testSequence->AddChild(MakeAction([this] { return Locked(); }));
 
         auto wanderSequence = MakeSequence();
-        wanderSequence->AddChild(MakeAction([this] { return MoveToDestination(); }));
+        wanderSequence->AddChild(MakeAction([this] { return WaitForPath(); }));
         wanderSequence->AddChild(MakeAction([this] { return PickRandomDestination(); }));
+        wanderSequence->AddChild(MakeAction([this] { return MoveToDestination(); }));
 
         auto basicSelector = MakeSelector();
         basicSelector->AddChild(std::move(testSequence));
@@ -48,7 +53,6 @@ namespace api::ai {
         // PickRandomDestination always succeeds, MoveToDestination stays kRunning
         // until the motor reaches the target. When the sequence completes, it resets
         astar_graph_ = &astar_graph;
-
     }
 
 
@@ -61,29 +65,48 @@ namespace api::ai {
 
     void Npc::Draw(sf::RenderWindow &window){
         if (sprite_.has_value()) {
+
+            // sf::RectangleShape rect{sprite_->getLocalBounds().size};
+            // sprite_->setPosition({32,32});
+            // rect.setPosition(sprite_->getPosition());
+            // window.draw(rect);
+
             sprite_->setPosition(motor_.position());
             window.draw(*sprite_);
+
         }
+    }
+
+    Status Npc::WaitForPath(){
+        return Status::kSuccess;
     }
 
     Status Npc::PickRandomDestination(){
         // core::rng::get_value<long long>(0, walkable_tiles_.extent(0) * walkable_tiles_.extent(1));
         // get the path
-        path_ = astar_graph_->GetPath(sf::Vector2i{motor_.position()}, core::rng::get_vector(sf::Vector2i{world_size_}));
-        path_idx_ = 0;
-        motor_.set_destination(sf::Vector2f{path_[path_idx_]});
-        return Status::kSuccess;
+        sf::Vector2i destination = astar_graph_->GetRandomNode();
+        if (ManhattanDistance(sf::Vector2i{motor_.position()}, destination) > 200) {
+            return Status::kFailure;
+        }
+        path_ = astar_graph_->GetPath(sf::Vector2i{motor_.position()}, destination);
+
+        if (!path_.empty()) {
+            path_idx_ = 0;
+            motor_.set_destination(sf::Vector2f{path_[path_idx_]});
+            return Status::kSuccess;
+        }
+
+        return Status::kFailure;
     }
 
     Status Npc::MoveToDestination(){
-
         // on parcourt case par case, waypoints
         // TODO : path increment
         if (motor_.remaining_distance() <= 0.001f) {
             path_idx_++;
             if (path_idx_ >= path_.size()) {
                 return Status::kSuccess;
-            }else {
+            } else {
                 motor_.set_destination(sf::Vector2f{path_[path_idx_]});
             }
         }

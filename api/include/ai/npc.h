@@ -24,7 +24,7 @@ namespace api::ai {
     class Npc final {
 
     public:
-        void Setup (const sf::Texture*, sf::Vector2f, sf::Vector2f, AStarGraph&);
+        void Setup (const sf::Texture*, sf::Vector2i, sf::Vector2i, AStarGraph&);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
 
@@ -55,13 +55,14 @@ namespace api::ai {
 
     private:
         // Behaviour-tree actions (bound into the tree via lambdas in Setup()).
+        [[nodiscard]] core::ai::behaviour_tree::Status WaitForPath();
         [[nodiscard]] core::ai::behaviour_tree::Status PickRandomDestination();
         [[nodiscard]] core::ai::behaviour_tree::Status MoveToDestination();
         [[nodiscard]] core::ai::behaviour_tree::Status Locked();
 
         static constexpr float kSpeed = 200.f;
 
-        sf::Vector2f world_size_{};
+        sf::Vector2i world_size_{};
         //sf::Texture* texture_=nullptr;
         std::optional<sf::Sprite> sprite_;
         motion::Motor motor_;

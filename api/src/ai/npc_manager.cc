@@ -10,7 +10,7 @@
 #include "rng/rng.h"
 
 namespace api::ai {
-    void NPCManager::Setup(std::string_view sprite_path, sf::Vector2f world_size){
+    void NPCManager::Setup(std::string_view sprite_path, sf::Vector2i world_size){
         world_size_ = world_size;
         sprite_path_ = sprite_path;
         if (texture_->loadFromFile(std::string(sprite_path))) {
@@ -33,6 +33,6 @@ namespace api::ai {
 
     void NPCManager::SpawnNPC(AStarGraph& graph){
         npcs_.emplace_back(std::make_unique<Npc>());
-        npcs_.back()->Setup(texture_.get(), world_size_, core::rng::get_vector(world_size_), graph);
+        npcs_.back()->Setup(texture_.get(), world_size_, graph.GetRandomNode(), graph);
     }
 }

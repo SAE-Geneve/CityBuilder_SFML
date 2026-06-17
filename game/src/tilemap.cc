@@ -7,7 +7,7 @@
 #include "game_types.h"
 #include "tiles\tilemap_generator.h"
 
-void Tilemap::Setup(sf::Vector2f grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph &astar_graph){
+void Tilemap::Setup(sf::Vector2i grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph &astar_graph){
     using namespace api::tiles;
 
     grid_size_ = grid_size;
@@ -28,7 +28,9 @@ void Tilemap::Setup(sf::Vector2f grid_size, sf::Vector2f gridOffset, api::ai::AS
         terrain_renderer_.ClearVertices();
 
         for (auto &tile: terrain_) {
-            astar_graph.AddNode(sf::Vector2i{tile.Pos});
+            if (tile.type == TerrainTile::kGrassA || tile.type == TerrainTile::kGrassB) {
+                astar_graph.AddNode(sf::Vector2i{tile.Pos});
+            }
             terrain_renderer_.AddTile(tile.Pos, gridOffset, terrain_tilesheet_.GetBounds(tile.type));
         }
     }

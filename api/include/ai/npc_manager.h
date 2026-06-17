@@ -16,12 +16,12 @@ namespace api::ai {
     class NPCManager {
 
         std::vector<std::unique_ptr<Npc>> npcs_;
-        sf::Vector2f world_size_;
+        sf::Vector2i world_size_;
         std::string sprite_path_;
         std::unique_ptr<sf::Texture> texture_ = std::make_unique<sf::Texture>();
 
     public:
-        void Setup(std::string_view, sf::Vector2f);
+        void Setup(std::string_view, sf::Vector2i);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
         void SpawnNPC(AStarGraph& graph);

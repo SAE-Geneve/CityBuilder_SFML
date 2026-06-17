@@ -13,7 +13,7 @@
 
 namespace api::tiles::generator {
 
-    inline std::vector<Tile<TerrainTile>> GenerateTerrain(sf::Vector2f size, sf::Vector2f offset){
+    inline std::vector<Tile<TerrainTile>> GenerateTerrain(sf::Vector2i size, sf::Vector2f offset){
 
         std::vector<Tile<TerrainTile>> terrainMap;
 

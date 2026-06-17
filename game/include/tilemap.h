@@ -18,7 +18,7 @@
 
 class Tilemap {
 
-    sf::Vector2f grid_size_;
+    sf::Vector2i grid_size_;
     sf::Vector2f grid_offset_;
 
     api::graphics::TilemapRenderer terrain_renderer_;
@@ -31,7 +31,7 @@ class Tilemap {
     std::vector<api::tiles::Tile<ResourceTile> > resources_;
 
 public:
-    void Setup(sf::Vector2f grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph&aStarGraph);
+    void Setup(sf::Vector2i grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph&aStarGraph);
     void Draw(sf::RenderWindow &window);
 
 };

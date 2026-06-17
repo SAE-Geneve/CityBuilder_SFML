@@ -10,7 +10,8 @@
 
 namespace game {
     namespace {
-        constexpr sf::Vector2f world_size = {1920.f, 1080.f};
+        constexpr sf::Vector2i world_size = {1920 * 2, 1080 * 2};
+        constexpr sf::Vector2i world_offset = {32, 32};
         constexpr sf::Vector2f window_size_f = {1920.f, 1080.f};
         constexpr sf::Vector2u window_size_u = {1920u, 1080u};
 
@@ -23,20 +24,19 @@ namespace game {
         Tilemap map_;
         api::graphics::Camera camera_;
         api::ai::NPCManager npc_manager_;
-        api::ai::AStarGraph astar_graph_;
+        api::ai::AStarGraph astar_graph_(world_size, world_offset);
 
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode(window_size_u), "SFML window", sf::State::Fullscreen);
             //isFullscreen_ = true;
             camera_.Setup(window_size_f, sf::FloatRect({0.f, 0.f}, {world_size.x, world_size.y}));
-            map_.Setup(world_size, {32, 32}, astar_graph_);
+            map_.Setup(world_size, {world_offset.x, world_offset.y}, astar_graph_);
             npc_manager_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png", world_size);
 
-            for (int i = 0; i < 5; ++i) {
+            for (int i = 0; i < 100; ++i) {
                 npc_manager_.SpawnNPC(astar_graph_);
             }
-
         }
 
         void ToggleFullscreen(){
