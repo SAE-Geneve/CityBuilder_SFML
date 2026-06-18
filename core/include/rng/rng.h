@@ -9,20 +9,19 @@
 
 namespace core::rng {
 
+    inline std::uniform_real_distribution<double> dist_float(0.f, 1.f);
+    inline std::mt19937 rng_{std::random_device{}()};
+
     template<typename T>
     requires std::is_floating_point_v<T>
     T get_value(T min, T max){
-        std::uniform_real_distribution<T> dist(min, max);
-        std::mt19937 rng_{std::random_device{}()};
-        return dist(rng_);
+        return min + max * dist_float(rng_);
     }
 
     template<typename T>
     requires std::is_integral_v<T>
     T get_value(T min, T max){
-        std::uniform_int_distribution<T> dist(min, max);
-        std::mt19937 rng_{std::random_device{}()};
-        return dist(rng_);
+        return min + max * dist_float(rng_);
     }
 
     template<typename T>

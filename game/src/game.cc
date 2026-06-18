@@ -34,7 +34,7 @@ namespace game {
             map_.Setup(world_size, {world_offset.x, world_offset.y}, astar_graph_);
             npc_manager_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png", world_size);
 
-            for (int i = 0; i < 100; ++i) {
+            for (int i = 0; i < 2000; ++i) {
                 npc_manager_.SpawnNPC(astar_graph_);
             }
         }
