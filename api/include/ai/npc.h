@@ -28,6 +28,7 @@ namespace api::ai {
         void Setup (const sf::Texture*, sf::Vector2i, sf::Vector2i, AStarGraph&);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
+        [[nodiscard]] sf::Vector2f Position() const;
 
         Npc() = default;
         ~Npc() = default;

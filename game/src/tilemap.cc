@@ -5,7 +5,7 @@
 #include "tilemap.h"
 
 #include "game_types.h"
-#include "tiles\tilemap_generator.h"
+#include "../include/tilemap_generator.h"
 
 void Tilemap::Setup(sf::Vector2i grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph &astar_graph){
     using namespace api::tiles;
@@ -14,7 +14,16 @@ void Tilemap::Setup(sf::Vector2i grid_size, sf::Vector2f gridOffset, api::ai::AS
     grid_offset_ = gridOffset;
 
     terrain_ = generator::GenerateTerrain(grid_size_, gridOffset);
-    resources_ = generator::SeedAndGrow(terrain_, ResourceTile::kWood);
+
+    resources_ = generator::FilterTerrain(terrain_);
+
+    generator::SeedAndGrow(resources_, ResourceTile::kWood, 0.05f);
+    generator::SeedAndGrow(resources_, ResourceTile::kRock, 0.05f);
+    generator::SeedAndGrow(resources_, ResourceTile::kFood, 0.20f);
+
+    resources_ = resources_
+    | std::views::filter([](auto tile){return tile.type != ResourceTile::kUndefined;})
+    | std::ranges::to<std::vector>();
 
     if (terrain_tilesheet_.InitTileSheet("_assets/tiles/RTS_medieval@2_no_margins_transparent.png", 128)) {
         terrain_tilesheet_.AddTile(TerrainTile::kGrassA, 0, 0);

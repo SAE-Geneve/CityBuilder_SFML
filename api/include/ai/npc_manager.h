@@ -10,6 +10,7 @@
 
 #include "a_star_graph.h"
 #include "npc.h"
+#include "graphics/tilemap_renderer.h"
 #include "tiles/tile.h"
 
 namespace api::ai {
@@ -18,7 +19,11 @@ namespace api::ai {
         std::vector<std::unique_ptr<Npc>> npcs_;
         sf::Vector2i world_size_;
         std::string sprite_path_;
+
         std::unique_ptr<sf::Texture> texture_ = std::make_unique<sf::Texture>();
+        sf::FloatRect texture_bounds_;
+        graphics::TilemapRenderer renderer_;
+
 
     public:
         void Setup(std::string_view, sf::Vector2i);

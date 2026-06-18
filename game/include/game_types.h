@@ -15,6 +15,7 @@ enum class TerrainTile : uint8_t {
 };
 
 enum class ResourceTile : uint8_t {
+    kUndefined,
     kWood,
     kRock,
     kFood

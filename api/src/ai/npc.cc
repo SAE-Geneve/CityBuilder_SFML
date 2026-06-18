@@ -65,10 +65,14 @@ namespace api::ai {
             // sprite_->setPosition({32,32});
             // rect.setPosition(sprite_->getPosition());
             // window.draw(rect);
-
+            sprite_->setColor(sf::Color::Red);
             sprite_->setPosition(motor_.position());
             window.draw(*sprite_);
         }
+    }
+
+    sf::Vector2f Npc::Position() const{
+        return motor_.position();
     }
 
     Status Npc::WaitForPath(){
