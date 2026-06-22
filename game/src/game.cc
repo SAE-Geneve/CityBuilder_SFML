@@ -7,6 +7,7 @@
 #include "ai/npc.h"
 #include "ai/npc_manager.h"
 #include "graphics/camera.h"
+#include "ui/ui_manager.h"
 
 namespace game {
     namespace {
@@ -26,6 +27,9 @@ namespace game {
         api::ai::NPCManager npc_manager_;
         api::ai::AStarGraph astar_graph_(world_size, world_offset);
 
+        // UI -----------------------------------------
+        api::ui::ui_manager ui_manager;
+
         void Setup(){
             // Create the main window
             window_.create(sf::VideoMode(window_size_u), "SFML window", sf::State::Fullscreen);
@@ -37,6 +41,13 @@ namespace game {
             for (int i = 0; i < 500; ++i) {
                 npc_manager_.SpawnNPC(astar_graph_);
             }
+
+            ui_manager.InitTexture("_assets/UI/square_buttons_26x26.png");
+            ui_manager.InitLabelStyle("_assets/UI/pixelFont-7-8x14-sproutLands.ttf");
+            ui_manager.AddButton({200,200}, "Wood");
+            ui_manager.AddButton({200,400}, "Food");
+
+
         }
 
         void ToggleFullscreen(){
@@ -70,6 +81,7 @@ namespace game {
                     }
                 }
                 camera_.HandleEvent(*event, window_);
+                ui_manager.HandleEvent(*event, window_);
             }
 
             // Rebuild the GL context if the window was resized/maximized.
@@ -83,6 +95,7 @@ namespace game {
             window_.clear();
             map_.Draw(window_);
             npc_manager_.Draw(window_);
+            ui_manager.Draw(window_);
             window_.display();
         }
     }

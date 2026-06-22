@@ -51,7 +51,7 @@ namespace api::tiles::generator {
         for (auto &tile: base_resources) {
             if (tile.type == ResourceTile::kUndefined) {
                 float rng_value = rnd(gen);
-                std::println("Rng Tile : {}", rng_value);
+                // std::println("Rng Tile : {}", rng_value);
                 if (rng_value < limit) {
                     tile.type = seed;
                 }
