@@ -2,7 +2,7 @@ name: Discord Notification
 
 on:
   push:
-    branches: [ main, master, develop ] # Modifiez selon vos branches
+    branches: [ main, master, develop, 925 ] # Modifiez selon vos branches
 
 jobs:
   notify-discord:
@@ -51,7 +51,10 @@ jobs:
               ],
               "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
             }
-          ]
+          ],
+          "allowed_mentions": {
+            "roles": ["1412376932271657000"]
+          }
         }
         EOF
         
