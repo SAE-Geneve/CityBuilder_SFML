@@ -58,7 +58,7 @@ jobs:
         }
         EOF
         
-        # Envoyer la notification à Discord
+        # Envoyer la notification à Discord (dans le thread)
         curl -H "Content-Type: application/json" \
              -d @discord_payload.json \
-             "$DISCORD_WEBHOOK_URL"
+             "$DISCORD_WEBHOOK_URL?thread_id=1518557303283122296"
