@@ -26,7 +26,7 @@ jobs:
         # Créer le payload JSON pour Discord
         cat << EOF > discord_payload.json
         {
-          "content": "<@&1375369355025584258> Nouveau push... Mettez vous à jour.",
+          "content": "<@&1412376932271657000> Nouveau push... Mettez vous à jour.",
           "embeds": [
             {
               "author": {
