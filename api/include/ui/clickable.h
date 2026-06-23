@@ -22,24 +22,26 @@ namespace api::ui {
         // Constructeur protected, la classe demande un heritage
         Clickable() = default;
 
-        UICallback OnHoverEnter;
-        UICallback OnReleasedLeft;
-        UICallback OnReleasedRight;
-        UICallback OnPressedLeft;
-        UICallback OnPressedRight;
+        // Intrinsic-behavior hooks. Default = no-op; derived classes override.
+        virtual void OnHoverEnter()   {}
+        virtual void OnHoverExit()    {}
+        virtual void OnReleasedLeft() {}
+        virtual void OnReleasedRight(){}
+        virtual void OnPressedLeft()  {}
+        virtual void OnPressedRight() {}
 
     public:
         virtual ~Clickable() = default;
         bool DoHoverEnterEvents(const std::optional<sf::Event> &evt);
         bool DoHoverExitEvents(const std::optional<sf::Event> &evt);
-        bool DoReleasedEvents(const std::optional<sf::Event> &evt) const;
-        bool DoPressedEvents(const std::optional<sf::Event> &evt) const;
+        bool DoReleasedEvents(const std::optional<sf::Event> &evt);
+        bool DoPressedEvents(const std::optional<sf::Event> &evt);
         bool HandleEvent(const std::optional<sf::Event> &event);
 
+        // Force a hover-exit from outside (e.g. to reset sibling widgets).
+        void LeaveHover();
+
         virtual void SetZone(sf::IntRect zone);
-
-        UICallback OnHoverExit;
-
     };
 } // namespace api::ui
 

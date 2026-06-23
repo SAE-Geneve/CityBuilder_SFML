@@ -3,6 +3,7 @@
 //
 
 #include "ui/ui_manager.h"
+#include "ui/button_builder.h"
 
 namespace api::ui {
     bool ui_manager::InitTexture(std::string_view texture_path){
@@ -11,7 +12,7 @@ namespace api::ui {
     }
 
     bool ui_manager::InitLabelStyle(std::string_view font_path){
-        if(font_.openFromFile(font_path)) {
+        if (font_.openFromFile(font_path)) {
             label_ = sf::Text(font_);
             if (label_.has_value()) {
                 label_->setCharacterSize(18);
@@ -22,17 +23,18 @@ namespace api::ui {
     }
 
     // ReSharper disable once CppParameterMayBeConst
-    void ui_manager::AddButton(sf::Vector2f pos, const std::string_view text, const UICallback &hCallback, const UICallback &cCallback){
-        buttons_.emplace_back(std::make_unique<Button>());
+    void ui_manager::AddButton(sf::Vector2f pos, const std::string &text, const UICallback &hCallback,
+                               const UICallback &cCallback){
 
-        buttons_.back()->SetPosition(pos);
-        buttons_.back()->SetText(text);
-        buttons_.back()->SetBaseTiling(sf::FloatRect({0, 3 * 48}, {48, 48}));
-        buttons_.back()->SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), hCallback);
-        buttons_.back()->SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), cCallback);
+        ButtonBuilder btnBuilder;
 
-        buttons_.back()->SetZone(sf::IntRect(sf::Vector2i{pos}, sf::Vector2i{96,96}));
-
+        buttons_.emplace_back(
+            std::move(btnBuilder
+            .BaseButton(pos, text, {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
+            .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), hCallback)
+            .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), cCallback)
+            .Build())
+        );
 
     }
 
@@ -67,9 +69,9 @@ namespace api::ui {
             // Do we enter in a button
             if (button->DoHoverEnterEvents(event)) {
                 // Exit other buttons
-                for (auto &exitButton : buttons_) {
+                for (auto &exitButton: buttons_) {
                     if (button != exitButton) {
-                        exitButton->OnHoverExit();
+                        exitButton->LeaveHover();
                     }
                 }
             }

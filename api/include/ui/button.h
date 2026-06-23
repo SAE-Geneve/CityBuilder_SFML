@@ -16,12 +16,15 @@
 
 namespace api::ui {
     class Button : public Clickable {
-        sf::Vector2f vertex_size_ = {96, 96};
+
+        friend class ButtonBuilder;
+
+        sf::Vector2f vertex_size_;
         std::array<sf::Vertex, 6> vertices_;
 
         sf::Vector2f pos_;
         static constexpr sf::Color kColor = sf::Color::White;
-        std::string_view text_;
+        std::string text_;
 
         sf::FloatRect tiling_;
         sf::FloatRect baseTiling_;
@@ -31,21 +34,20 @@ namespace api::ui {
         UICallback hoverCallback_;
         UICallback clickCallback_;
 
+    protected:
+        // Intrinsic button behavior: swap the tiling, then fire the user callback.
+        void OnHoverEnter()   override;
+        void OnHoverExit()    override;
+        void OnPressedLeft()  override;
+        void OnReleasedLeft() override;
+
     public:
         Button() = default;
 
         [[nodiscard]] std::span<sf::Vertex> GetVertices();
-        [[nodiscard]] std::string_view GetLabel() const;
+        [[nodiscard]] std::string GetLabel() const;
         [[nodiscard]] sf::Vector2f GetPosition() const;
         [[nodiscard]] sf::Vector2f GetVertexSize() const;
-
-        void SetPosition(sf::Vector2f pos);
-        void SetText(std::string text);
-        void SetBaseTiling(sf::FloatRect baseTiling);
-        void SetHover(sf::FloatRect hoverTiling, const UICallback &hoverCallback);
-        void SetClick(sf::FloatRect clickTiling, const UICallback &clickCallback);
-
-
     };
 
 

@@ -24,63 +24,36 @@ namespace api::ui {
     }
 
     // ReSharper disable once CppConstValueFunctionReturnType
-    const std::string_view Button::GetLabel() const{
+    std::string Button::GetLabel() const{
         return text_;
     }
 
     // ReSharper disable once CppConstValueFunctionReturnType
-    const sf::Vector2f Button::GetPosition() const{
+    sf::Vector2f Button::GetPosition() const{
         return pos_;
     }
 
     // ReSharper disable once CppMemberFunctionMayBeStatic
-    const sf::Vector2f Button::GetVertexSize() const{
+    sf::Vector2f Button::GetVertexSize() const{
         return vertex_size_;
     }
 
-    void Button::SetPosition(sf::Vector2f pos){
-        pos_ = pos;
+    void Button::OnHoverEnter(){
+        tiling_ = hoverTiling_;
+        if (hoverCallback_) hoverCallback_();
     }
 
-    void Button::SetText(const std::string text){
-        text_ = std::move(text);
-    }
-
-    void Button::SetBaseTiling(const sf::FloatRect baseTiling){
-        baseTiling_ = baseTiling;
+    void Button::OnHoverExit(){
         tiling_ = baseTiling_;
     }
 
-    void Button::SetHover(sf::FloatRect hoverTiling, const UICallback &hoverCallback){
-        hoverTiling_ = hoverTiling;
-        hoverCallback_ = hoverCallback;
-
-        OnHoverEnter = [this]() {
-            tiling_ = hoverTiling_;
-            if (hoverCallback_) {
-                hoverCallback_();
-            }
-        };
-        OnHoverExit = [this]() {
-            tiling_ = baseTiling_;
-        };
-
+    void Button::OnPressedLeft(){
+        tiling_ = clickTiling_;
+        if (clickCallback_) clickCallback_();
     }
 
-    void Button::SetClick(sf::FloatRect clickTiling, const UICallback &clickCallback){
-        clickTiling_ = clickTiling;
-        clickCallback_ = clickCallback;
-
-        OnReleasedLeft = [this]() {
-            tiling_ = baseTiling_;
-        };
-
-        OnPressedLeft = [this]() {
-            tiling_ = clickTiling_;
-            if (clickCallback_) {
-                clickCallback_();
-            }
-        };
+    void Button::OnReleasedLeft(){
+        tiling_ = baseTiling_;
     }
 
 

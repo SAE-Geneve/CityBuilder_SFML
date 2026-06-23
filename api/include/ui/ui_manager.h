@@ -23,7 +23,7 @@ namespace api::ui {
     public:
         bool InitTexture(std::string_view texture_path);
         bool InitLabelStyle(std::string_view label);
-        void AddButton(sf::Vector2f pos, std::string_view text, const UICallback &hCallback, const UICallback &cCallback);
+        void AddButton(sf::Vector2f pos, const std::string& text, const UICallback &hCallback, const UICallback &cCallback);
         void Draw(sf::RenderWindow &window);
         void HandleEvent(const sf::Event & event, const sf::RenderWindow & window) const;
 
