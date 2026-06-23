@@ -32,15 +32,15 @@ namespace api::ui {
         UICallback clickCallback_;
 
     public:
-        explicit Button() = default;
+        Button() = default;
 
         [[nodiscard]] std::span<sf::Vertex> GetVertices();
-        [[nodiscard]] const std::string_view GetLabel() const;
-        [[nodiscard]] const sf::Vector2f GetPosition() const;
-        [[nodiscard]] const sf::Vector2f GetVertexSize() const;
+        [[nodiscard]] std::string_view GetLabel() const;
+        [[nodiscard]] sf::Vector2f GetPosition() const;
+        [[nodiscard]] sf::Vector2f GetVertexSize() const;
 
         void SetPosition(sf::Vector2f pos);
-        void SetText(std::string_view text);
+        void SetText(std::string text);
         void SetBaseTiling(sf::FloatRect baseTiling);
         void SetHover(sf::FloatRect hoverTiling, const UICallback &hoverCallback);
         void SetClick(sf::FloatRect clickTiling, const UICallback &clickCallback);

@@ -42,8 +42,8 @@ namespace api::ui {
         pos_ = pos;
     }
 
-    void Button::SetText(const std::string_view text){
-        text_ = text;
+    void Button::SetText(const std::string text){
+        text_ = std::move(text);
     }
 
     void Button::SetBaseTiling(const sf::FloatRect baseTiling){
