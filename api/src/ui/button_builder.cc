@@ -6,31 +6,46 @@
 #include "ui/button.h"
 
 namespace api::ui {
-
-    ButtonBuilder &ButtonBuilder::BaseButton(sf::Vector2f pos, std::string text_, sf::Vector2f vertexSize,
-                                             sf::FloatRect baseTiling){
+    ButtonBuilder &ButtonBuilder::New(){
         product = Button();
+        return *this;
+    }
 
+    ButtonBuilder &ButtonBuilder::WithPosition(sf::Vector2f pos, sf::Vector2f vertexSize){
         product.pos_ = pos;
-        product.text_ = text_;
         product.vertex_size_ = vertexSize;
-        product.baseTiling_ = baseTiling;
-        product.tiling_ = baseTiling;
-        product.SetZone(sf::IntRect(sf::Vector2i{pos}, sf::Vector2i{96, 96}));
+        product.SetZone(sf::IntRect(sf::Vector2i{pos}, sf::Vector2i{vertexSize}));
 
         return *this;
     }
 
-    // ReSharper disable once CppParameterMayBeConst
-    ButtonBuilder &ButtonBuilder::SetHover(sf::FloatRect hoverTiling, const UICallback &hCallback){
+    ButtonBuilder &ButtonBuilder::WithText(std::string text){
+        product.text_ = text;
+        return *this;
+    }
+
+    ButtonBuilder &ButtonBuilder::WithBaseTile(sf::FloatRect baseTiling){
+        product.baseTiling_ = baseTiling;
+        product.tiling_ = baseTiling;
+        return *this;
+    }
+
+    ButtonBuilder &ButtonBuilder::WithHoverTile(sf::FloatRect hoverTiling){
         product.hoverTiling_ = hoverTiling;
+        return *this;
+    }
+
+    ButtonBuilder &ButtonBuilder::WithClickTile(sf::FloatRect clickTiling){
+        product.clickTiling_ = clickTiling;
+        return *this;
+    }
+
+    ButtonBuilder &ButtonBuilder::WithHoverCallback(const UICallback &hCallback){
         product.hoverCallback_ = hCallback;
         return *this;
     }
 
-    // ReSharper disable once CppParameterMayBeConst
-    ButtonBuilder &ButtonBuilder::SetClick(sf::FloatRect clickTiling, const UICallback &cCallback){
-        product.clickTiling_ = clickTiling;
+    ButtonBuilder &ButtonBuilder::WithClickCallback(const UICallback &cCallback){
         product.clickCallback_ = cCallback;
         return *this;
     }

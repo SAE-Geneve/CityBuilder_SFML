@@ -49,26 +49,39 @@ namespace game {
             api::ui::ButtonBuilder btnBuilder;
 
             ui_manager.Register(
-            btnBuilder
-                    .BaseButton({50, 50}, "Wood", {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
-                    .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), []() { std::println("Hover Wood"); })
-                    .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), []() { std::println("Click Wood"); })
-                    .Build()
-            );
-            ui_manager.Register(
                 btnBuilder
-                .BaseButton({120, 50}, "Rock", {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
-                .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), []() { std::println("Hover Rock"); })
-                .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), []() { std::println("Click Rock"); })
+                .New()
+                .WithPosition({50, 50}, {96, 96})
+                .WithText("Wood")
+                .WithBaseTile(sf::FloatRect({0, 3 * 48}, {48, 48}))
+                .WithHoverTile(sf::FloatRect({48, 3 * 48}, {48, 48}))
+                .WithClickTile(sf::FloatRect({48, 0 * 48}, {48, 48}))
+                .WithClickCallback([]() { std::println("Click Wood"); })
+                .WithHoverCallback([]() { std::println("Hover Wood"); })
                 .Build()
             );
             ui_manager.Register(
-            btnBuilder
-                    .BaseButton({190, 50}, "Food", {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
-                    .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), []() { std::println("Hover Food"); })
-                    .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), []() { std::println("Click Food"); })
-                    .Build()
+                btnBuilder
+                .New()
+                .WithPosition({120, 50}, {96, 96})
+                .WithText("Rock")
+                .WithBaseTile(sf::FloatRect({0, 3 * 48}, {48, 48}))
+                .WithHoverTile(sf::FloatRect({48, 3 * 48}, {48, 48}))
+                .WithClickTile(sf::FloatRect({48, 0 * 48}, {48, 48}))
+                .WithClickCallback([]() { std::println("Click Rock"); })
+                .WithHoverCallback([]() { std::println("Hover Rock"); })
+                .Build()
             );
+
+            ui_manager.Register(
+                btnBuilder
+                .WithPosition({190, 50}, {96, 96})
+                .WithText("Food")
+                .WithClickCallback([]() { std::println("Click Food"); })
+                .WithHoverCallback([]() { std::println("Hover Food"); })
+                .Build()
+            );
+
         }
 
         void ToggleFullscreen(){

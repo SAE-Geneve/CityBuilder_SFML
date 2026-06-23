@@ -23,13 +23,14 @@ namespace api::ui {
         std::array<sf::Vertex, 6> vertices_;
 
         sf::Vector2f pos_;
+        static constexpr sf::FloatRect kNoTiling = {{-1,-1},{-1,-1}};
         static constexpr sf::Color kColor = sf::Color::White;
         std::string text_;
 
-        sf::FloatRect tiling_;
-        sf::FloatRect baseTiling_;
-        sf::FloatRect hoverTiling_;
-        sf::FloatRect clickTiling_;
+        sf::FloatRect tiling_ = kNoTiling;
+        sf::FloatRect baseTiling_ = kNoTiling;
+        sf::FloatRect hoverTiling_ = kNoTiling;
+        sf::FloatRect clickTiling_ = kNoTiling;
 
         UICallback hoverCallback_;
         UICallback clickCallback_;

@@ -39,7 +39,7 @@ namespace api::ui {
     }
 
     void Button::OnHoverEnter(){
-        tiling_ = hoverTiling_;
+        if (hoverTiling_ != kNoTiling) tiling_ = hoverTiling_;
         if (hoverCallback_) hoverCallback_();
     }
 
@@ -48,7 +48,7 @@ namespace api::ui {
     }
 
     void Button::OnPressedLeft(){
-        tiling_ = clickTiling_;
+        if (clickTiling_ != kNoTiling) tiling_ = clickTiling_;
         if (clickCallback_) clickCallback_();
     }
 

@@ -17,10 +17,18 @@ namespace api::ui {
     class ButtonBuilder {
         Button product;
 
-        public:
-        ButtonBuilder& BaseButton(sf::Vector2f pos, std::string text_, sf::Vector2f vertexSize, sf::FloatRect baseTiling);
-        ButtonBuilder& SetHover(sf::FloatRect hoverTiling, const UICallback &hCallback);
-        ButtonBuilder& SetClick(sf::FloatRect clickTiling, const UICallback &cCallback);
+    public:
+        ButtonBuilder &New();
+        ButtonBuilder &WithPosition(sf::Vector2f pos, sf::Vector2f vertexSize);
+        ButtonBuilder &WithText(std::string text);
+
+        ButtonBuilder &WithBaseTile(sf::FloatRect baseTiling);
+        ButtonBuilder &WithHoverTile(sf::FloatRect baseTiling);
+        ButtonBuilder &WithClickTile(sf::FloatRect clickTiling);
+
+        ButtonBuilder &WithHoverCallback(const UICallback &hCallback);
+
+        ButtonBuilder &WithClickCallback(const UICallback &hCallback);
 
         std::unique_ptr<Button> Build();
 
