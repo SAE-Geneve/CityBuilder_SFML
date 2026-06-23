@@ -18,22 +18,22 @@ namespace api::ui {
     class Button : public Clickable {
 
         friend class ButtonBuilder;
+        static constexpr sf::FloatRect kNoTiling = {{-1,-1},{-1,-1}};
+        static constexpr sf::Color kColor = sf::Color::White;
 
         sf::Vector2f vertex_size_;
         std::array<sf::Vertex, 6> vertices_;
 
         sf::Vector2f pos_;
-        static constexpr sf::FloatRect kNoTiling = {{-1,-1},{-1,-1}};
-        static constexpr sf::Color kColor = sf::Color::White;
         std::string text_;
 
         sf::FloatRect tiling_ = kNoTiling;
         sf::FloatRect baseTiling_ = kNoTiling;
         sf::FloatRect hoverTiling_ = kNoTiling;
-        sf::FloatRect clickTiling_ = kNoTiling;
+        sf::FloatRect leftClickTiling_ = kNoTiling;
 
         UICallback hoverCallback_;
-        UICallback clickCallback_;
+        UICallback leftClickCallback_;
 
     protected:
         // Intrinsic button behavior: swap the tiling, then fire the user callback.

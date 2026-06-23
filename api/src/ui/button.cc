@@ -48,8 +48,8 @@ namespace api::ui {
     }
 
     void Button::OnPressedLeft(){
-        if (clickTiling_ != kNoTiling) tiling_ = clickTiling_;
-        if (clickCallback_) clickCallback_();
+        if (leftClickTiling_ != kNoTiling) tiling_ = leftClickTiling_;
+        if (leftClickCallback_) leftClickCallback_();
     }
 
     void Button::OnReleasedLeft(){

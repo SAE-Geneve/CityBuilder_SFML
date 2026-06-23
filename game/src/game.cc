@@ -51,6 +51,15 @@ namespace game {
             ui_manager.Register(
                 btnBuilder
                 .New()
+                .WithPosition({0,0},window_size_f)
+                .WithClickCallback([](){std::println("Click Background"); })
+                .WithHoverCallback([](){std::println("Hover Background, change mouse ?"); })
+                .Build()
+                );
+
+            ui_manager.Register(
+                btnBuilder
+                .New()
                 .WithPosition({50, 50}, {96, 96})
                 .WithText("Wood")
                 .WithBaseTile(sf::FloatRect({0, 3 * 48}, {48, 48}))
@@ -81,6 +90,7 @@ namespace game {
                 .WithHoverCallback([]() { std::println("Hover Food"); })
                 .Build()
             );
+
 
         }
 

@@ -13,7 +13,7 @@ namespace api::ui {
             if (zone_.contains(mouseMove->position) && !isHover_) {
                 OnHoverEnter();
                 isHover_ = true;
-                std::println("Hover Enter this !");
+                //std::println("Hover Enter this !");
                 return true;
             }
         }
@@ -25,7 +25,7 @@ namespace api::ui {
             if (!zone_.contains(mouseMove->position) && isHover_) {
                 OnHoverExit();
                 isHover_ = false;
-                std::println("Hover Exit this !");
+                //std::println("Hover Exit this !");
                 return true;
             }
         }

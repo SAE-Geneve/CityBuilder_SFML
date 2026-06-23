@@ -36,7 +36,7 @@ namespace api::ui {
     }
 
     ButtonBuilder &ButtonBuilder::WithClickTile(sf::FloatRect clickTiling){
-        product.clickTiling_ = clickTiling;
+        product.leftClickTiling_ = clickTiling;
         return *this;
     }
 
@@ -46,7 +46,7 @@ namespace api::ui {
     }
 
     ButtonBuilder &ButtonBuilder::WithClickCallback(const UICallback &cCallback){
-        product.clickCallback_ = cCallback;
+        product.leftClickCallback_ = cCallback;
         return *this;
     }
 
