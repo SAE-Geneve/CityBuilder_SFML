@@ -7,6 +7,7 @@
 #include "ai/npc.h"
 #include "ai/npc_manager.h"
 #include "graphics/camera.h"
+#include "ui/button_builder.h"
 #include "ui/ui_manager.h"
 
 namespace game {
@@ -44,11 +45,30 @@ namespace game {
 
             ui_manager.InitTexture("_assets/UI/square_buttons_26x26.png");
             ui_manager.InitLabelStyle("_assets/UI/pixelFont-7-8x14-sproutLands.ttf");
-            ui_manager.AddButton({190,50}, "Food", [](){std::print("Hover Food");}, [](){std::print("Click Food");});
-            ui_manager.AddButton({120,50}, "Rock", [](){std::print("Hover Rock");}, [](){std::print("Click Rock");});
-            ui_manager.AddButton({50,50}, "Wood", [](){std::print("Hover Wood");}, [](){std::print("Click Wood");});
 
+            api::ui::ButtonBuilder btnBuilder;
 
+            ui_manager.Register(
+            btnBuilder
+                    .BaseButton({50, 50}, "Wood", {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
+                    .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), []() { std::println("Hover Wood"); })
+                    .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), []() { std::println("Click Wood"); })
+                    .Build()
+            );
+            ui_manager.Register(
+                btnBuilder
+                .BaseButton({120, 50}, "Rock", {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
+                .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), []() { std::println("Hover Rock"); })
+                .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), []() { std::println("Click Rock"); })
+                .Build()
+            );
+            ui_manager.Register(
+            btnBuilder
+                    .BaseButton({190, 50}, "Food", {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
+                    .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), []() { std::println("Hover Food"); })
+                    .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), []() { std::println("Click Food"); })
+                    .Build()
+            );
         }
 
         void ToggleFullscreen(){

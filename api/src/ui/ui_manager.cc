@@ -22,22 +22,6 @@ namespace api::ui {
         return false;
     }
 
-    // ReSharper disable once CppParameterMayBeConst
-    void ui_manager::AddButton(sf::Vector2f pos, const std::string &text, const UICallback &hCallback,
-                               const UICallback &cCallback){
-
-        ButtonBuilder btnBuilder;
-
-        buttons_.emplace_back(
-            std::move(btnBuilder
-            .BaseButton(pos, text, {96, 96}, sf::FloatRect({0, 3 * 48}, {48, 48}))
-            .SetHover(sf::FloatRect({48, 3 * 48}, {48, 48}), hCallback)
-            .SetClick(sf::FloatRect({48, 0 * 48}, {48, 48}), cCallback)
-            .Build())
-        );
-
-    }
-
     void ui_manager::Draw(sf::RenderWindow &window){
 
         vertices_.clear();
@@ -87,6 +71,10 @@ namespace api::ui {
             }
 
         }
+    }
+
+    void ui_manager::Register(std::unique_ptr<Button> button){
+        buttons_.emplace_back(std::move(button));
     }
 
 }
