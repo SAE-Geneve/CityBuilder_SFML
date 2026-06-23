@@ -44,8 +44,9 @@ namespace game {
 
             ui_manager.InitTexture("_assets/UI/square_buttons_26x26.png");
             ui_manager.InitLabelStyle("_assets/UI/pixelFont-7-8x14-sproutLands.ttf");
-            ui_manager.AddButton({200,200}, "Wood");
-            ui_manager.AddButton({200,400}, "Food");
+            ui_manager.AddButton({190,50}, "Food", [](){std::print("Hover Food");}, [](){std::print("Click Food");});
+            ui_manager.AddButton({120,50}, "Rock", [](){std::print("Hover Rock");}, [](){std::print("Click Rock");});
+            ui_manager.AddButton({50,50}, "Wood", [](){std::print("Hover Wood");}, [](){std::print("Click Wood");});
 
 
         }
@@ -67,9 +68,14 @@ namespace game {
         // Start the game loop
         while (window_.isOpen()) {
             const float dt = clock_.restart().asSeconds();
+            //std::println("New frame ------------------------------------");
 
             // Process events = Input frame
+            int idx_event = 0;
             while (const std::optional event = window_.pollEvent()) {
+
+                //std::println("event treated {}", idx_event++);
+
                 // Close window: exit
                 if (event->is<sf::Event::Closed>()) {
                     window_.close();
@@ -83,19 +89,26 @@ namespace game {
                 camera_.HandleEvent(*event, window_);
                 ui_manager.HandleEvent(*event, window_);
             }
-
-            // Rebuild the GL context if the window was resized/maximized.
-            camera_.Update(dt);
-            camera_.Apply(window_);
-
             // Logic frame
             npc_manager_.Update(dt);
 
+            // Rebuild the GL context if the window was resized/maximized.
+            camera_.Update(dt);
             // Graphic frame
             window_.clear();
+
+            // Apply the camera view
+            camera_.Apply(window_);
             map_.Draw(window_);
             npc_manager_.Draw(window_);
+
+            // Reset the view for UI
+            sf::View ui_view_;
+            ui_view_.setSize(window_size_f);
+            ui_view_.setCenter(window_size_f * 0.5f);
+            window_.setView(ui_view_);
             ui_manager.Draw(window_);
+
             window_.display();
         }
     }

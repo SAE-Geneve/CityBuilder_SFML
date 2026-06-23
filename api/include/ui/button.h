@@ -16,25 +16,39 @@
 
 namespace api::ui {
     class Button : public Clickable {
-        static constexpr sf::Vector2f vertex_size_ = {96, 96};
-        // ReSharper disable once CppUseAuto
-        sf::FloatRect texture_bounds_ = sf::FloatRect({0, 3 * 48}, {48, 48});
+        sf::Vector2f vertex_size_ = {96, 96};
+        std::array<sf::Vertex, 6> vertices_;
 
         sf::Vector2f pos_;
-        sf::Color color_ = sf::Color::White;
-        std::array<sf::Vertex, 6> vertices_;
+        static constexpr sf::Color kColor = sf::Color::White;
         std::string_view text_;
 
+        sf::FloatRect tiling_;
+        sf::FloatRect baseTiling_;
+        sf::FloatRect hoverTiling_;
+        sf::FloatRect clickTiling_;
+
+        UICallback hoverCallback_;
+        UICallback clickCallback_;
+
     public:
-        Button(sf::Vector2f pos, std::string_view text);
-        void Draw(sf::RenderWindow &window) const;
+        explicit Button() = default;
+
         [[nodiscard]] std::span<sf::Vertex> GetVertices();
         [[nodiscard]] const std::string_view GetLabel() const;
         [[nodiscard]] const sf::Vector2f GetPosition() const;
         [[nodiscard]] const sf::Vector2f GetVertexSize() const;
 
+        void SetPosition(sf::Vector2f pos);
+        void SetText(std::string_view text);
+        void SetBaseTiling(sf::FloatRect baseTiling);
+        void SetHover(sf::FloatRect hoverTiling, const UICallback &hoverCallback);
+        void SetClick(sf::FloatRect clickTiling, const UICallback &clickCallback);
+
 
     };
+
+
 
 } // namespace api::ui
 

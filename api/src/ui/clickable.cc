@@ -4,62 +4,82 @@
 
 #include "ui/clickable.h"
 
-#ifdef TRACY_ENABLE
-#include "tracy/Tracy.hpp"
-#endif
+#include <print>
 
 namespace api::ui {
-    void Clickable::HandleEvent(std::optional<sf::Event> evt, bool &wasClicked){
+    bool Clickable::DoHoverEnterEvents(const std::optional<sf::Event> &evt){
+        // First Do Hover Events
+        if (const auto mouseMove = evt->getIf<sf::Event::MouseMoved>()) {
+            if (zone_.contains(mouseMove->position) && !isHover_) {
+                if (OnHoverEnter) OnHoverEnter();
+                isHover_ = true;
+                std::println("Hover Enter this !");
+                return true;
+            }
+        }
+        return false;
+    }
 
-        const auto released = evt->getIf<sf::Event::MouseButtonReleased>();
-        if (released && !wasClicked) {
+    bool Clickable::DoHoverExitEvents(const std::optional<sf::Event> &evt){
+        if (const auto mouseMove = evt->getIf<sf::Event::MouseMoved>()) {
+            if (!zone_.contains(mouseMove->position) && isHover_) {
+                if (OnHoverExit) OnHoverExit();
+                isHover_ = false;
+                std::println("Hover Exit this !");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Clickable::DoReleasedEvents(const std::optional<sf::Event> &evt) const{
+        if (const auto released = evt->getIf<sf::Event::MouseButtonReleased>()) {
             if (zone_.contains(released->position)) {
                 if (released->button == sf::Mouse::Button::Left) {
                     if (OnReleasedLeft) {
                         OnReleasedLeft();
-                        wasClicked |= true; // Indicate that a click was handled
+                        return true; // Indicate that a click was handled
                     }
                 }
 
                 if (released->button == sf::Mouse::Button::Right) {
                     if (OnReleasedRight) {
                         OnReleasedRight();
-                        wasClicked |= true; // Indicate that a click was handled
+                        return true; // Indicate that a click was handled
                     }
                 }
             }
         }
+        return false;
+    }
 
-        const auto pressed = evt->getIf<sf::Event::MouseButtonPressed>();
-        if (pressed && !wasClicked) {
+    bool Clickable::DoPressedEvents(const std::optional<sf::Event> &evt) const{
+        if (const auto pressed = evt->getIf<sf::Event::MouseButtonPressed>()) {
             if (zone_.contains(pressed->position)) {
                 if (pressed->button == sf::Mouse::Button::Left) {
                     if (OnPressedLeft) {
                         OnPressedLeft();
-                        wasClicked |= true; // Indicate that a click was handled
+                        return true; // Indicate that a click was handled
                     }
                 }
 
                 if (pressed->button == sf::Mouse::Button::Right) {
                     if (OnPressedRight) {
                         OnPressedRight();
-                        wasClicked |= true; // Indicate that a click was handled
+                        return true; // Indicate that a click was handled
                     }
                 }
             }
         }
+        return false;
+    }
 
-        const auto mouseMove = evt->getIf<sf::Event::MouseMoved>();
-        if (mouseMove) {
-            if (zone_.contains(mouseMove->position) && !isHover_) {
-                if (OnHoverEnter) OnHoverEnter();
-                isHover_ = true;
-            }
-            if (!zone_.contains(mouseMove->position) && isHover_) {
-                if (OnHoverExit) OnHoverExit();
-                isHover_ = false;
-            }
-        }
+    bool Clickable::HandleEvent(const std::optional<sf::Event> &event){
+        if (DoReleasedEvents(event)) return true;
+        if (DoPressedEvents(event)) return true;
+
+        return false;
+
     }
 
     void Clickable::SetZone(sf::IntRect zone){
