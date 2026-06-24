@@ -36,8 +36,9 @@ namespace api::graphics {
         }
 
         sf::FloatRect GetBounds(T type){
-            if (tile_rects.contains(type)) {
-                return tile_rects.at(type);
+            auto it = tile_rects.find(type);
+            if (it != tile_rects.end()) {
+                return it->second;
             }
             return {};
         }

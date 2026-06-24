@@ -20,11 +20,7 @@ namespace api::graphics {
 
     public:
         void AddTile(sf::Vector2f pos, sf::Vector2f offset, sf::FloatRect texBounds);
-
-        //void Setup(sf::Texture *texture, sf::Vector2f gridSize, sf::Vector2f gridOffset, sf::FloatRect texBounds);
-
         void Draw(sf::RenderWindow &window) const;
-
         void SetTexture(sf::Texture *texture);
         void ClearVertices();
 
