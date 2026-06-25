@@ -23,7 +23,7 @@ namespace api::ai {
         // Position we reached this vertex from; recorded into the came_from map when settled.
         sf::Vector2i parent_position = sf::Vector2i(-1, -1);
 
-        [[nodiscard]] int F() const{return g + h;};
+        [[nodiscard]] int F() const{ return g + h; };
 
         // Ordering for the open-queue (min-heap via std::greater).
         //bool operator>(const AStarVertex& other) const{return F() > other.F();};
@@ -31,16 +31,20 @@ namespace api::ai {
     };
 
     struct VxCompareByF {
-        bool operator()(AStarVertex a, AStarVertex b)
-        {
+        bool operator()(AStarVertex a, AStarVertex b){
             return a.F() < b.F();
         }
     };
 
+    enum class WalkableState {
+        Walkable,
+        NotWalkable,
+    };
+
     class AStarGraph {
 
-        std::unordered_set<sf::Vector2i, core::utils::Vec2iHash> walkables_;
-        sf::Vector2i world_offset_;
+        // std::unordered_set<sf::Vector2i, core::utils::Vec2iHash> walkables_set_;
+        std::vector<WalkableState> walkables_;
 
         // Scratch reused across GetPath calls: doubles as the closed set (key = settled)
         // and the reverse parent chain (value = parent). mutable so the const GetPath can
@@ -48,19 +52,21 @@ namespace api::ai {
         mutable std::unordered_map<sf::Vector2i, sf::Vector2i, core::utils::Vec2iHash> came_from_;
 
     public:
-        explicit AStarGraph(sf::Vector2i world_size, sf::Vector2i world_offset) : world_offset_(world_offset){
+        explicit AStarGraph(const sf::Vector2i world_size) : walkables_(world_size.x * world_size.y,
+                                                                        WalkableState::NotWalkable){
         };
 
-        void AddNode(sf::Vector2i node);
-        void RemoveNode(sf::Vector2i node);
-        [[nodiscard]] bool ContainsNode(sf::Vector2i node) const;
+        void SetWalkablePos(size_t idx);
+        void UnsetWalkablePos(size_t idx);
+        void SetWalkablePos(sf::Vector2i node);
+        void UnsetWalkablePos(sf::Vector2i node);
+        [[nodiscard]] bool IsInBoundsAndWalkable(sf::Vector2i pixel_pos) const;
 
-        sf::Vector2i GetRandomNode();
+        sf::Vector2i GetRandomNode() const;
 
         [[nodiscard]] std::vector<sf::Vector2i> GetPath(sf::Vector2i start, sf::Vector2i end) const;
 
     };
-
 
 
     constexpr std::array kNeighbours{

@@ -5,41 +5,39 @@
 #ifndef CITYBUILDER_TILEMAP_GENERATOR_H
 #define CITYBUILDER_TILEMAP_GENERATOR_H
 
-#include <print>
 #include <random>
 #include <ranges>
 #include <span>
 
-#include "../../api/include/tiles/tile.h"
+#include "game_types.h"
+#include "rng/rng.h"
+#include "tiles/world_settings.h"
 
-namespace api::tiles::generator {
-    inline std::random_device rd;
-    inline std::mt19937 gen(rd());
-    inline std::uniform_real_distribution rnd(0.f, 1.f);
+namespace game::generator {
 
-    inline std::vector<Tile<TerrainTile> > GenerateTerrain(sf::Vector2i size, sf::Vector2f offset){
-        std::vector<Tile<TerrainTile> > terrainMap;
+    inline std::vector<TerrainTile> GenerateTerrain(sf::Vector2i size, sf::Vector2i offset){
+        std::vector terrainMap(size.x * size.y, TerrainTile::kUndefined);
 
         FastNoiseLite noise;
         noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
         noise.SetSeed(1337);
         noise.SetFrequency(0.0025f);
 
-        for (float x = 0.f; x < size.x; x += offset.x) { // NOLINT(*-flp30-c)
-            for (float y = 0.f; y < size.y; y += offset.y) { // NOLINT(*-flp30-c)
+        for (int x = 0.f; x < size.x; x ++) { // NOLINT(*-flp30-c)
+            for (int y = 0.f; y < size.y; y ++) { // NOLINT(*-flp30-c)
 
                 // Generator stuff -----------------------------
-                if (std::abs(noise.GetNoise(x, y)) <= 0.3f) {
-                    if (rnd(gen) < 0.5f) {
-                        terrainMap.emplace_back(Tile{{{x, y}, true}, TerrainTile::kGrassA});
+                if (std::abs(noise.GetNoise(static_cast<float>(x * offset.x), static_cast<float>(y * offset.y))) <= 0.3f) {
+                    if (core::rng::get_value(0.f,1.f) < 0.5f) {
+                        terrainMap.at(api::tiles::WorldSettings::TilePosToIdx(sf::Vector2i{x,y})) = TerrainTile::kGrassA;
                     } else {
-                        terrainMap.emplace_back(Tile{{{x, y}, true}, TerrainTile::kGrassB});
+                        terrainMap.at(api::tiles::WorldSettings::TilePosToIdx(sf::Vector2i{x,y})) = TerrainTile::kGrassB;
                     }
                 } else {
-                    if (rnd(gen) < 0.5f) {
-                        terrainMap.emplace_back(Tile{{{x, y}, true}, TerrainTile::kWaterA});
+                    if (core::rng::get_value(0.f,1.f) < 0.5f) {
+                        terrainMap.at(api::tiles::WorldSettings::TilePosToIdx(sf::Vector2i{x,y})) = TerrainTile::kWaterA;
                     } else {
-                        terrainMap.emplace_back(Tile{{{x, y}, true}, TerrainTile::kWaterB});
+                        terrainMap.at(api::tiles::WorldSettings::TilePosToIdx(sf::Vector2i{x,y})) = TerrainTile::kWaterB;
                     }
                 }
             }
@@ -47,27 +45,39 @@ namespace api::tiles::generator {
         return terrainMap;
     }
 
-    inline void SeedAndGrow(std::vector<Tile<ResourceTile> > &base_resources, ResourceTile seed, float limit){
-        for (auto &tile: base_resources) {
-            if (tile.type == ResourceTile::kUndefined) {
-                float rng_value = rnd(gen);
-                // std::println("Rng Tile : {}", rng_value);
-                if (rng_value < limit) {
-                    tile.type = seed;
+    inline void SeedAndGrow(std::vector<ResourceTile> &base_resources, const std::vector<TerrainTile> &base_terrain, ResourceTile seed, float limit){
+
+        for (int idxTile = 0; idxTile < base_resources.size(); ++idxTile) {
+
+            auto& tile = base_resources[idxTile];
+
+            if (base_terrain[idxTile] == TerrainTile::kGrassA || base_terrain[idxTile] == TerrainTile::kGrassB) {
+                if (tile == ResourceTile::kFree) {
+                    // std::println("Rng Tile : {}", rng_value);
+                    if (core::rng::get_value(0.f, 1.f) < limit) {
+                        tile = seed;
+                    }
                 }
             }
         }
+
+        //
+        // for (auto &tile: base_resources) {
+        //     if (tile == ResourceTile::kUndefined) {
+        //         // std::println("Rng Tile : {}", rng_value);
+        //         if (core::rng::get_value(0.f, 1.f) < limit) {
+        //             tile = seed;
+        //         }
+        //     }
+        // }
     }
 
-    inline std::vector<Tile<ResourceTile> > FilterTerrain(std::span<Tile<TerrainTile> > terrainMap){
+    inline std::vector<ResourceTile> FilterTerrain(std::span<TerrainTile> terrainMap){
         auto map = terrainMap
-                   | std::views::filter([](auto tile) {
-                       return tile.type == TerrainTile::kGrassA || tile.type == TerrainTile::kGrassB;
-                   })
                    | std::views::transform([](auto tile) {
-                       return Tile<ResourceTile>{{tile.Pos, true}, ResourceTile::kUndefined};
+                       return ResourceTile::kFree;
                    })
-                   | std::ranges::to<std::vector<Tile<ResourceTile> > >();
+                   | std::ranges::to<std::vector<ResourceTile>>();
 
         return map;
     }

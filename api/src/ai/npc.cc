@@ -14,9 +14,8 @@
 namespace api::ai {
     using core::ai::behaviour_tree::Status;
 
-    void Npc::Setup(const sf::Texture *texture, sf::Vector2i world_size, sf::Vector2i start_position,
+    void Npc::Setup(const sf::Texture *texture, sf::Vector2i start_position,
                     AStarGraph &astar_graph){
-        world_size_ = world_size;
 
         if (texture != nullptr) {
             sprite_ = sf::Sprite(*texture);
@@ -83,9 +82,9 @@ namespace api::ai {
         // core::rng::get_value<long long>(0, walkable_tiles_.extent(0) * walkable_tiles_.extent(1));
         // get the path
         sf::Vector2i destination = astar_graph_->GetRandomNode();
-        if (ManhattanDistance(sf::Vector2i{motor_.position()}, destination) > 200) {
-            return Status::kFailure;
-        }
+        // if (ManhattanDistance(sf::Vector2i{motor_.position()}, destination) > 200) {
+        //     return Status::kFailure;
+        // }
         path_.SetPath(astar_graph_->GetPath(sf::Vector2i{motor_.position()}, destination));
         if (path_.IsValid()) {
             path_.NextPosition();

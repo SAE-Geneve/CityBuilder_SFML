@@ -40,6 +40,6 @@ namespace api::ai {
 
     void NPCManager::SpawnNPC(AStarGraph &graph){
         npcs_.emplace_back(std::make_unique<Npc>());
-        npcs_.back()->Setup(texture_.get(), world_size_, graph.GetRandomNode(), graph);
+        npcs_.back()->Setup(texture_.get(), graph.GetRandomNode(), graph);
     }
 }

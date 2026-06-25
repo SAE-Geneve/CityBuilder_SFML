@@ -11,7 +11,7 @@
 namespace api::graphics {
     class TilemapRenderer {
 
-        const sf::Color color = sf::Color::White;
+        const sf::Color color = sf::Color(255,255,255, 255);
 
         sf::Vector2f gridSize_;
         sf::Vector2f gridOffset_;

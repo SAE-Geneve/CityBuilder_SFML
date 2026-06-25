@@ -16,10 +16,12 @@
 #include "graphics/tilesheet.h"
 #include "ai/a_star_graph.h"
 
+namespace game {
+
 class Tilemap {
 
     sf::Vector2i grid_size_;
-    sf::Vector2f grid_offset_;
+    sf::Vector2i grid_offset_;
 
     api::graphics::TilemapRenderer terrain_renderer_;
     api::graphics::Tilesheet<TerrainTile> terrain_tilesheet_;
@@ -27,19 +29,16 @@ class Tilemap {
     api::graphics::TilemapRenderer resources_renderer_;
     api::graphics::Tilesheet<ResourceTile> resources_tilesheet_;
 
-    std::vector<api::tiles::Tile<TerrainTile> > terrain_;
-    std::vector<api::tiles::Tile<ResourceTile> > resources_;
+    std::vector<TerrainTile> terrain_;
+    std::vector<ResourceTile> resources_;
 
 public:
-    void Setup(sf::Vector2i grid_size, sf::Vector2f gridOffset, api::ai::AStarGraph&aStarGraph);
+    void Setup(sf::Vector2i grid_size, sf::Vector2i gridOffset, api::ai::AStarGraph&aStarGraph);
     void Draw(sf::RenderWindow &window);
 
 };
 
-#include "ai/a_star_graph.h"
 
-#include "graphics/tilemap_renderer.h"
-
-#include "graphics/tilesheet.h"
+}
 
 #endif //CITYBUILDER_TILEMAP_H

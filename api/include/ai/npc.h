@@ -25,7 +25,7 @@ namespace api::ai {
     class Npc final {
 
     public:
-        void Setup (const sf::Texture*, sf::Vector2i, sf::Vector2i, AStarGraph&);
+        void Setup (const sf::Texture*, sf::Vector2i, AStarGraph&);
         void Update(float dt);
         void Draw(sf::RenderWindow &window);
         [[nodiscard]] sf::Vector2f Position() const;
@@ -37,7 +37,6 @@ namespace api::ai {
 
         Npc(Npc &&npc) noexcept {
             std::println("Npc : Move semantic move constructor");
-            std::swap(world_size_, npc.world_size_);
             std::swap(sprite_, npc.sprite_);
             std::swap(motor_, npc.motor_);
             std::swap(bt_root_, npc.bt_root_);
@@ -46,7 +45,6 @@ namespace api::ai {
 
         Npc &operator=(Npc &&npc) noexcept{
             std::println("Npc : Move semantic move operator");
-            std::swap(world_size_, npc.world_size_);
             std::swap(sprite_, npc.sprite_);
             std::swap(motor_, npc.motor_);
             std::swap(bt_root_, npc.bt_root_);
@@ -64,9 +62,7 @@ namespace api::ai {
 
         static constexpr float kSpeed = 200.f;
 
-        sf::Vector2i world_size_{};
-        //sf::Texture* texture_=nullptr;
-        std::optional<sf::Sprite> sprite_;
+         std::optional<sf::Sprite> sprite_;
         motion::Motor motor_;
         std::unique_ptr<core::ai::behaviour_tree::Node> bt_root_;
 

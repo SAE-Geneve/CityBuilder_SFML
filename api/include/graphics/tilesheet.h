@@ -40,7 +40,7 @@ namespace api::graphics {
             if (it != tile_rects.end()) {
                 return it->second;
             }
-            return {};
+            return {{0,0},{0,0}};
         }
     };
 } // namespace graphics

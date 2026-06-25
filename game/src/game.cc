@@ -1,5 +1,6 @@
 ﻿#include <optional>
 #include "SFML/Graphics.hpp"
+
 #include "game.h"
 
 #include "tilemap.h"
@@ -7,15 +8,14 @@
 #include "ai/npc.h"
 #include "ai/npc_manager.h"
 #include "graphics/camera.h"
+#include "graphics/graphic_settings.h"
+#include "tiles/world_settings.h"
 #include "ui/button_builder.h"
 #include "ui/ui_manager.h"
 
 namespace game {
     namespace {
-        constexpr sf::Vector2i world_size = {1920 * 2, 1080 * 2};
-        constexpr sf::Vector2i world_offset = {32, 32};
-        constexpr sf::Vector2f window_size_f = {1920.f, 1080.f};
-        constexpr sf::Vector2u window_size_u = {1920u, 1080u};
+
 
         sf::Clock clock_;
         sf::RenderWindow window_;
@@ -26,20 +26,23 @@ namespace game {
         Tilemap map_;
         api::graphics::Camera camera_;
         api::ai::NPCManager npc_manager_;
-        api::ai::AStarGraph astar_graph_(world_size, world_offset);
+        api::ai::AStarGraph astar_graph_(api::tiles::WorldSettings::nb_tiles);
 
         // UI -----------------------------------------
         api::ui::ui_manager ui_manager;
 
         void Setup(){
-            // Create the main window
-            window_.create(sf::VideoMode(window_size_u), "SFML window", sf::State::Fullscreen);
-            //isFullscreen_ = true;
-            camera_.Setup(window_size_f, sf::FloatRect({0.f, 0.f}, {world_size.x, world_size.y}));
-            map_.Setup(world_size, {world_offset.x, world_offset.y}, astar_graph_);
-            npc_manager_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png", world_size);
 
-            for (int i = 0; i < 500; ++i) {
+            using namespace api;
+
+            // Create the main window
+            window_.create(sf::VideoMode(graphics::window_size_u), "SFML window", sf::State::Fullscreen);
+            //isFullscreen_ = true;
+            camera_.Setup(graphics::window_size_f, sf::FloatRect({0.f, 0.f}, {tiles::WorldSettings::nb_tiles.x, tiles::WorldSettings::nb_tiles.y}));
+            map_.Setup(tiles::WorldSettings::nb_tiles, tiles::WorldSettings::tile_size, astar_graph_);
+            npc_manager_.Setup("_assets/kenney_medieval-rts/PNG/Default size/Unit/medievalUnit_01.png", tiles::WorldSettings::nb_tiles);
+
+            for (int i = 0; i < 10000; ++i) {
                 npc_manager_.SpawnNPC(astar_graph_);
             }
 
@@ -98,7 +101,7 @@ namespace game {
             if (isFullscreen_) {
                 window_.create(sf::VideoMode::getDesktopMode(), "SFML window", sf::State::Fullscreen);
             } else {
-                window_.create(sf::VideoMode(window_size_u), "SFML window", sf::Style::Default);
+                window_.create(sf::VideoMode(api::graphics::window_size_u), "SFML window", sf::Style::Default);
             }
             appliedSize_ = window_.getSize();
         }
@@ -146,8 +149,8 @@ namespace game {
 
             // Reset the view for UI
             sf::View ui_view_;
-            ui_view_.setSize(window_size_f);
-            ui_view_.setCenter(window_size_f * 0.5f);
+            ui_view_.setSize(api::graphics::window_size_f);
+            ui_view_.setCenter(api::graphics::window_size_f * 0.5f);
             window_.setView(ui_view_);
             ui_manager.Draw(window_);
 

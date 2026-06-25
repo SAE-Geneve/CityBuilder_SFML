@@ -4,14 +4,14 @@
 
 #ifndef CITYBUILDER_NPC_MANAGER_H
 #define CITYBUILDER_NPC_MANAGER_H
-#include <mdspan>
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <string_view>
 
 #include "a_star_graph.h"
 #include "npc.h"
 #include "graphics/tilemap_renderer.h"
-#include "tiles/tile.h"
+
 
 namespace api::ai {
     class NPCManager {

@@ -6,6 +6,9 @@
 
 namespace api::graphics {
     void TilemapRenderer::AddTile(sf::Vector2f pos, sf::Vector2f offset, sf::FloatRect texBounds){
+
+        if (texBounds.size.x <= 0 || texBounds.size.y <= 0) return;
+
         vertices_.append(sf::Vertex(pos, color, texBounds.position));
         vertices_.append(sf::Vertex(pos + sf::Vector2f(offset.x, 0.f), color,
                                     texBounds.position + sf::Vector2f(texBounds.size.x, 0.f))); // + X

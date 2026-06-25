@@ -8,6 +8,7 @@
 #include "tiles/tile.h"
 
 enum class TerrainTile : uint8_t {
+    kUndefined,
     kGrassA,
     kGrassB,
     kWaterA,
@@ -15,7 +16,7 @@ enum class TerrainTile : uint8_t {
 };
 
 enum class ResourceTile : uint8_t {
-    kUndefined,
+    kFree,
     kWood,
     kRock,
     kFood
