@@ -26,8 +26,15 @@ namespace api::ai {
         [[nodiscard]] int F() const{return g + h;};
 
         // Ordering for the open-queue (min-heap via std::greater).
-        bool operator>(const AStarVertex& other) const{return F() > other.F();};
+        //bool operator>(const AStarVertex& other) const{return F() > other.F();};
 
+    };
+
+    struct VxCompareByF {
+        bool operator()(AStarVertex a, AStarVertex b)
+        {
+            return a.F() < b.F();
+        }
     };
 
     class AStarGraph {

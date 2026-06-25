@@ -33,7 +33,7 @@ namespace api::ai {
     }
 
     std::vector<sf::Vector2i> AStarGraph::GetPath(sf::Vector2i start, sf::Vector2i end) const{
-        std::priority_queue<AStarVertex, std::vector<AStarVertex>, std::greater<>> open_queue;
+        std::priority_queue<AStarVertex, std::vector<AStarVertex>, VxCompareByF> open_queue;
 
         // came_from_ (a reused member) doubles as the closed set: a position is a key iff
         // it has been settled, and the stored value is the parent we reached it from. This
